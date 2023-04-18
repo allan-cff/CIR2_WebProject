@@ -23,7 +23,7 @@
     - `\q`
 - Test :
     - `psql db_webproject web`
-    - `INSERT INTO public.user VALUES('lara.clette@messagerie.fr', 'Clette', 'Lara', 'test', '11/04/2023 15:30:00.000', '0612345678');`
+    - `INSERT INTO public.user VALUES('charles.ottofraises@messagerie.fr', 'Ottofraises', 'Charles', 'test', '11/04/2023 15:30:00.000', '0612345686');`
 
 ## VSCode DB link setup :
 - Add new connection & fill as here : 
