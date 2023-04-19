@@ -1,23 +1,44 @@
 <?php
-include "connect.php";
-function addUser($conn, $mail, $nom, $prenom, $password, $date, $phone){
+include "constants.php";
+
+function dbConnect(){
+    $dsn = "pgsql:dbname=". DB_NAME . ";host=" . DB_SERVER . ";port=" . DB_PORT;
     try{
-        $sql = $conn->prepare('INSERT INTO public.user (mail, name, surname, password, last_login, phone) VALUES (:mail, :nom, :prenom, :password, :date, :phone);');
-        $sql->bindParam(':mail', $mail);
-        $sql->bindParam(':nom', $nom);
-        $sql->bindParam(':prenom', $prenom);
-        $sql->bindParam(':password', $password);
-        $sql->bindParam(':date', $date);
-        $sql->bindParam(':phone', $phone);
-        $sql->execute();
-        $user = $sql->fetch(PDO::FETCH_ASSOC);
+        $conn = new PDO($dsn, DB_USER, DB_PASSWORD);
+    }
+    catch(PDOException $e){
+        echo "Connection failed: " . $e->getMessage();
+    }
+    return $conn;
+}
+
+function addStudent($conn, $mail, $name, $surname, $password, $phone, $class){
+    try{
+        $userInsert = $conn->prepare("INSERT INTO public.user VALUES(:mail, :name, :surname, :password, NULL, :phone);");
+        $userInsert->bindParam(':mail', $mail);
+        $userInsert->bindParam(':name', $name);
+        $userInsert->bindParam(':surname', $surname);
+        $userInsert->bindParam(':password', $password);
+        $userInsert->bindParam(':phone', $phone);
+        $userInsert->execute();
+        $classSelect = $conn->prepare("SELECT class_id FROM public.class WHERE cycle = :cycle LIMIT 1");
+        $classSelect->bindParam(':cycle', $class);
+        $classResult = $classSelect->fetch(PDO::FETCH_ASSOC);
+        if(!$classResult){
+            $classInsert = $conn->prepare("INSERT INTO public.class(cycle) VALUES(:cycle);");
+            $classInsert->bindParam(':cycle', $class);
+            $classInsert->execute();
+        }
+        $studentInsert = $conn->prepare('INSERT INTO student (mail, class_id) VALUES (:mail, (SELECT class_id FROM public.class WHERE cycle = :cycle LIMIT 1));');
+        $studentInsert->bindParam(':mail', $mail);
+        $studentInsert->bindParam(':cycle', $class);
+        $studentInsert->execute();
+        return true;
     } catch (PDOException $exception){
         error_log('Request error: '.$exception->getMessage());
         return false;
     }
-    return true;
 }
-
 
 function getUsers($conn){
     try{

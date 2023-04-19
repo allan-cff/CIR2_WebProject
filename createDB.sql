@@ -38,11 +38,11 @@ CREATE TABLE public.user(
 -- Table: teacher
 ------------------------------------------------------------
 CREATE TABLE public.teacher(
-	teacher_ID   int GENERATED ALWAYS AS IDENTITY ,
-	mail         VARCHAR (50) NOT NULL  ,
-	CONSTRAINT teacher_PK PRIMARY KEY (teacher_ID)
-
-	,CONSTRAINT teacher_user_FK FOREIGN KEY (mail) REFERENCES public.user(mail)
+	teacher_ID   int GENERATED ALWAYS AS IDENTITY,
+	mail         VARCHAR (50) NOT NULL,
+	CONSTRAINT teacher_PK PRIMARY KEY (teacher_ID),
+	CONSTRAINT teacher_AK UNIQUE (mail),
+	CONSTRAINT teacher_user_FK FOREIGN KEY (mail) REFERENCES public.user(mail)
 )WITHOUT OIDS;
 
 
@@ -50,8 +50,8 @@ CREATE TABLE public.teacher(
 -- Table: class
 ------------------------------------------------------------
 CREATE TABLE public.class(
-	class_ID   int GENERATED ALWAYS AS IDENTITY ,
-	cycle      VARCHAR (7) NOT NULL  ,
+	class_ID   int GENERATED ALWAYS AS IDENTITY,
+	cycle      VARCHAR (7) NOT NULL,
 	CONSTRAINT class_PK PRIMARY KEY (class_ID)
 )WITHOUT OIDS;
 
@@ -63,10 +63,10 @@ CREATE TABLE public.student(
 	student_ID   int GENERATED ALWAYS AS IDENTITY ,
 	mail         VARCHAR (50) NOT NULL ,
 	class_ID     INT  NOT NULL  ,
-	CONSTRAINT student_PK PRIMARY KEY (student_ID)
-
-	,CONSTRAINT student_user_FK FOREIGN KEY (mail) REFERENCES public.user(mail)
-	,CONSTRAINT student_class0_FK FOREIGN KEY (class_ID) REFERENCES public.class(class_ID)
+	CONSTRAINT student_PK PRIMARY KEY (student_ID),
+	CONSTRAINT student_AK UNIQUE (mail),
+	CONSTRAINT student_user_FK FOREIGN KEY (mail) REFERENCES public.user(mail),
+	CONSTRAINT student_class0_FK FOREIGN KEY (class_ID) REFERENCES public.class(class_ID)
 )WITHOUT OIDS;
 
 
@@ -76,9 +76,9 @@ CREATE TABLE public.student(
 CREATE TABLE public.admin(
 	admin_ID   int GENERATED ALWAYS AS IDENTITY ,
 	mail       VARCHAR (50) NOT NULL  ,
-	CONSTRAINT admin_PK PRIMARY KEY (admin_ID)
-
-	,CONSTRAINT admin_user_FK FOREIGN KEY (mail) REFERENCES public.user(mail)
+	CONSTRAINT admin_PK PRIMARY KEY (admin_ID),
+	CONSTRAINT admin_AK UNIQUE (mail),
+	CONSTRAINT admin_user_FK FOREIGN KEY (mail) REFERENCES public.user(mail)
 )WITHOUT OIDS;
 
 
