@@ -8,4 +8,10 @@
     foreach($students as $student){
         echo $student['mail']. '<br>';
     }
+    deleteUser($conn, "patoche@isen.com");
+    echo "<b>KILL PATOCHE</b><br>";
+    $students = getStudents($conn);
+    foreach($students as $student){
+        echo $student['mail']. '<br>';
+    }
 ?>
