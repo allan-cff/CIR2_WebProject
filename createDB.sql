@@ -27,7 +27,7 @@ CREATE TABLE public.user(
 	name         VARCHAR (20) NOT NULL ,
 	surname      VARCHAR (20) NOT NULL ,
 	password     VARCHAR (75) NOT NULL ,
-	last_login   DATE  NOT NULL ,
+	last_login   DATE ,
 	phone        VARCHAR (10)  NOT NULL  ,
 	CONSTRAINT user_PK PRIMARY KEY (mail) ,
 	CONSTRAINT user_AK UNIQUE (phone)
@@ -157,21 +157,21 @@ CREATE TABLE public.grade(
 -- INSERT TEST DATA
 ------------------------------------------------------------
 INSERT INTO public.class VALUES(DEFAULT, 'CIR2');
-INSERT INTO public.user VALUES('lara.clette@messagerie.fr', 'Clette', 'Lara', 'test', '11/04/2023 15:30:00.000', '0612345678');
+INSERT INTO public.user VALUES('lara.clette@messagerie.fr', 'Clette', 'Lara', 'test', NULL, '0612345678');
 INSERT INTO public.student(mail, class_ID) VALUES('lara.clette@messagerie.fr', (SELECT class_id FROM class WHERE cycle = 'CIR2'));
-INSERT INTO public.user VALUES('jacques.ouzi@messagerie.fr', 'Ouzi', 'Jacques', 'test', '2023-11-04 15:30:00.000', '0612345679');
+INSERT INTO public.user VALUES('jacques.ouzi@messagerie.fr', 'Ouzi', 'Jacques', 'test', NULL, '0612345679');
 INSERT INTO public.student(mail, class_ID) VALUES('jacques.ouzi@messagerie.fr', (SELECT class_id FROM class WHERE cycle = 'CIR2'));
-INSERT INTO public.user VALUES('line.stah@messagerie.fr', 'Stah', 'Line', 'test', '2023-11-04 15:30:00.000', '0612345680');
+INSERT INTO public.user VALUES('line.stah@messagerie.fr', 'Stah', 'Line', 'test', NULL, '0612345680');
 INSERT INTO public.student(mail, class_ID) VALUES('line.stah@messagerie.fr', (SELECT class_id FROM class WHERE cycle = 'CIR2'));
-INSERT INTO public.user VALUES('bernard.tichaud@messagerie.fr', 'Tichaud', 'Bernard', 'test', '2023-11-04 15:30:00.000', '0612345681');
+INSERT INTO public.user VALUES('bernard.tichaud@messagerie.fr', 'Tichaud', 'Bernard', 'test', NULL, '0612345681');
 INSERT INTO public.student(mail, class_ID) VALUES('bernard.tichaud@messagerie.fr', (SELECT class_id FROM class WHERE cycle = 'CIR2'));
-INSERT INTO public.user VALUES('annalise.durine@messagerie.fr', 'Durine', 'Anna-Lise', 'test', '2023-11-04 15:30:00.000', '0612345682');
+INSERT INTO public.user VALUES('annalise.durine@messagerie.fr', 'Durine', 'Anna-Lise', 'test', NULL, '0612345682');
 INSERT INTO public.student(mail, class_ID) VALUES('annalise.durine@messagerie.fr', (SELECT class_id FROM class WHERE cycle = 'CIR2'));
-INSERT INTO public.user VALUES('alain.terieur@messagerie.fr', 'Terieur', 'Alain', 'test', '2023-11-04 15:30:00.000', '0612345683');
+INSERT INTO public.user VALUES('alain.terieur@messagerie.fr', 'Terieur', 'Alain', 'test', NULL, '0612345683');
 INSERT INTO public.student(mail, class_ID) VALUES('alain.terieur@messagerie.fr', (SELECT class_id FROM class WHERE cycle = 'CIR2'));
-INSERT INTO public.user VALUES('abel.auboisdormant@messagerie.fr', 'Auboisdormant', 'Abel', 'test', '2023-11-04 15:30:00.000', '0612345684');
+INSERT INTO public.user VALUES('abel.auboisdormant@messagerie.fr', 'Auboisdormant', 'Abel', 'test', NULL, '0612345684');
 INSERT INTO public.student(mail, class_ID) VALUES('abel.auboisdormant@messagerie.fr', (SELECT class_id FROM class WHERE cycle = 'CIR2'));
-INSERT INTO public.user VALUES('maurice.dubois@messagerie.fr', 'Dubois', 'Maurice', 'test', '2023-11-04 15:30:00.000', '0612345685');
+INSERT INTO public.user VALUES('maurice.dubois@messagerie.fr', 'Dubois', 'Maurice', 'test', NULL, '0612345685');
 INSERT INTO public.teacher(mail) VALUES('maurice.dubois@messagerie.fr');
 INSERT INTO public.semester(date_begin, date_end) VALUES('2023-09-01 8:00:00.000', '2024-02-15 8:00:00.000');
 INSERT INTO public.lesson(subject, class_id, teacher_id, semester_id) VALUES('Algorithmique - C++', (SELECT class_id FROM class WHERE cycle = 'CIR2'), (SELECT teacher_id FROM teacher WHERE mail = 'maurice.dubois@messagerie.fr'), (SELECT semester_id FROM semester WHERE date_begin = '2023-09-01 8:00:00.000'));
