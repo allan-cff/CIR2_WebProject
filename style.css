@@ -17,6 +17,11 @@ header {
     grid-row-end: 2;
 }
 
+.navbar-toggler{
+
+    border-style: none;
+}
+
 main {
     grid-column-start: 1;
     grid-column-end: 4;
