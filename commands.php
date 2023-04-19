@@ -1,29 +1,33 @@
 <?php
 include "connect.php";
-function addStudent($conn, $mail, $class_id, $student_id){
+function addUser($conn, $mail, $nom, $prenom, $password, $date, $phone){
     try{
-        $sql = $conn->prepare('INSERT INTO student (email, class_id, student_id) VALUES (:mail, :class_id, :student_id);');
+        $sql = $conn->prepare('INSERT INTO public.user (mail, name, surname, password, last_login, phone) VALUES (:mail, :nom, :prenom, :password, :date, :phone);');
         $sql->bindParam(':mail', $mail);
-        $sql->bindParam(':class_id', $class_id);
-        $sql->bindParam(':student_id', $student_id);
+        $sql->bindParam(':nom', $nom);
+        $sql->bindParam(':prenom', $prenom);
+        $sql->bindParam(':password', $password);
+        $sql->bindParam(':date', $date);
+        $sql->bindParam(':phone', $phone);
         $sql->execute();
-        $student = $sql->fetch(PDO::FETCH_ASSOC);
+        $user = $sql->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $exception){
         error_log('Request error: '.$exception->getMessage());
         return false;
     }
-    return $student;
+    return true;
 }
 
-function getStudents($conn){
+
+function getUsers($conn){
     try{
-        $sql = $conn->prepare('SELECT * FROM student;');
+        $sql = $conn->prepare('SELECT * FROM public.user;');
         $sql->execute();
-        $students = $sql->fetchAll(PDO::FETCH_ASSOC);
+        $users = $sql->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $exception){
         error_log('Request error: '.$exception->getMessage());
         return false;
     }
-    return $students;
+    return $users;
 }
 ?>
