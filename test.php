@@ -6,6 +6,6 @@
     addStudent($conn, "patoche@isen.com", "Coucou", "Patoche", "test", "0616155976", "CIR3");
     $students = getStudents($conn);
     foreach($students as $student){
-        echo $student['mail'];
+        echo $student['mail']. '<br>';
     }
 ?>
