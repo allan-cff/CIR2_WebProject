@@ -42,42 +42,37 @@ function addStudent($conn, $mail, $name, $surname, $password, $phone, $class){
 
 function getStudents($conn){
     try{
-        $sql = $conn->prepare('SELECT * FROM public.student;');
+        $sql = $conn->prepare('SELECT mail, name, surname, phone, cycle FROM public.user JOIN public.student USING (mail) JOIN public.class USING (class_id);');
         $sql->execute();
-        $users = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $exception){
         error_log('Request error: '.$exception->getMessage());
         return false;
     }
-    return $users;
 }
 
 function getUser($conn, $mail){
     try{
-        $sql = $conn->prepare('SELECT * FROM public.user WHERE mail = :mail;');
+        $sql = $conn->prepare('SELECT mail, name, surname, phone FROM public.user WHERE mail = :mail;');
         $sql->bindParam(':mail', $mail);
         $sql->execute();
-        $user = $sql->fetch(PDO::FETCH_ASSOC);
+        return $sql->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $exception){
         error_log('Request error: '.$exception->getMessage());
         return false;
     }
-    return $user;
 }
 
-function deleteStudent($conn, $mail){
+function deleteUser($conn, $mail){
     try{
-        $sql = $conn->prepare('DELETE FROM public.student WHERE mail = :mail;');
-        $sql->bindParam(':mail', $mail);
-        $sql->execute();
         $sql = $conn->prepare('DELETE FROM public.user WHERE mail = :mail;');
         $sql->bindParam(':mail', $mail);
         $sql->execute();
+        return true;
     } catch (PDOException $exception){
         error_log('Request error: '.$exception->getMessage());
         return false;
     }
-    return true;
 }
 
 function deleteUser($conn, $mail){
