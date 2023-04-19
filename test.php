@@ -15,4 +15,5 @@ foreach($users as $user){
 print_r($users);
 $userToSearch = getUser($conn, 'léna.zi@messagerie.fr');
 echo $userToSearch['mail'];
+deleteUser($conn, 'léna.zi@messagerie.fr');
 ?>
