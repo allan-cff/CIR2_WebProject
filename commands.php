@@ -65,8 +65,11 @@ function getUser($conn, $mail){
     return $user;
 }
 
-function deleteUser($conn, $mail){
+function deleteStudent($conn, $mail){
     try{
+        $sql = $conn->prepare('DELETE FROM public.student WHERE mail = :mail;');
+        $sql->bindParam(':mail', $mail);
+        $sql->execute();
         $sql = $conn->prepare('DELETE FROM public.user WHERE mail = :mail;');
         $sql->bindParam(':mail', $mail);
         $sql->execute();
