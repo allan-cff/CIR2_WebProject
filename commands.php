@@ -1,29 +1,78 @@
 <?php
-include "connect.php";
-function addStudent($conn, $mail, $class_id, $student_id){
+include "constants.php";
+
+function dbConnect(){
+    $dsn = "pgsql:dbname=". DB_NAME . ";host=" . DB_SERVER . ";port=" . DB_PORT;
     try{
-        $sql = $conn->prepare('INSERT INTO student (email, class_id, student_id) VALUES (:mail, :class_id, :student_id);');
-        $sql->bindParam(':mail', $mail);
-        $sql->bindParam(':class_id', $class_id);
-        $sql->bindParam(':student_id', $student_id);
-        $sql->execute();
-        $student = $sql->fetch(PDO::FETCH_ASSOC);
+        $conn = new PDO($dsn, DB_USER, DB_PASSWORD);
+    }
+    catch(PDOException $e){
+        echo "Connection failed: " . $e->getMessage();
+    }
+    return $conn;
+}
+
+function addStudent($conn, $mail, $name, $surname, $password, $phone, $class){
+    try{
+        $userInsert = $conn->prepare("INSERT INTO public.user VALUES(:mail, :name, :surname, :password, NULL, :phone);");
+        $userInsert->bindParam(':mail', $mail);
+        $userInsert->bindParam(':name', $name);
+        $userInsert->bindParam(':surname', $surname);
+        $userInsert->bindParam(':password', $password);
+        $userInsert->bindParam(':phone', $phone);
+        $userInsert->execute();
+        $classSelect = $conn->prepare("SELECT class_id FROM public.class WHERE cycle = :cycle LIMIT 1");
+        $classSelect->bindParam(':cycle', $class);
+        $classResult = $classSelect->fetch(PDO::FETCH_ASSOC);
+        if(!$classResult){
+            $classInsert = $conn->prepare("INSERT INTO public.class(cycle) VALUES(:cycle);");
+            $classInsert->bindParam(':cycle', $class);
+            $classInsert->execute();
+        }
+        $studentInsert = $conn->prepare('INSERT INTO student (mail, class_id) VALUES (:mail, (SELECT class_id FROM public.class WHERE cycle = :cycle LIMIT 1));');
+        $studentInsert->bindParam(':mail', $mail);
+        $studentInsert->bindParam(':cycle', $class);
+        $studentInsert->execute();
+        return true;
     } catch (PDOException $exception){
         error_log('Request error: '.$exception->getMessage());
         return false;
     }
-    return $student;
 }
 
 function getStudents($conn){
     try{
-        $sql = $conn->prepare('SELECT * FROM student;');
+        $sql = $conn->prepare('SELECT mail, name, surname, phone, cycle FROM public.user JOIN public.student USING (mail) JOIN public.class USING (class_id);');
         $sql->execute();
-        $students = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $exception){
         error_log('Request error: '.$exception->getMessage());
         return false;
     }
-    return $students;
 }
+
+function getUser($conn, $mail){
+    try{
+        $sql = $conn->prepare('SELECT mail, name, surname, phone FROM public.user WHERE mail = :mail;');
+        $sql->bindParam(':mail', $mail);
+        $sql->execute();
+        return $sql->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
+
+function deleteUser($conn, $mail){
+    try{
+        $sql = $conn->prepare('DELETE FROM public.user WHERE mail = :mail;');
+        $sql->bindParam(':mail', $mail);
+        $sql->execute();
+        return true;
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
+
 ?>
