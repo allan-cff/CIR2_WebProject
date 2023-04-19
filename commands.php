@@ -80,4 +80,15 @@ function deleteStudent($conn, $mail){
     return true;
 }
 
+function deleteUser($conn, $mail){
+    try{
+        $sql = $conn->prepare('DELETE FROM public.user WHERE mail = :mail;');
+        $sql->bindParam(':mail', $mail);
+        $sql->execute();
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+    return true;
+}
 ?>
