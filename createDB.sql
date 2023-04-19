@@ -29,7 +29,7 @@ CREATE TABLE public.user(
 	password     VARCHAR (75) NOT NULL ,
 	last_login   DATE ,
 	phone        VARCHAR (10)  NOT NULL  ,
-	CONSTRAINT user_PK PRIMARY KEY (mail) ,
+	CONSTRAINT user_PK PRIMARY KEY (mail),
 	CONSTRAINT user_AK UNIQUE (phone)
 )WITHOUT OIDS;
 
@@ -42,7 +42,7 @@ CREATE TABLE public.teacher(
 	mail         VARCHAR (50) NOT NULL,
 	CONSTRAINT teacher_PK PRIMARY KEY (teacher_ID),
 	CONSTRAINT teacher_AK UNIQUE (mail),
-	CONSTRAINT teacher_user_FK FOREIGN KEY (mail) REFERENCES public.user(mail)
+	CONSTRAINT teacher_user_FK FOREIGN KEY (mail) REFERENCES public.user(mail) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 
@@ -52,7 +52,8 @@ CREATE TABLE public.teacher(
 CREATE TABLE public.class(
 	class_ID   int GENERATED ALWAYS AS IDENTITY,
 	cycle      VARCHAR (7) NOT NULL,
-	CONSTRAINT class_PK PRIMARY KEY (class_ID)
+	CONSTRAINT class_PK PRIMARY KEY (class_ID),
+	CONSTRAINT class_AK UNIQUE (cycle)
 )WITHOUT OIDS;
 
 
@@ -65,8 +66,8 @@ CREATE TABLE public.student(
 	class_ID     INT  NOT NULL  ,
 	CONSTRAINT student_PK PRIMARY KEY (student_ID),
 	CONSTRAINT student_AK UNIQUE (mail),
-	CONSTRAINT student_user_FK FOREIGN KEY (mail) REFERENCES public.user(mail),
-	CONSTRAINT student_class0_FK FOREIGN KEY (class_ID) REFERENCES public.class(class_ID)
+	CONSTRAINT student_user_FK FOREIGN KEY (mail) REFERENCES public.user(mail) ON DELETE CASCADE,
+	CONSTRAINT student_class0_FK FOREIGN KEY (class_ID) REFERENCES public.class(class_ID) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 
@@ -78,7 +79,7 @@ CREATE TABLE public.admin(
 	mail       VARCHAR (50) NOT NULL  ,
 	CONSTRAINT admin_PK PRIMARY KEY (admin_ID),
 	CONSTRAINT admin_AK UNIQUE (mail),
-	CONSTRAINT admin_user_FK FOREIGN KEY (mail) REFERENCES public.user(mail)
+	CONSTRAINT admin_user_FK FOREIGN KEY (mail) REFERENCES public.user(mail) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 
@@ -101,10 +102,9 @@ CREATE TABLE public.appreciation(
 	appraisal         VARCHAR (200) NOT NULL ,
 	semester_ID       INT  NOT NULL ,
 	student_ID        INT  NOT NULL  ,
-	CONSTRAINT appreciation_PK PRIMARY KEY (appreciation_ID)
-
-	,CONSTRAINT appreciation_semester_FK FOREIGN KEY (semester_ID) REFERENCES public.semester(semester_ID)
-	,CONSTRAINT appreciation_student0_FK FOREIGN KEY (student_ID) REFERENCES public.student(student_ID)
+	CONSTRAINT appreciation_PK PRIMARY KEY (appreciation_ID),
+	CONSTRAINT appreciation_semester_FK FOREIGN KEY (semester_ID) REFERENCES public.semester(semester_ID) ON DELETE CASCADE,
+	CONSTRAINT appreciation_student0_FK FOREIGN KEY (student_ID) REFERENCES public.student(student_ID) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 
@@ -117,11 +117,10 @@ CREATE TABLE public.lesson(
 	class_ID      INT  NOT NULL ,
 	teacher_ID    INT  NOT NULL ,
 	semester_ID   INT  NOT NULL  ,
-	CONSTRAINT lesson_PK PRIMARY KEY (lesson_ID)
-
-	,CONSTRAINT lesson_class_FK FOREIGN KEY (class_ID) REFERENCES public.class(class_ID)
-	,CONSTRAINT lesson_teacher0_FK FOREIGN KEY (teacher_ID) REFERENCES public.teacher(teacher_ID)
-	,CONSTRAINT lesson_semester1_FK FOREIGN KEY (semester_ID) REFERENCES public.semester(semester_ID)
+	CONSTRAINT lesson_PK PRIMARY KEY (lesson_ID),
+	CONSTRAINT lesson_class_FK FOREIGN KEY (class_ID) REFERENCES public.class(class_ID) ON DELETE CASCADE,
+	CONSTRAINT lesson_teacher0_FK FOREIGN KEY (teacher_ID) REFERENCES public.teacher(teacher_ID) ON DELETE CASCADE,
+	CONSTRAINT lesson_semester1_FK FOREIGN KEY (semester_ID) REFERENCES public.semester(semester_ID) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 
@@ -132,9 +131,8 @@ CREATE TABLE public.evaluation(
 	eval_ID     int GENERATED ALWAYS AS IDENTITY ,
 	coeff       FLOAT  NOT NULL ,
 	lesson_ID   INT  NOT NULL  ,
-	CONSTRAINT evaluation_PK PRIMARY KEY (eval_ID)
-
-	,CONSTRAINT evaluation_lesson_FK FOREIGN KEY (lesson_ID) REFERENCES public.lesson(lesson_ID)
+	CONSTRAINT evaluation_PK PRIMARY KEY (eval_ID),
+	CONSTRAINT evaluation_lesson_FK FOREIGN KEY (lesson_ID) REFERENCES public.lesson(lesson_ID) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 
@@ -146,10 +144,9 @@ CREATE TABLE public.grade(
 	grade        FLOAT  NOT NULL ,
 	eval_ID      INT  NOT NULL ,
 	student_ID   INT  NOT NULL  ,
-	CONSTRAINT grade_PK PRIMARY KEY (grade_ID)
-
-	,CONSTRAINT grade_evaluation_FK FOREIGN KEY (eval_ID) REFERENCES public.evaluation(eval_ID)
-	,CONSTRAINT grade_student0_FK FOREIGN KEY (student_ID) REFERENCES public.student(student_ID)
+	CONSTRAINT grade_PK PRIMARY KEY (grade_ID),
+	CONSTRAINT grade_evaluation_FK FOREIGN KEY (eval_ID) REFERENCES public.evaluation(eval_ID) ON DELETE CASCADE,
+	CONSTRAINT grade_student0_FK FOREIGN KEY (student_ID) REFERENCES public.student(student_ID) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 
