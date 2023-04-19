@@ -30,4 +30,17 @@ function getUsers($conn){
     }
     return $users;
 }
+
+function getUser($conn, $mail){
+    try{
+        $sql = $conn->prepare('SELECT * FROM public.user WHERE mail = :mail;');
+        $sql->bindParam(':mail', $mail);
+        $sql->execute();
+        $user = $sql->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+    return $user;
+}
 ?>

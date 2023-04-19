@@ -13,4 +13,6 @@ foreach($users as $user){
     echo $user["mail"].'<br>';
 }
 print_r($users);
+$userToSearch = getUser($conn, 'léna.zi@messagerie.fr');
+echo $userToSearch['mail'];
 ?>
