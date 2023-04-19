@@ -3,9 +3,9 @@
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
     $conn = dbConnect();
-    addStudent($conn, "patoche@isen.com", "Coucou", "Patoche", "test", "0616155976", "CIR3");
-    addStudent($conn, "patoche2@isen.com", "Coucou", "Patoche", "test", "0616155977", "CIR3");
-    $students = getStudents($conn);
+    addStudent($conn, "patoche@isen.com", "Coucou", "Patoche", "test", "0616159501", "CIR2");
+    addStudent($conn, "patoche2@isen.com", "Coucou", "Patoche", "test", "0616159500", "CIR3");
+    $students = getAllStudents($conn);
     echo "<b>ETUDIANTS</b><br>";
     foreach($students as $student){
         echo $student['mail']. '<br>';
@@ -27,6 +27,8 @@
     echo "<b>ADMINS</b><br>";
     addAdmin($conn, 'quentin@isen.com', 'Quentin', 'Le Goff', 'test', '0750230013');
     addAdmin($conn, 'allan@isen.com', 'Allan', 'Cueff', 'test', '0750230014');
-    $admin = getAllAdmins($conn);
-    echo $admin['mail']. '<br>';
+    $admins = getAllAdmins($conn);
+    foreach($admins as $admin){
+        echo $admin['mail']. '<br>';
+    }
 ?>
