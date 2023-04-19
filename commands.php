@@ -40,9 +40,9 @@ function addStudent($conn, $mail, $name, $surname, $password, $phone, $class){
     }
 }
 
-function getUsers($conn){
+function getStudents($conn){
     try{
-        $sql = $conn->prepare('SELECT * FROM public.user;');
+        $sql = $conn->prepare('SELECT * FROM public.student;');
         $sql->execute();
         $users = $sql->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $exception){
