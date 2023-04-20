@@ -78,18 +78,18 @@ function addAdmin($conn, $mail, $name, $surname, $password, $phone){
     }
 }
 
-function getAdmin($conn){
+function getAllAdmins($conn){
     try{
         $sql = $conn->prepare('SELECT mail, name, surname, phone FROM public.user JOIN public.admin USING (mail);');
         $sql->execute();
-        return $sql->fetch(PDO::FETCH_ASSOC);
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $exception){
         error_log('Request error: '.$exception->getMessage());
         return false;
     }
 }
 
-function getStudents($conn){
+function getAllStudents($conn){
     try{
         $sql = $conn->prepare('SELECT mail, name, surname, phone, cycle FROM public.user JOIN public.student USING (mail) JOIN public.class USING (class_id);');
         $sql->execute();
@@ -100,7 +100,7 @@ function getStudents($conn){
     }
 }
 
-function getTeachers($conn){
+function getAllTeachers($conn){
     try{
         $sql = $conn->prepare('SELECT mail, name, surname, phone FROM public.user JOIN public.teacher USING (mail);');
         $sql->execute();
