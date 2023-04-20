@@ -18,6 +18,7 @@
     }
     echo "<b>PROFESSEURS</b><br>";
     addTeacher($conn, 'patrick@isen.com', 'Patrick', 'Pat', 'test', '0616155976');
+    addTeacher($conn, 'patrick3@isen.com', 'nik', 'la', 'test', '0616155976');
     addTeacher($conn, 'erin@isen.com', 'erin', 'nazi', 'test', '0616155977');
     $teachers = getTeachers($conn);
     foreach($teachers as $teacher){
