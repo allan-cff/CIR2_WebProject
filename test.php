@@ -1,0 +1,17 @@
+<?php
+    include "commands.php";
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+    $conn = dbConnect();
+    addStudent($conn, "patoche@isen.com", "Coucou", "Patoche", "test", "0616155976", "CIR3");
+    $students = getStudents($conn);
+    foreach($students as $student){
+        echo $student['mail']. '<br>';
+    }
+    deleteUser($conn, "patoche@isen.com");
+    echo "<b>KILL PATOCHE</b><br>";
+    $students = getStudents($conn);
+    foreach($students as $student){
+        echo $student['mail']. '<br>';
+    }
+?>

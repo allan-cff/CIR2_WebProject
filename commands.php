@@ -40,6 +40,10 @@ function addStudent($conn, $mail, $name, $surname, $password, $phone, $class){
     }
 }
 
+function addTeacher($conn, $mail, $name, $surname, $password, $phone, $class){
+    
+}
+
 function getStudents($conn){
     try{
         $sql = $conn->prepare('SELECT mail, name, surname, phone, cycle FROM public.user JOIN public.student USING (mail) JOIN public.class USING (class_id);');
