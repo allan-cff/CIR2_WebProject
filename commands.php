@@ -116,7 +116,7 @@ function getUser($conn, $mail){
         $sql = $conn->prepare('SELECT mail, name, surname, phone FROM public.user WHERE mail = :mail;');
         $sql->bindParam(':mail', $mail);
         $sql->execute();
-        return $sql->fetch(PDO::FETCH_ASSOC);
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $exception){
         error_log('Request error: '.$exception->getMessage());
         return false;
