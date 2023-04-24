@@ -137,13 +137,10 @@ function deleteUser($conn, $mail){
 
 function addSemester($conn, $dateBegin, $dateEnd){
     try{
-        $userInsert = $conn->prepare("INSERT INTO public.semester VALUES(:dateBegin, :dateEnd);");
-        $userInsert->bindParam(':dateBegin', $datBegin);
-        $userInsert->bindParam(':dateEnd', $dateEnd);
-        $userInsert->execute();
-        $adminInsert = $conn->prepare('INSERT INTO public.admin (mail) VALUES (:mail);');
-        $adminInsert->bindParam(':mail', $mail);
-        $adminInsert->execute();
+        $semesterInsert = $conn->prepare("INSERT INTO public.semester VALUES(:dateBegin, :dateEnd);");
+        $semesterInsert->bindParam(':dateBegin', $dateBegin);
+        $semesterInsert->bindParam(':dateEnd', $dateEnd);
+        $semesterInsert->execute();
         return true;
     } catch (PDOException $exception){
         error_log('Request error: '.$exception->getMessage());
