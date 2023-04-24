@@ -14,6 +14,12 @@ function dbConnect(){
 
 function addStudent($conn, $mail, $name, $surname, $password, $phone, $class){
     try{
+        $classSelect = $conn->prepare("SELECT class_id FROM public.class WHERE class_name = :class LIMIT 1");
+        $classSelect->bindParam(':class', $class);
+        $classResult = $classSelect->fetch(PDO::FETCH_ASSOC);
+        if(!$classResult){
+            return false;
+        }
         $userInsert = $conn->prepare("INSERT INTO public.user VALUES(:mail, :name, :surname, :password, NULL, :phone);");
         $userInsert->bindParam(':mail', $mail);
         $userInsert->bindParam(':name', $name);
@@ -21,15 +27,7 @@ function addStudent($conn, $mail, $name, $surname, $password, $phone, $class){
         $userInsert->bindParam(':password', $password);
         $userInsert->bindParam(':phone', $phone);
         $userInsert->execute();
-        $classSelect = $conn->prepare("SELECT class_id FROM public.class WHERE cycle = :cycle LIMIT 1");
-        $classSelect->bindParam(':cycle', $class);
-        $classResult = $classSelect->fetch(PDO::FETCH_ASSOC);
-        if(!$classResult){
-            $classInsert = $conn->prepare("INSERT INTO public.class(cycle) VALUES(:cycle);");
-            $classInsert->bindParam(':cycle', $class);
-            $classInsert->execute();
-        }
-        $studentInsert = $conn->prepare('INSERT INTO public.student (mail, class_id) VALUES (:mail, (SELECT class_id FROM public.class WHERE cycle = :cycle LIMIT 1));');
+        $studentInsert = $conn->prepare('INSERT INTO public.student (mail, class_id) VALUES (:mail, (SELECT class_id FROM public.class WHERE class_name = :class LIMIT 1));');
         $studentInsert->bindParam(':mail', $mail);
         $studentInsert->bindParam(':cycle', $class);
         $studentInsert->execute();
