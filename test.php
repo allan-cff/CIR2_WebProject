@@ -31,4 +31,6 @@
     foreach($admins as $admin){
         echo $admin['mail']. '<br>';
     }
+    echo "<b>SEMESTERS</b><br>";
+    addSemester($conn, '2018-2019', '2018-09-01', '2019-02-01');
 ?>

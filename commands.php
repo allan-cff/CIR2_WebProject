@@ -134,4 +134,34 @@ function deleteUser($conn, $mail){
         return false;
     }
 }
+
+function addSemester($conn, $dateBegin, $dateEnd){
+    try{
+        $userInsert = $conn->prepare("INSERT INTO public.semester VALUES(:dateBegin, :dateEnd);");
+        $userInsert->bindParam(':dateBegin', $datBegin);
+        $userInsert->bindParam(':dateEnd', $dateEnd);
+        $userInsert->execute();
+        $adminInsert = $conn->prepare('INSERT INTO public.admin (mail) VALUES (:mail);');
+        $adminInsert->bindParam(':mail', $mail);
+        $adminInsert->execute();
+        return true;
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
+
+function addGrade($conn, $mailStudent, $grade){
+    try{
+        $gradeInsert = $conn->prepare("INSERT INTO public.grade VALUES(:mailStudent, :grade);");
+        $gradeInsert->bindParam(':mailStudent', $mailStudent);
+        $gradeInsert->bindParam(':evalutation', $evalutation);
+        $gradeInsert->execute();
+        $evalSelect = $conn->prepare("SELECT evaluation FROM public.grade WHERE mailStudent = :mailStudent LIMIT 1");
+        return true;
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
 ?>
