@@ -165,7 +165,7 @@ function addGrade($conn, $mailStudent, $grade){
 
 function addLesson($conn, $subject, $mailTeacher, $className, $beginDateSemester){
     try{
-        $lessonInsert = $conn->prepare("INSERT INTO public.lesson (subject, class_id, teacher_id, semester_id) VALUES(:subject,(SELECT class_id from public.class where class_name = :className), (SELECT teacher_id from public.teacher where mail = :mailTeacher), (SELECT semester_id FROM public.semester WHERE date_begin = :beginDateSemester);");
+        $lessonInsert = $conn->prepare("INSERT INTO public.lesson (subject, class_id, teacher_id, semester_id) VALUES(:subject,(SELECT class_id from public.class where class_name = :className), (SELECT teacher_id from public.teacher where mail = :mailTeacher), (SELECT semester_id FROM public.semester WHERE date_begin = :beginDateSemester));");
         $lessonInsert->bindParam(':subject', $subject);
         $lessonInsert->bindParam(':mailTeacher', $mailTeacher);
         $lessonInsert->bindParam(':className', $className);
@@ -177,6 +177,7 @@ function addLesson($conn, $subject, $mailTeacher, $className, $beginDateSemester
         return false;
     }
 }
+
 
 function deleteSemester($conn, $dateBegin){
     try{
