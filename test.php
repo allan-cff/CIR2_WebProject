@@ -33,7 +33,9 @@
     }
     echo "<b>SEMESTERS</b><br>";
     addSemester($conn, '2018-09-01', '2019-02-01');
+    deleteSemester($conn, '2018-09-01');
     echo "<b>GRADES</b><br>";
     addTeacher($conn, 'MateoSorin@isen.fr', 'Mateo', 'Sorin', 'test', '0616155998');
+    getAllTeachers($conn);
     addLesson($conn, 'FHS', 'MateoSorin@isen.fr', 'CIR2', '2023-04-25');    
 ?>

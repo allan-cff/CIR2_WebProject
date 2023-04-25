@@ -178,4 +178,16 @@ function addLesson($conn, $subject, $mailTeacher, $className, $beginDateSemester
     }
 }
 
+function deleteSemester($conn, $dateBegin){
+    try{
+        $sql = $conn->prepare('DELETE FROM public.semester WHERE date_begin = :dateBegin;');
+        $sql->bindParam(':dateBegin', $dateBegin);
+        $sql->execute();
+        return true;
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
+
 ?>
