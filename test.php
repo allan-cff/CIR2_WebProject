@@ -3,7 +3,7 @@
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
     $conn = dbConnect();
-    addStudent($conn, "patoche@isen.com", "Coucou", "Patoche", "test", "0616159501", "CIR2");
+    addStudent($conn, "patoche@isen.com", "Coucou", "Patoche", "test", "0616159571", "CIR2");
     addStudent($conn, "patoche2@isen.com", "Coucou", "Patoche", "test", "0616159500", "CIR3");
     $students = getAllStudents($conn);
     echo "<b>ETUDIANTS</b><br>";
@@ -34,5 +34,6 @@
     echo "<b>SEMESTERS</b><br>";
     addSemester($conn, '2018-09-01', '2019-02-01');
     echo "<b>GRADES</b><br>";
-    addGrade($conn, 'con@isen.com', 12);
+    addTeacher($conn, 'MateoSorin@isen.fr', 'Mateo', 'Sorin', 'test', '0616155998');
+    addLesson($conn, 'FHS', 'MateoSorin@isen.fr', 'CIR2', '2023-04-25');    
 ?>

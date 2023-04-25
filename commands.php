@@ -148,15 +148,34 @@ function addSemester($conn, $dateBegin, $dateEnd){
 
 function addGrade($conn, $mailStudent, $grade){
     try{
-        $gradeInsert = $conn->prepare("INSERT INTO public.grade VALUES(:mailStudent, :grade);");
+        $gradeInsert = $conn->prepare("INSERT INTO public.grade (mailStudent, grade) VALUES(:mailStudent, :grade);");
         $gradeInsert->bindParam(':mailStudent', $mailStudent);
         $gradeInsert->bindParam(':grade', $grade);
         $gradeInsert->execute();
+
         $evalSelect = $conn->prepare("SELECT evaluation FROM public.grade WHERE mailStudent = :mailStudent LIMIT 1");
+        $evalSelect->bindParam(':mailStudent', $mailStudent);
+        $evalSelect->execute();
+
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
+
+function addLesson($conn, $subject, $mailTeacher, $className, $beginDateSemester){
+    try{
+        $lessonInsert = $conn->prepare("INSERT INTO public.lesson (subject, class_id, teacher_id, semester_id) VALUES(:subject,(SELECT class_id from public.class where class_name = :className), (SELECT teacher_id from public.teacher where mail = :mailTeacher), (SELECT semester_id FROM public.semester WHERE date_begin = :beginDateSemester);");
+        $lessonInsert->bindParam(':subject', $subject);
+        $lessonInsert->bindParam(':mailTeacher', $mailTeacher);
+        $lessonInsert->bindParam(':className', $className);
+        $lessonInsert->bindParam(':beginDateSemester', $beginDateSemester);
+        $lessonInsert->execute();
         return true;
     } catch (PDOException $exception){
         error_log('Request error: '.$exception->getMessage());
         return false;
     }
 }
+
 ?>
