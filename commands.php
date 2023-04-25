@@ -137,7 +137,7 @@ function deleteUser($conn, $mail){
 
 function addSemester($conn, $dateBegin, $dateEnd){
     try{
-        $semesterInsert = $conn->prepare("INSERT INTO public.semester VALUES(:dateBegin, :dateEnd);");
+        $semesterInsert = $conn->prepare("INSERT INTO public.semester(date_begin, date_end) VALUES(:dateBegin, :dateEnd);");
         $semesterInsert->bindParam(':dateBegin', $dateBegin);
         $semesterInsert->bindParam(':dateEnd', $dateEnd);
         $semesterInsert->execute();
@@ -152,7 +152,7 @@ function addGrade($conn, $mailStudent, $grade){
     try{
         $gradeInsert = $conn->prepare("INSERT INTO public.grade VALUES(:mailStudent, :grade);");
         $gradeInsert->bindParam(':mailStudent', $mailStudent);
-        $gradeInsert->bindParam(':evalutation', $evalutation);
+        $gradeInsert->bindParam(':grade', $grade);
         $gradeInsert->execute();
         $evalSelect = $conn->prepare("SELECT evaluation FROM public.grade WHERE mailStudent = :mailStudent LIMIT 1");
         return true;

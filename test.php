@@ -19,7 +19,7 @@
     echo "<b>PROFESSEURS</b><br>";
     addTeacher($conn, 'patrick@isen.com', 'Patrick', 'Pat', 'test', '0616155975');
     addTeacher($conn, 'patrick3@isen.com', 'nik', 'la', 'test', '0616155983');
-    addTeacher($conn, 'nazi@isen.com', 'isen', 'nazi', 'test', '0616155977');
+    addTeacher($conn, 'con@isen.com', 'con', 'isen', 'test', '0616155977');
     $teachers = getAllTeachers($conn);
     foreach($teachers as $teacher){
         echo $teacher['mail']. '<br>';
@@ -33,4 +33,6 @@
     }
     echo "<b>SEMESTERS</b><br>";
     addSemester($conn, '2018-09-01', '2019-02-01');
+    echo "<b>GRADES</b><br>";
+    addGrade($conn, 'con@isen.com', 12);
 ?>
