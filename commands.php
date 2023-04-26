@@ -190,5 +190,20 @@ function deleteSemester($conn, $dateBegin){
         return false;
     }
 }
+function modifyUser($conn, $mail, $newName, $newSurname, $newPassword, $newPhone){
+    try{
+        $sql = $conn->prepare('UPDATE public.user SET name = :name, surname = :surname, password = :password, phone = :phone WHERE mail = :mail;');
+        $sql->bindParam(':mail', $mail);
+        $sql->bindParam(':name', $newName);
+        $sql->bindParam(':surname', $newSurname);
+        $sql->bindParam(':password', $newPassword);
+        $sql->bindParam(':phone', $newPhone);
+        $sql->execute();
+        return true;
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
 
 ?>

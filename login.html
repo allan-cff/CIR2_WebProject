@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-  <link href="style.css" rel="stylesheet">
+  <link href="style_login.css" rel="stylesheet">
 </head>
 
 <body>
@@ -19,10 +19,27 @@
   </header>
 
 
-  <main>
-        
-  </main>
+    <h2 id="title_welcome">Bienvenue, entrez vos identifiants pour vous connecter</h2>
 
+  
+    <div class="card">
+      <br>
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Email</label>
+          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="entrez votre email" name="email">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Mot de passe</label>
+          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="entrez votre mot de passe" name="password">
+        </div>
+        <input class="btn btn-danger" type="submit" value="Se connecter" name="submit_login">
+      </div>
+    </div>
+
+  
+  
+  
 
   <footer>
     <hr>
