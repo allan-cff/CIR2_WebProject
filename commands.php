@@ -14,6 +14,12 @@ function dbConnect(){
 
 function addStudent($conn, $mail, $name, $surname, $password, $phone, $class){
     try{
+        $classSelect = $conn->prepare("SELECT class_id FROM public.class WHERE class_name = :class LIMIT 1");
+        $classSelect->bindParam(':class', $class);
+        $classResult = $classSelect->fetch(PDO::FETCH_ASSOC);
+        if(!$classResult){
+            return false;
+        }
         $userInsert = $conn->prepare("INSERT INTO public.user VALUES(:mail, :name, :surname, :password, NULL, :phone);");
         $userInsert->bindParam(':mail', $mail);
         $userInsert->bindParam(':name', $name);
@@ -21,15 +27,7 @@ function addStudent($conn, $mail, $name, $surname, $password, $phone, $class){
         $userInsert->bindParam(':password', $password);
         $userInsert->bindParam(':phone', $phone);
         $userInsert->execute();
-        $classSelect = $conn->prepare("SELECT class_id FROM public.class WHERE cycle = :cycle LIMIT 1");
-        $classSelect->bindParam(':cycle', $class);
-        $classResult = $classSelect->fetch(PDO::FETCH_ASSOC);
-        if(!$classResult){
-            $classInsert = $conn->prepare("INSERT INTO public.class(cycle) VALUES(:cycle);");
-            $classInsert->bindParam(':cycle', $class);
-            $classInsert->execute();
-        }
-        $studentInsert = $conn->prepare('INSERT INTO public.student (mail, class_id) VALUES (:mail, (SELECT class_id FROM public.class WHERE cycle = :cycle LIMIT 1));');
+        $studentInsert = $conn->prepare('INSERT INTO public.student (mail, class_id) VALUES (:mail, (SELECT class_id FROM public.class WHERE class_name = :class LIMIT 1));');
         $studentInsert->bindParam(':mail', $mail);
         $studentInsert->bindParam(':cycle', $class);
         $studentInsert->execute();
@@ -116,7 +114,7 @@ function getUser($conn, $mail){
         $sql = $conn->prepare('SELECT mail, name, surname, phone FROM public.user WHERE mail = :mail;');
         $sql->bindParam(':mail', $mail);
         $sql->execute();
-        return $sql->fetch(PDO::FETCH_ASSOC);
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $exception){
         error_log('Request error: '.$exception->getMessage());
         return false;
@@ -134,4 +132,78 @@ function deleteUser($conn, $mail){
         return false;
     }
 }
+
+function addSemester($conn, $dateBegin, $dateEnd){
+    try{
+        $semesterInsert = $conn->prepare("INSERT INTO public.semester(date_begin, date_end) VALUES(:dateBegin, :dateEnd);");
+        $semesterInsert->bindParam(':dateBegin', $dateBegin);
+        $semesterInsert->bindParam(':dateEnd', $dateEnd);
+        $semesterInsert->execute();
+        return true;
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
+
+function addGrade($conn, $mailStudent, $grade){
+    try{
+        $gradeInsert = $conn->prepare("INSERT INTO public.grade (mailStudent, grade) VALUES(:mailStudent, :grade);");
+        $gradeInsert->bindParam(':mailStudent', $mailStudent);
+        $gradeInsert->bindParam(':grade', $grade);
+        $gradeInsert->execute();
+
+        $evalSelect = $conn->prepare("SELECT evaluation FROM public.grade WHERE mailStudent = :mailStudent LIMIT 1");
+        $evalSelect->bindParam(':mailStudent', $mailStudent);
+        $evalSelect->execute();
+
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
+
+function addLesson($conn, $subject, $mailTeacher, $className, $beginDateSemester){
+    try{
+        $lessonInsert = $conn->prepare("INSERT INTO public.lesson (subject, class_id, teacher_id, semester_id) VALUES(:subject,(SELECT class_id from public.class where class_name = :className), (SELECT teacher_id from public.teacher where mail = :mailTeacher), (SELECT semester_id FROM public.semester WHERE date_begin = :beginDateSemester));");
+        $lessonInsert->bindParam(':subject', $subject);
+        $lessonInsert->bindParam(':mailTeacher', $mailTeacher);
+        $lessonInsert->bindParam(':className', $className);
+        $lessonInsert->bindParam(':beginDateSemester', $beginDateSemester);
+        $lessonInsert->execute();
+        return true;
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
+
+
+function deleteSemester($conn, $dateBegin){
+    try{
+        $sql = $conn->prepare('DELETE FROM public.semester WHERE date_begin = :dateBegin;');
+        $sql->bindParam(':dateBegin', $dateBegin);
+        $sql->execute();
+        return true;
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
+function modifyUser($conn, $mail, $newName, $newSurname, $newPassword, $newPhone){
+    try{
+        $sql = $conn->prepare('UPDATE public.user SET name = :name, surname = :surname, password = :password, phone = :phone WHERE mail = :mail;');
+        $sql->bindParam(':mail', $mail);
+        $sql->bindParam(':name', $newName);
+        $sql->bindParam(':surname', $newSurname);
+        $sql->bindParam(':password', $newPassword);
+        $sql->bindParam(':phone', $newPhone);
+        $sql->execute();
+        return true;
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
+
 ?>
