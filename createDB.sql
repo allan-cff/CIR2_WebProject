@@ -80,10 +80,8 @@ CREATE TABLE public.user(
 -- Table: teacher
 ------------------------------------------------------------
 CREATE TABLE public.teacher(
-	teacher_ID   INT GENERATED ALWAYS AS IDENTITY,
 	mail         VARCHAR (50) NOT NULL,
-	CONSTRAINT teacher_PK PRIMARY KEY (teacher_ID),
-	CONSTRAINT teacher_AK UNIQUE (mail),
+	CONSTRAINT teacher_PK PRIMARY KEY (mail),
 	CONSTRAINT teacher_user_FK FOREIGN KEY (mail) REFERENCES public.user(mail) ON DELETE CASCADE
 )WITHOUT OIDS;
 
@@ -106,10 +104,8 @@ CREATE TABLE public.student(
 -- Table: admin
 ------------------------------------------------------------
 CREATE TABLE public.admin(
-	admin_ID   INT GENERATED ALWAYS AS IDENTITY ,
 	mail       VARCHAR (50) NOT NULL  ,
-	CONSTRAINT admin_PK PRIMARY KEY (admin_ID),
-	CONSTRAINT admin_AK UNIQUE (mail),
+	CONSTRAINT admin_PK PRIMARY KEY (mail),
 	CONSTRAINT admin_user_FK FOREIGN KEY (mail) REFERENCES public.user(mail) ON DELETE CASCADE
 )WITHOUT OIDS;
 
@@ -146,11 +142,11 @@ CREATE TABLE public.lesson(
 	lesson_ID     INT GENERATED ALWAYS AS IDENTITY ,
 	subject       VARCHAR (20) NOT NULL ,
 	class_ID      INT  NOT NULL ,
-	teacher_ID    INT  NOT NULL ,
+	teacher    VARCHAR (50) NOT NULL ,
 	semester_ID   INT  NOT NULL  ,
 	CONSTRAINT lesson_PK PRIMARY KEY (lesson_ID),
 	CONSTRAINT lesson_class_FK FOREIGN KEY (class_ID) REFERENCES public.class(class_ID) ON DELETE CASCADE,
-	CONSTRAINT lesson_teacher0_FK FOREIGN KEY (teacher_ID) REFERENCES public.teacher(teacher_ID) ON DELETE CASCADE,
+	CONSTRAINT lesson_teacher0_FK FOREIGN KEY (teacher) REFERENCES public.teacher(mail) ON DELETE CASCADE,
 	CONSTRAINT lesson_semester1_FK FOREIGN KEY (semester_ID) REFERENCES public.semester(semester_ID) ON DELETE CASCADE
 )WITHOUT OIDS;
 
@@ -202,6 +198,6 @@ INSERT INTO public.student(mail, class_ID) VALUES('alain.terieur@messagerie.fr',
 INSERT INTO public.user VALUES('abel.auboisdormant@messagerie.fr', 'Auboisdormant', 'Abel', 'test', NULL, '0612345684');
 INSERT INTO public.student(mail, class_ID) VALUES('abel.auboisdormant@messagerie.fr', (SELECT class_id FROM public.class WHERE class_name = 'CIR2'));
 INSERT INTO public.user VALUES('maurice.dubois@messagerie.fr', 'Dubois', 'Maurice', 'test', NULL, '0612345685');
-INSERT INTO public.teacher(mail) VALUES('maurice.dubois@messagerie.fr');
-INSERT INTO public.semester(date_begin, date_end) VALUES('2023-09-01 8:00:00.000', '2024-02-15 8:00:00.000');
-INSERT INTO public.lesson(subject, class_id, teacher_id, semester_id) VALUES('Algorithmique - C++', (SELECT class_id FROM public.class WHERE class_name = 'CIR2'), (SELECT teacher_id FROM public.teacher WHERE mail = 'maurice.dubois@messagerie.fr'), (SELECT semester_id FROM public.semester WHERE date_begin = '2023-09-01 8:00:00.000'));
+INSERT INTO public.teacher VALUES('maurice.dubois@messagerie.fr');
+INSERT INTO public.semester(date_begin, date_end) VALUES('2023-09-01', '2024-02-15');
+INSERT INTO public.lesson(subject, class_id, teacher, semester_id) VALUES('Algorithmique - C++', (SELECT class_id FROM public.class WHERE class_name = 'CIR2'), 'maurice.dubois@messagerie.fr', (SELECT semester_id FROM public.semester WHERE date_begin = '2023-09-01 8:00:00.000'));
