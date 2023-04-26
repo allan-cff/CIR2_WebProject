@@ -47,7 +47,7 @@ function addTeacher($conn, $mail, $name, $surname, $password, $phone){
         $userInsert->bindParam(':password', $password);
         $userInsert->bindParam(':phone', $phone);
         $userInsert->execute();
-        $teacherInsert = $conn->prepare('INSERT INTO teacher (mail) VALUES (:mail);');
+        $teacherInsert = $conn->prepare('INSERT INTO teacher VALUES (:mail);');
         $teacherInsert->bindParam(':mail', $mail);
         $teacherInsert->execute();
         return true;
@@ -66,7 +66,7 @@ function addAdmin($conn, $mail, $name, $surname, $password, $phone){
         $userInsert->bindParam(':password', $password);
         $userInsert->bindParam(':phone', $phone);
         $userInsert->execute();
-        $adminInsert = $conn->prepare('INSERT INTO public.admin (mail) VALUES (:mail);');
+        $adminInsert = $conn->prepare('INSERT INTO public.admin VALUES (:mail);');
         $adminInsert->bindParam(':mail', $mail);
         $adminInsert->execute();
         return true;
@@ -165,7 +165,7 @@ function addGrade($conn, $mailStudent, $grade){
 
 function addLesson($conn, $subject, $mailTeacher, $className, $beginDateSemester){
     try{
-        $lessonInsert = $conn->prepare("INSERT INTO public.lesson (subject, class_id, teacher_id, semester_id) VALUES(:subject,(SELECT class_id from public.class where class_name = :className), (SELECT teacher_id from public.teacher where mail = :mailTeacher), (SELECT semester_id FROM public.semester WHERE date_begin = :beginDateSemester));");
+        $lessonInsert = $conn->prepare("INSERT INTO public.lesson (subject, class_id, teacher, semester_id) VALUES(:subject,(SELECT class_id from public.class where class_name = :className), :mailTeacher, (SELECT semester_id FROM public.semester WHERE date_begin = :beginDateSemester));");
         $lessonInsert->bindParam(':subject', $subject);
         $lessonInsert->bindParam(':mailTeacher', $mailTeacher);
         $lessonInsert->bindParam(':className', $className);
