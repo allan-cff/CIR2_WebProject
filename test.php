@@ -37,6 +37,6 @@
     echo "<b>GRADES</b><br>";
     addTeacher($conn, 'MateoSorin@isen.fr', 'Mateo', 'Sorin', 'test', '0616155998');
     getAllTeachers($conn);
-    addTeacher($conn, 'anaisDaniau@isen.fr', 'Anais', 'Daniau', 'test', '0616155958');
+    addSemester($conn, '2023-04-25', '2023-07-02');
     addLesson($conn, 'FHS', 'MateoSorin@isen.fr', 'CIR2', '2023-04-25');    
 ?>
