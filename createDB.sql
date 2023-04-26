@@ -201,3 +201,5 @@ INSERT INTO public.user VALUES('maurice.dubois@messagerie.fr', 'Dubois', 'Mauric
 INSERT INTO public.teacher VALUES('maurice.dubois@messagerie.fr');
 INSERT INTO public.semester(date_begin, date_end) VALUES('2023-09-01', '2024-02-15');
 INSERT INTO public.lesson(subject, class_id, teacher, semester_id) VALUES('Algorithmique - C++', (SELECT class_id FROM public.class WHERE class_name = 'CIR2'), 'maurice.dubois@messagerie.fr', (SELECT semester_id FROM public.semester WHERE date_begin = '2023-09-01 8:00:00.000'));
+INSERT INTO public.user VALUES('allan@isen.fr', 'Cueff', 'Allan', 'test', NULL, '0616155975');
+INSERT INTO public.admin VALUES('allan@isen.fr');
