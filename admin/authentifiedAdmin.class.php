@@ -57,18 +57,21 @@
         }
         public function listUsers(){
             $usersList = false;
-            $sql = $this->conn->prepare('SELECT mail, name, surname, last_login, phone, EXISTS (SELECT mail FROM public.student WHERE mail = public.user.mail) AS "is_student", EXISTS (SELECT mail FROM public.teacher WHERE mail = public.user.mail) AS "is_teacher", EXISTS (SELECT mail FROM public.admin WHERE mail = public.user.mail) AS "is_admin" FROM public.user;');
+            $sql = $this->conn->prepare('SELECT mail, name, surname, last_login, phone, student_id, class_name, study_year, cycle, campus_name, latitude, longitude, EXISTS (SELECT mail FROM public.student WHERE mail = public.user.mail) AS "is_student", EXISTS (SELECT mail FROM public.teacher WHERE mail = public.user.mail) AS "is_teacher", EXISTS (SELECT mail FROM public.admin WHERE mail = public.user.mail) AS "is_admin" FROM public.user LEFT JOIN public.student USING (mail) LEFT JOIN public.class USING (class_id) LEFT JOIN public.cycle USING (cycle_id) LEFT JOIN public.campus USING (campus_id);');
             $sql->execute();
             $usersList = $sql->fetchAll(PDO::FETCH_ASSOC);
-            $toUserClass = function($user){
-                if($user['is_student']){
-                    return new Student($user);
+            $toUserClass = function($userDbRow){
+                if($userDbRow['is_student']){
+                    return new Student($userDbRow);
                 }
-                if($user['is_teacher']){
-                    return new Teacher($user);
+                if($userDbRow['is_teacher']){
+                    return new Teacher($userDbRow);
                 }
-                return new User($user);
+                return new User($userDbRow);
             };
+            if(!$usersList){
+                return false;
+            }
             return array_map($toUserClass, $usersList);
         }
         public function getUser($mail){
@@ -123,6 +126,19 @@
             $lessonInsert->bindParam(':semesterBeginDate', $semesterBeginDate);
             $lessonInsert->execute();
             return $lessonInsert->rowCount() === 1;
+        }
+        public function listLessons(){
+            $lessonsList = false;
+            $sql = $this->conn->prepare('SELECT subject, class_name, study_year, cycle, campus_name, latitude, longitude, mail, name, surname, EXISTS (SELECT mail FROM public.admin WHERE mail = teacher) AS "is_admin", last_login, phone, date_begin, date_end FROM public.lesson JOIN public.semester USING (semester_id) JOIN public.class USING (class_id) JOIN public.cycle USING (cycle_id) JOIN public.campus USING (campus_id) JOIN public.teacher ON teacher = mail JOIN public.user USING (mail);');
+            $sql->execute();
+            $lessonsList = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $toLessonClass = function($lessonDbRow){
+                return new Lesson($lessonDbRow);
+            };
+            if(!$lessonsList){
+                return false;
+            }
+            return array_map($toLessonClass, $lessonsList);
         }
         // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED ADMINISTRATOR CAN USE    
     }

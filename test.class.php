@@ -69,6 +69,10 @@
             if($success){
                 echo "&#9989; - I just added an FHS Lesson with mateosorin@isen.fr teaching CIR2 from 2018-09-01 to end of semester<br>";
             }
+            $lessonsList = $me->listLessons();
+            foreach($lessonsList as $lesson){
+                echo $lesson->teacher->getFullName() . " is teaching " . $lesson->subject . " to the " . $lesson->class->name . "<br>";
+            }
         }
     }
 ?>

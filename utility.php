@@ -29,9 +29,9 @@
         public $class;
         public function __construct($dbRow){
             parent::__construct($dbRow);
-            //$studentClass = new SchoolClass($dbRow);
-            //$this->class = $studentClass;
-            //$this->id = $dbRow['student_id'];
+            $studentClass = new SchoolClass($dbRow);
+            $this->class = $studentClass;
+            $this->id = $dbRow['student_id'];
         }
     }
 
@@ -42,17 +42,31 @@
     }
 
     class SchoolClass {
-        public $id;
         public $cycle;
         public $study_year;
         public $name;
         public $campus;
         public function __construct($dbRow){
-            $this->id = $dbRow['class_id'];
             $this->cycle = $dbRow['cycle'];
             $this->study_year = $dbRow['study_year'];
             $this->name = $dbRow['class_name'];
             $this->campus = $dbRow['campus_name'];
         } 
+    }
+
+    class Lesson {
+        public $class;
+        public $teacher;
+        public $semester;
+        public $subject;
+        public $start;
+        public $end;
+        public function __construct($dbRow){
+            $this->class = new SchoolClass($dbRow);
+            $this->teacher = new Teacher($dbRow);
+            $this->subject = $dbRow["subject"];
+            $this->start = $dbRow["date_begin"];
+            $this->end = $dbRow["date_end"];
+        }
     }
 ?>
