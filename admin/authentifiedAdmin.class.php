@@ -11,7 +11,7 @@
             $this->conn = $conn;
         } 
         public function addUser($user, $password){
-            if(!is_subclass_of($user, "User")){ // check if $user is instance of class User
+            if(!is_subclass_of($user, "User")){ // check if $user is instance of class User or child
                 return false;
             }
             $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -28,10 +28,7 @@
             if(!(get_class($student) === "Student")){
                 return false;
             }
-            $result = $this->addUser($student, $password);
-            if(!$result){
-                return false;
-            }
+            $this->addUser($student, $password);
             $studentInsert = $this->conn->prepare('INSERT INTO public.student (mail, class_id) VALUES (:mail, (SELECT class_id FROM public.class WHERE class_name = :class LIMIT 1));');
             $studentInsert->bindParam(':mail', $student->mail);
             $studentInsert->bindParam(':cycle', $student->class->name);
@@ -42,23 +39,17 @@
             if(!(get_class($teacher) === "Teacher")){
                 return false;
             }
-            $result = $this->addUser($teacher, $password);
-            if(!$result){
-                return false;
-            }
+            $this->addUser($teacher, $password);
             $teacherInsert = $this->conn->prepare('INSERT INTO teacher (mail) VALUES (:mail);');
             $teacherInsert->bindParam(':mail', $teacher->mail);
             $teacherInsert->execute();
             return $teacherInsert->rowCount() === 1;
         }
-        public function addAdmin($admin, $password){
-            if(!(get_class($admin) === "Admin")){
+        public function addAdmin($user, $password){
+            if(!is_subclass_of($user, "User")){ // check if $user is instance of class User or child
                 return false;
             }
-            $result = $this->addUser($admin, $password);
-            if(!$result){
-                return false;
-            }
+            $this->addUser($user, $password);
             $adminInsert = $this->conn->prepare('INSERT INTO public.admin (mail) VALUES (:mail);');
             $adminInsert->bindParam(':mail', $admin->mail);
             $adminInsert->execute();
