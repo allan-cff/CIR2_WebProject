@@ -95,7 +95,14 @@
             return $sql->rowCount() === 1;
         }
         public function addSemester($dateBegin, $dateEnd){
-            // ADD VERIFICATION IN PHP HERE
+            $verifSemesterOverlap = $this->conn->prepare("SELECT EXISTS (SELECT FROM public.semester WHERE (:dateBegin >= date_begin AND :dateBegin <= date_end) OR (:dateEnd >= date_begin AND :dateEnd <= date_end));");
+            $verifSemesterOverlap->bindParam(':dateBegin', $dateBegin);
+            $verifSemesterOverlap->bindParam(':dateEnd', $dateEnd);
+            $verifSemesterOverlap->execute();
+            $isOverlapping = $verifSemesterOverlap->fetch(PDO::FETCH_ASSOC);
+            if($isOverlapping["exists"]){
+                return false; //STOPS execution here : we don't insert an overlapping Semester in the DB
+            }
             $semesterInsert = $this->conn->prepare("INSERT INTO public.semester(date_begin, date_end) VALUES(:dateBegin, :dateEnd);");
             $semesterInsert->bindParam(':dateBegin', $dateBegin);
             $semesterInsert->bindParam(':dateEnd', $dateEnd);
@@ -103,7 +110,6 @@
             return $semesterInsert->rowCount() === 1;
         }
         public function deleteSemester($dateBegin){
-            // IS CRASHING IF DUPLICATE SEMESTER START DATE
             $sql = $this->conn->prepare('DELETE FROM public.semester WHERE date_begin = :dateBegin;');
             $sql->bindParam(':dateBegin', $dateBegin);
             $sql->execute();

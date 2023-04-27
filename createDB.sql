@@ -117,7 +117,8 @@ CREATE TABLE public.semester(
 	semester_ID   INT GENERATED ALWAYS AS IDENTITY ,
 	date_begin    DATE  NOT NULL ,
 	date_end      DATE  NOT NULL  ,
-	CONSTRAINT semester_PK PRIMARY KEY (semester_ID)
+	CONSTRAINT semester_PK PRIMARY KEY (semester_ID),
+	CONSTRAINT semester_AK UNIQUE (date_begin, date_end)
 )WITHOUT OIDS;
 
 
