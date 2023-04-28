@@ -73,6 +73,12 @@
             foreach($lessonsList as $lesson){
                 echo $lesson->teacher->getFullName() . " is teaching " . $lesson->subject . " to the " . $lesson->class->name . "<br>";
             }
+            $success = $me->addEvaluation($lessonsList[1], '2019-01-29 8:00:00', '2019-01-29 9:30:00');
+            if($success){
+                echo "&#9989; - I just added an evaluation of FHS on 2019-01-29 8:00:00 for CIR2<br>";
+            } else {
+                echo "&#x274C; - I can't add an evaluation of FHS on 2019-01-29 8:00:00 for CIR2 : SHOULD NOT HAPPEN<br>";
+            }
         }
     }
 ?>

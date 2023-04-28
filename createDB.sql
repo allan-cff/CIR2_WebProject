@@ -148,7 +148,8 @@ CREATE TABLE public.lesson(
 	CONSTRAINT lesson_PK PRIMARY KEY (lesson_ID),
 	CONSTRAINT lesson_class_FK FOREIGN KEY (class_ID) REFERENCES public.class(class_ID) ON DELETE CASCADE,
 	CONSTRAINT lesson_teacher0_FK FOREIGN KEY (teacher) REFERENCES public.teacher(mail) ON DELETE CASCADE,
-	CONSTRAINT lesson_semester1_FK FOREIGN KEY (semester_ID) REFERENCES public.semester(semester_ID) ON DELETE CASCADE
+	CONSTRAINT lesson_semester1_FK FOREIGN KEY (semester_ID) REFERENCES public.semester(semester_ID) ON DELETE CASCADE,
+	CONSTRAINT lesson_AK UNIQUE (class_ID, subject, semester_ID, teacher)
 )WITHOUT OIDS;
 
 
@@ -158,6 +159,9 @@ CREATE TABLE public.lesson(
 CREATE TABLE public.evaluation(
 	eval_ID     INT GENERATED ALWAYS AS IDENTITY ,
 	coeff       FLOAT  NOT NULL ,
+	begin_datetime   TIMESTAMP WITH TIME ZONE NOT NULL ,
+	end_datetime     TIMESTAMP WITH TIME ZONE NOT NULL ,
+	note             VARCHAR (100)  ,
 	lesson_ID   INT  NOT NULL  ,
 	CONSTRAINT evaluation_PK PRIMARY KEY (eval_ID),
 	CONSTRAINT evaluation_lesson_FK FOREIGN KEY (lesson_ID) REFERENCES public.lesson(lesson_ID) ON DELETE CASCADE

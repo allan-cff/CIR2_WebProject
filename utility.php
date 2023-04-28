@@ -43,12 +43,12 @@
 
     class SchoolClass {
         public $cycle;
-        public $study_year;
+        public $studyYear;
         public $name;
         public $campus;
         public function __construct($dbRow){
             $this->cycle = $dbRow['cycle'];
-            $this->study_year = $dbRow['study_year'];
+            $this->studyYear = $dbRow['study_year'];
             $this->name = $dbRow['class_name'];
             $this->campus = $dbRow['campus_name'];
         } 

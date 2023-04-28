@@ -140,6 +140,20 @@
             }
             return array_map($toLessonClass, $lessonsList);
         }
+        public function addEvaluation($lesson, $dateBegin, $dateEnd, $coeff = 1, $note = ""){
+            $evaluationInsert = $this->conn->prepare("INSERT INTO public.evaluation (coeff, begin_datetime, end_datetime, lesson_id) VALUES (:coeff, :beginDate, :endDate, (SELECT lesson_id FROM public.lesson WHERE subject = :subject AND teacher = :teacherMail AND class_id = (SELECT class_id FROM public.class WHERE class_name = :className AND study_year = :studyYear AND cycle_id = (SELECT cycle_id FROM public.cycle WHERE cycle = :cycle) AND campus_id = (SELECT campus_id FROM public.campus WHERE campus_name = :campus))));");
+            $evaluationInsert->bindParam(':coeff', $coeff);
+            $evaluationInsert->bindParam(':beginDate', $dateBegin);
+            $evaluationInsert->bindParam(':endDate', $dateEnd);
+            $evaluationInsert->bindParam(':subject', $lesson->subject);
+            $evaluationInsert->bindParam(':teacherMail', $lesson->teacher->mail);
+            $evaluationInsert->bindParam(':className', $lesson->class->name);
+            $evaluationInsert->bindParam(':studyYear', $lesson->class->studyYear);
+            $evaluationInsert->bindParam(':cycle', $lesson->class->cycle);
+            $evaluationInsert->bindParam(':campus', $lesson->class->campus);
+            $evaluationInsert->execute();
+            return $evaluationInsert->rowCount() === 1;
+        }
         // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED ADMINISTRATOR CAN USE    
     }
 ?>    
