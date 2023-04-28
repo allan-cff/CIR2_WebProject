@@ -38,5 +38,7 @@
     addTeacher($conn, 'MateoSorin@isen.fr', 'Mateo', 'Sorin', 'test', '0616155998');
     getAllTeachers($conn);
     addSemester($conn, '2023-04-25', '2023-07-02');
-    addLesson($conn, 'FHS', 'MateoSorin@isen.fr', 'CIR2', '2023-04-25');    
+    addLesson($conn, 'FHS', 'MateoSorin@isen.fr', 'CIR2', '2023-04-25');
+    echo '<b>MODIFY<b>';
+    modifyUser($conn, '')    
 ?>
