@@ -103,6 +103,6 @@
     <hr>
     <small>© CUEFF Allan, FOSSE Raphaël, LE GOFF Quentin</small>
   </footer>
-  <img src="../logo-iSEN-Nantes-ingenieur-400.jpg" id="logo" width="160px" height="80px">
+  <img src="../../logo-iSEN-Nantes-ingenieur-400.jpg" id="logo" width="160px" height="80px">
 
 </body>
