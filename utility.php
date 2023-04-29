@@ -57,7 +57,6 @@
     class Lesson {
         public $class;
         public $teacher;
-        public $semester;
         public $subject;
         public $start;
         public $end;

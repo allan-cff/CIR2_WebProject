@@ -1,3 +1,6 @@
+<?php
+  require_once(realpath(dirname(__FILE__) . '/../../header.php'));
+?>
 <!DOCTYPE html>
 <html>
 
@@ -38,7 +41,6 @@
                   </svg>
                 </a>
               </li>
-              <span style="background-color: #e8e7e7">
               <li class="nav-item">
                 <a class="nav-link" href="teacher_add_grade.html">
                   Ajout d'une note
@@ -48,7 +50,7 @@
                   </svg>
                 </a>
               </li> 
-              </span>
+              <span style="background-color: #e8e7e7">
               <li class="nav-item">
                 <a class="nav-link" href="teacher_add_appreciation.html">
                   Ajout d'une appreciation
@@ -58,6 +60,7 @@
                   </svg>
                 </a>
               </li> 
+              </span>
               <li class="nav-item">
                 <a class="nav-link" href="teacher_classes.html">
                   Mes classes
@@ -72,7 +75,7 @@
           </div>
         </div>
 
-        <h3>AJOUT DE NOTE</h3>
+        <h3>AJOUT  D'APPRÉCIATION</h3>
               
         <div class="dropdown-center">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">NOM prenom</a>

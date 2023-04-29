@@ -1,3 +1,6 @@
+<?php
+  require_once(realpath(dirname(__FILE__) . '/../../header.php'));
+?>
 <!DOCTYPE html>
 <html>
 
@@ -56,6 +59,7 @@
                   </svg>
                 </a>
               </li> 
+              <span style="background-color: #e8e7e7">
               <li class="nav-item">
                 <a class="nav-link" href="teacher_classes.html">
                   Mes classes
@@ -65,12 +69,13 @@
                   </svg>
                 </a>
               </li> 
+              </span>
 
             </ul>       
           </div>
         </div>
 
-        <h3>(mettre classe spécifique)</h3>
+        <h3>MES CLASSES</h3>
               
         <div class="dropdown-center">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">NOM prenom</a>

@@ -1,3 +1,6 @@
+<?php
+  require_once(realpath(dirname(__FILE__) . '/../../header.php'));
+?>
 <!DOCTYPE html>
 <html>
 
@@ -12,7 +15,7 @@
 <body>
 
   <header>
-    <nav class="navbar text-bg-danger" >
+    <nav class="navbar text-bg-danger justify-content-center" >
 
       <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -38,7 +41,6 @@
                   </svg>
                 </a>
               </li>
-              <span style="background-color: #e8e7e7">
               <li class="nav-item">
                 <a class="nav-link" href="student_grade.html">
                   Note et moyenne
@@ -47,13 +49,13 @@
                     <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
                   </svg>
                 </a>
-              </li>  
-            </span>           
+             </li>  
+
             </ul>       
           </div>
         </div>
 
-        <h3>NOTE ET MOYENNE</h3>
+        <h3>(mettre la bonne classe)</h3>
               
         <div class="dropdown-center">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">NOM prenom</a>
@@ -75,50 +77,27 @@
   </header>
 
 
-  <div id="student_table_grade">
-
-    <table class="table table-striped">
-
-      <thead>
-        <tr>
-          <th scope="col">classe</th>
-          <th scope="col">Moyenne</th>
-          <th scope="col">Moyenne de classe</th>
-          <th scope="col">Appréciation</th>
-          <th scope="col">Rang</th>
-          <th scope="col">Rattrapage</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr>
-          <td>Mathématique</td>
-          <td>17.5</td>
-          <td>9</td>
-          <td>Non renseigner</td>
-          <td>3</td>
-          <td>non</td>
-        </tr>
-        <tr>
-          <td>C++</td>
-          <td>12</td>
-          <td>12</td>
-          <td>Nils est un bronies</td>
-          <td>12</td>
-          <td>non</td>
-        </tr>
-        <tr>
-          <td>Physique</td>
-          <td>9</td>
-          <td>11</td>
-          <td>Non renseigner</td>
-          <td>15</td>
-          <td>oui</td>
-        </tr>
-      </tbody>
-    </table>
-
+  <div class="card" id="card_1">
+    <div class="card-body">
+      
+    </div>
   </div>
+  <div class="card" id="card_2">
+    <div class="card-body">
+      
+    </div>
+  </div>
+  <div class="card" id="card_3">
+    <div class="card-body">
+      
+    </div>
+  </div>
+  <div class="card" id="card_4">
+    <div class="card-body">
+      
+    </div>
+  </div>
+
 
   <footer>
     <hr>
