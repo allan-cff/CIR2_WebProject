@@ -9,6 +9,7 @@
     if($success){
         echo "&#9989; - successfully connected to database <br>";
         $me = $database->authentify("allan@isen.fr", "passwordRandomPasHaché");
+        $me->connect();
         if($me){
             echo "<br>&#9989; - My name is " . $me->getFullName() . "<br>";
             echo "&#9989; - I am an " . get_class($me) . "<br>";

@@ -13,7 +13,7 @@
         private $port;
         private $user;
         private $password;
-        private $conn;
+        public $conn;
         public function __construct($dbname, $host, $port, $user, $password) {
             $this->dbname = $dbname;
             $this->host = $host;
