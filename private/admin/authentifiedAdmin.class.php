@@ -134,7 +134,7 @@
         }
         public function listLessons(){
             $lessonsList = false;
-            $sql = $cthis->database->onn->prepare('SELECT subject, class_name, study_year, cycle, campus_name, latitude, longitude, mail, name, surname, EXISTS (SELECT mail FROM public.admin WHERE mail = teacher) AS "is_admin", last_login, phone, date_begin, date_end FROM public.lesson JOIN public.semester USING (semester_id) JOIN public.class USING (class_id) JOIN public.cycle USING (cycle_id) JOIN public.campus USING (campus_id) JOIN public.teacher ON teacher = mail JOIN public.user USING (mail);');
+            $sql = $this->database->conn->prepare('SELECT subject, class_name, study_year, cycle, campus_name, latitude, longitude, mail, name, surname, EXISTS (SELECT mail FROM public.admin WHERE mail = teacher) AS "is_admin", last_login, phone, date_begin, date_end FROM public.lesson JOIN public.semester USING (semester_id) JOIN public.class USING (class_id) JOIN public.cycle USING (cycle_id) JOIN public.campus USING (campus_id) JOIN public.teacher ON teacher = mail JOIN public.user USING (mail);');
             $sql->execute();
             $lessonsList = $sql->fetchAll(PDO::FETCH_ASSOC);
             $toLessonClass = function($lessonDbRow){
