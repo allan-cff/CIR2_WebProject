@@ -7,7 +7,7 @@ html {
 body{
     min-height: 100%;
     display: grid;
-    grid-template-columns: 5% 10% 10% 15% 20% 15% 10% 10% 5%;
+    grid-template-columns: 5% 10% 10% 20% 10% 20% 10% 10% 5%;
     grid-template-rows: auto 0.1fr 0.1fr 0.3fr 0.1fr 0.3fr 0.1fr auto;
 }
 
@@ -37,21 +37,56 @@ footer {
     grid-row-end: 9;
 }
 
-/* ---------------- login.html ---------------- */
-#title_welcome{
+/* ---------------- teacher_home.html ---------------- */
+#card_1{
+    grid-column-start: 3;
+    grid-column-end: 5;
+    grid-row-start: 4;
+    grid-row-end: 7;
+    text-align: center;
+}
+#card_2{
+    grid-column-start: 6;
+    grid-column-end: 8;
+    grid-row-start: 4;
+    grid-row-end: 5;
+    text-align: center;
+}
+#card_3{
+    grid-column-start: 6;
+    grid-column-end: 8;
+    grid-row-start: 6;
+    grid-row-end: 7;
+    text-align: center;
+}
+
+/* ---------------- teacher_class.html & teacher_detail_class.html ---------------- */
+#teacher_class_table{
+    grid-column-start: 2;
+    grid-column-end: 9;
+    grid-row-start: 3;
+    grid-row-end: 7;
+}
+#teacher_detail_class_table{
+    grid-column-start: 2;
+    grid-column-end: 9;
+    grid-row-start: 3;
+    grid-row-end: 7;
+}
+
+/* ---------------- teacher_add_grade.html ---------------- */
+#title_instruction{
     grid-column-start: 3;
     grid-column-end: 8;
     grid-row-start: 3;
     grid-row-end: 4;
     text-align: center;
 }
-
 .card {
     grid-column-start: 4;
     grid-column-end: 7;
     grid-row-start: 4;
     grid-row-end: 7;
     text-align: center;
-    background-color: #FFEAE5;
     border-style: none;
 }
