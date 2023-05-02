@@ -1,4 +1,5 @@
 <?php
+require_once('utility.php');
     include "commands.php";
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
@@ -43,5 +44,4 @@
     echo '<b>MODIFY<b>';
     modifyUser($conn, 'lara.clette@messagerie.fr', 'Fosse', 'Raphaël', 'test', '0616171819');    
     modifyPhone($conn, 'lara.clette@messagerie.fr', '0636656565');
-    addGrade($conn, 'lara.clette@messagerie.fr', 10);
 ?>
