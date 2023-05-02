@@ -1,4 +1,5 @@
 <?php
+require_once('utility.php');
     include "commands.php";
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
@@ -41,5 +42,6 @@
     addSemester($conn, '2023-04-25', '2023-07-02');
     addLesson($conn, 'FHS', 'MateoSorin@isen.fr', 'CIR2', '2023-04-25');
     echo '<b>MODIFY<b>';
-    modifyUser($conn, '')    
+    modifyUser($conn, 'lara.clette@messagerie.fr', 'Fosse', 'Raphaël', 'test', '0616171819');    
+    modifyPhone($conn, 'lara.clette@messagerie.fr', '0636656565');
 ?>
