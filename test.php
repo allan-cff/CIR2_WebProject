@@ -1,5 +1,5 @@
 <?php
-require_once('utility.php');
+    require_once('utility.php');    
     include "commands.php";
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
@@ -36,11 +36,30 @@ require_once('utility.php');
     addSemester($conn, '2018-09-01', '2019-02-01');
     deleteSemester($conn, '2018-09-01');
     deleteSemester($conn, '2023-04-25');
-    echo "<b>GRADES</b><br>";
-    addTeacher($conn, 'MateoSorin@isen.fr', 'Mateo', 'Sorin', 'test', '0616155998');
+    echo "<b>LESSONS</b><br>";
+    addTeacher($conn, 'mateosorin@isen.fr', 'Mateo', 'Sorin', 'test', '0616155998');
     getAllTeachers($conn);
     addSemester($conn, '2023-04-25', '2023-07-02');
-    addLesson($conn, 'FHS', 'MateoSorin@isen.fr', 'CIR2', '2023-04-25');
+    addLesson($conn, 'FHS', 'mateosorin@isen.fr', 'CIR2', '2023-04-25');
+    echo "<b>EVALUATION</b><br>";
+    $lesson = new Lesson(array(
+        "subject" => "FHS",
+        "date_begin" => "2023-04-25",
+        "date_end" => "osef",
+        "mail" => "mateosorin@isen.fr",
+        "name" => "osef",
+        "surname" => "osef",
+        "phone" => "osef",
+        "is_admin" => "osef",
+        "cycle" => "CIR",
+        "study_year" => 2,
+        "class_name" => "CIR2",
+        "campus_name" => "Nantes"
+    ));
+    addEvaluation($conn, $lesson, '2019-01-29 8:00:00', '2019-01-29 9:30:00', 2, "Calculatrices interdites");
+    echo "<b>GRADE</b><br>";
+    addGrade($conn, "lara.clette@messagerie.fr", $lesson, 17);
+    addGrade($conn, "bernard.tichaud@messagerie.fr", $lesson, 2.5);
     echo '<b>MODIFY<b>';
     modifyUser($conn, 'lara.clette@messagerie.fr', 'Fosse', 'Raphaël', 'test', '0616171819');    
     modifyPhone($conn, 'lara.clette@messagerie.fr', '0636656565');

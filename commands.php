@@ -77,10 +77,11 @@ function addAdmin($conn, $mail, $name, $surname, $password, $phone){
 }
 
 function addEvaluation($conn, $lesson, $dateBegin, $dateEnd, $coeff = 1, $note = ""){
-    $evaluationInsert = $conn->prepare("INSERT INTO public.evaluation (coeff, begin_datetime, end_datetime, lesson_id) VALUES (:coeff, :beginDate, :endDate, (SELECT lesson_id FROM public.lesson WHERE subject = :subject AND teacher = :teacherMail AND class_id = (SELECT class_id FROM public.class WHERE class_name = :className AND study_year = :studyYear AND cycle_id = (SELECT cycle_id FROM public.cycle WHERE cycle = :cycle) AND campus_id = (SELECT campus_id FROM public.campus WHERE campus_name = :campus))));");
+    $evaluationInsert = $conn->prepare("INSERT INTO public.evaluation (coeff, begin_datetime, end_datetime, note, lesson_id) VALUES (:coeff, :beginDate, :endDate, :note, (SELECT lesson_id FROM public.lesson WHERE subject = :subject AND teacher = :teacherMail AND class_id = (SELECT class_id FROM public.class WHERE class_name = :className AND study_year = :studyYear AND cycle_id = (SELECT cycle_id FROM public.cycle WHERE cycle = :cycle) AND campus_id = (SELECT campus_id FROM public.campus WHERE campus_name = :campus))));");
     $evaluationInsert->bindParam(':coeff', $coeff);
     $evaluationInsert->bindParam(':beginDate', $dateBegin);
     $evaluationInsert->bindParam(':endDate', $dateEnd);
+    $evaluationInsert->bindParam(':note', $note);
     $evaluationInsert->bindParam(':subject', $lesson->subject);
     $evaluationInsert->bindParam(':teacherMail', $lesson->teacher->mail);
     $evaluationInsert->bindParam(':className', $lesson->class->name);
@@ -161,17 +162,18 @@ function addSemester($conn, $dateBegin, $dateEnd){
     }
 }
 
-function addGrade($conn, $mailStudent, $grade){
+function addGrade($conn, $mailStudent, $lesson, $grade){
     try{
-        $gradeInsert = $conn->prepare("INSERT INTO public.grade (mailStudent, grade) VALUES(:mailStudent, :grade);");
+        $gradeInsert = $conn->prepare("INSERT INTO public.grade (student_id, grade, eval_id) VALUES((SELECT student_id FROM public.student WHERE mail = :mailStudent), :grade, (SELECT eval_id FROM public.evaluation WHERE lesson_id = (SELECT lesson_id FROM public.lesson WHERE subject = :subject AND teacher = :teacherMail AND class_id = (SELECT class_id FROM public.class WHERE class_name = :className AND study_year = :studyYear AND cycle_id = (SELECT cycle_id FROM public.cycle WHERE cycle = :cycle) AND campus_id = (SELECT campus_id FROM public.campus WHERE campus_name = :campus)))));");
         $gradeInsert->bindParam(':mailStudent', $mailStudent);
         $gradeInsert->bindParam(':grade', $grade);
+        $gradeInsert->bindParam(':subject', $lesson->subject);
+        $gradeInsert->bindParam(':teacherMail', $lesson->teacher->mail);
+        $gradeInsert->bindParam(':className', $lesson->class->name);
+        $gradeInsert->bindParam(':studyYear', $lesson->class->studyYear);
+        $gradeInsert->bindParam(':cycle', $lesson->class->cycle);
+        $gradeInsert->bindParam(':campus', $lesson->class->campus);
         $gradeInsert->execute();
-
-        $evalSelect = $conn->prepare("SELECT evaluation FROM public.grade WHERE mailStudent = :mailStudent LIMIT 1");
-        $evalSelect->bindParam(':mailStudent', $mailStudent);
-        $evalSelect->execute();
-
     } catch (PDOException $exception){
         error_log('Request error: '.$exception->getMessage());
         return false;
