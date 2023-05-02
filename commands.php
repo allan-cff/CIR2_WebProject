@@ -76,6 +76,8 @@ function addAdmin($conn, $mail, $name, $surname, $password, $phone){
     }
 }
 
+
+
 function getAllAdmins($conn){
     try{
         $sql = $conn->prepare('SELECT mail, name, surname, phone FROM public.user JOIN public.admin USING (mail);');
@@ -192,12 +194,61 @@ function deleteSemester($conn, $dateBegin){
 }
 function modifyUser($conn, $mail, $newName, $newSurname, $newPassword, $newPhone){
     try{
-        $sql = $conn->prepare('UPDATE public.user SET name = :name, surname = :surname, password = :password, phone = :phone WHERE mail = :mail;');
+        modifyName($conn, $mail, $newName);
+        modifySurname($conn, $mail, $newSurname);
+        modifyPassword($conn, $mail, $newPassword);
+        modifyPhone($conn, $mail, $newPhone);
+        return true;
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
+
+function modifyName($conn, $mail, $newName){
+    try{
+        $sql = $conn->prepare('UPDATE public.user SET name = :newName WHERE mail = :mail;');
         $sql->bindParam(':mail', $mail);
-        $sql->bindParam(':name', $newName);
-        $sql->bindParam(':surname', $newSurname);
-        $sql->bindParam(':password', $newPassword);
-        $sql->bindParam(':phone', $newPhone);
+        $sql->bindParam(':newName', $newName);
+        $sql->execute();
+        return true;
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
+
+function modifySurname($conn, $mail, $newSurname){
+    try{
+        $sql = $conn->prepare('UPDATE public.user SET surname = :newSurname WHERE mail = :mail;');
+        $sql->bindParam(':mail', $mail);
+        $sql->bindParam(':newSurname', $newSurname);
+        $sql->execute();
+        return true;
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
+
+function modifyPassword($conn, $mail, $newPassword){
+    try{
+        $sql = $conn->prepare('UPDATE public.user SET password = :newPassword WHERE mail = :mail;');
+        $sql->bindParam(':mail', $mail);
+        $sql->bindParam(':newPassword', $newPassword);
+        $sql->execute();
+        return true;
+    } catch (PDOException $exception){
+        error_log('Request error: '.$exception->getMessage());
+        return false;
+    }
+}
+
+function modifyPhone($conn, $mail, $newPhone){
+    try{
+        $sql = $conn->prepare('UPDATE public.user SET phone = :newPhone WHERE mail = :mail;');
+        $sql->bindParam(':mail', $mail);
+        $sql->bindParam(':newPhone', $newPhone);
         $sql->execute();
         return true;
     } catch (PDOException $exception){
