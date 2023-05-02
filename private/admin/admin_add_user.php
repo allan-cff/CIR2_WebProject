@@ -2,7 +2,7 @@
   require_once(realpath(dirname(__FILE__) . '/../../header.php'));
 ?>
 <!DOCTYPE html>
-<html>
+<html class="h-100">
 
 <head>
   <title>WebAurion++</title>
@@ -12,7 +12,7 @@
   <link href="../style_login.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="d-flex flex-column h-100 justify-content-between">
 
   <header>
     <nav class="navbar text-bg-danger justify-content-center" >
@@ -122,14 +122,89 @@
 
 
   <main>
+    <div class="container">
+  
+      <div class="row">
+        <form class="col-md-7 offset-md-3" method="post" action="????????????????????????????????????????????????.php">
+
+          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+            <label class="btn btn-outline-danger" for="btnradio1">professeur</label>
+
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+            <label class="btn btn-outline-danger" for="btnradio2">éleve</label>
+          </div>
         
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Nom</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Dupont" name="new_last_name">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Prénom</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="jean" name="new_first_name">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Téléphone</label>
+            <div class="col-sm-8">
+              <input type="num" class="form-control" id="exampleFormControlInput1" placeholder="0123456789" name="new_phone">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Adresse mail</label>
+            <div class="col-sm-8">
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="jean.dupont@messagerie.fr" name="new_mail">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label"> Confirmation Email</label>
+            <div class="col-sm-8">
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="jean.dupont@messagerie.fr" name="new_mail_validation">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Mot de passe</label>
+            <div class="col-sm-8">
+              <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="motdepasse" name="new_password">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Confirmation du mot de passe</label>
+            <div class="col-sm-8">
+              <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="motdepasse" name="new_password_validation">
+            </div>
+          </div>
+
+          <input class="btn text-bg-danger mt-3" type="submit" value="Ajouter" name="add_user">
+        </form>
+      </div>
+
+
+    </div>
   </main>
 
 
-  <footer>
-    <hr>
-    <small>© CUEFF Allan, FOSSE Raphaël, LE GOFF Quentin</small>
+  <footer class="footer py-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+          <hr>
+          <small>© CUEFF Allan, FOSSE Raphaël, LE GOFF Quentin</small>
+        </div>
+        <div class="col">
+          <img src="../../logo-iSEN-Nantes-ingenieur-400.jpg" id="logo" width="160px" height="80px">
+        </div>
+      </div>
+    </div>
   </footer>
-  <img src="../../logo-iSEN-Nantes-ingenieur-400.jpg" id="logo" width="160px" height="80px">
 
 </body>
