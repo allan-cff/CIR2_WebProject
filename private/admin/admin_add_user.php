@@ -131,7 +131,7 @@
             <input type="radio" class="btn-check" name="btnradio" id="btnradio1" value="professeur" autocomplete="off" checked>
             <label class="btn btn-outline-danger" for="btnradio1">professeur</label>
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" value="élève" autocomplete="off">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" value="eleve" autocomplete="off">
             <label class="btn btn-outline-danger" for="btnradio2">éleve</label>
           </div>
         
@@ -192,33 +192,35 @@
     </div>
   </main>
   <?php
-  /*      if(isset($_POST['add_user'])){
-          if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'professeur'){
-            if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
-              $values = array(
-                "mail" => $_POST['new_mail'],
-                "name" => $_POST['new_last_name'],
-                "surname" => $_POST['new_first_name'],
-                "phone" => $_POST['new_phone'],
-                "is_admin" => false
-              );
-            $student = new Student($values);              
-            $this->addTeacher($teacher,$_POST['new_password']);
-            }}
-          else{
-            if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
-              $values = array(
-                "mail" => $_POST['new_mail'],
-                "name" => $_POST['new_last_name'],
-                "surname" => $_POST['new_first_name'],
-                "phone" => $_POST['new_phone'],
-                "is_admin" => false
-              );
-            $student = new Student($values);
-            $this->addStudent($student,$_POST['new_password']);
-          }
-        }}*/
-      ?>
+    if(isset($_POST['add_user'])){
+      if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'professeur'){
+        if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
+          $values = array(
+            "mail" => $_POST['new_mail'],
+            "name" => $_POST['new_last_name'],
+            "surname" => $_POST['new_first_name'],
+            "phone" => $_POST['new_phone'],
+            "is_admin" => false
+          );
+          $teacher = new Teacher($values);              
+          $user->addTeacher($teacher,$_POST['new_password']);
+        }
+      } 
+      if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'eleve'){
+        if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
+          $values = array(
+            "mail" => $_POST['new_mail'],
+            "name" => $_POST['new_last_name'],
+            "surname" => $_POST['new_first_name'],
+            "phone" => $_POST['new_phone'],
+            "is_admin" => false
+          );
+          $student = new Student($values);
+          $user->addStudent($student,$_POST['new_password']);
+        }
+      }
+    }
+  ?>
 
   <footer class="footer py-3">
     <div class="container">
