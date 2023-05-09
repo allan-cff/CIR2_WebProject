@@ -121,7 +121,67 @@
 
 
   <main>
+    <div class="container">
+  
+      <div class="row">
+        <form class="col-md-7 offset-md-3" method="post" action="admin_add_user.php">
         
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Nom</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Dupont" name="new_last_name">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Prénom</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="jean" name="new_first_name">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Téléphone</label>
+            <div class="col-sm-8">
+              <input type="num" class="form-control" id="exampleFormControlInput1" placeholder="0123456789" name="new_phone">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Adresse mail</label>
+            <div class="col-sm-8">
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="jean.dupont@messagerie.fr" name="new_mail">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label"> Confirmation Email</label>
+            <div class="col-sm-8">
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="jean.dupont@messagerie.fr" name="new_mail_validation">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Mot de passe</label>
+            <div class="col-sm-8">
+              <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="motdepasse" name="new_password">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Confirmation du mot de passe</label>
+            <div class="col-sm-8">
+              <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="motdepasse" name="new_password_validation">
+            </div>
+          </div>
+
+          <input class="btn border-danger text-danger mt-3 col-md-2 offset-md-2" type="submit" value="Modifier" name="add_user">
+          <input class="btn text-bg-danger mt-3 col-md-2 offset-md-2" type="submit" value="Supprimer" name="add_user">
+        </form>
+      </div>
+
+
+    </div>
   </main>
 
 
