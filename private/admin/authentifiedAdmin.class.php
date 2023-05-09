@@ -159,6 +159,32 @@
             $evaluationInsert->execute();
             return $evaluationInsert->rowCount() === 1;
         }
+
+        public function addCycle($cycle){
+            $sql = $this->database->conn->prepare('INSERT INTO public.cycle (cycle) VALUES (:cycle);');
+            $sql->bindParam(':cycle', $cycle);
+            $sql->execute();
+            return $sql->rowCount() === 1;
+        }
+
+        public function deleteClass($className, $campusName, $cycle){
+            $sql = $this->database->conn->prepare('DELETE FROM public.class WHERE campus_id = (SELECT FROM public.campus where campus_name = :campusName) AND cycle_id = (SELECT FROM public.cycle where cycle = :cycle) AND class_name = :className;');
+            $sql->bindParam(':campusName', $campusName);
+            $sql->bindParam(':className', $className);
+            $sql->bindParam(':cycle', $cycle);
+            $sql->execute();
+            return $sql->rowCount() === 1;
+        }
+
+        public function addClass($className, $campusName, $cycle, $studyYear){
+            $sql = $this->database->conn->prepare('INSERT INTO public.class (class_name, campus_id, cycle_id, study_year) VALUES (:className, (SELECT campus_id FROM public.campus WHERE campus_name = :campusName), (SELECT cycle_id FROM public.cycle WHERE cycle = :cycle), :study_year);');
+            $sql->bindParam(':className', $className);
+            $sql->bindParam(':campusName', $campusName);
+            $sql->bindParam(':cycle', $cycle);
+            $sql->bindParam(':studyYear', $studyYear);
+            $sql->execute();
+            return $sql->rowCount() === 1;
+        }
         // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED ADMINISTRATOR CAN USE    
     }
 ?>    
