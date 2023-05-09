@@ -125,7 +125,52 @@
 
 
   <main>
-        
+    <div class="container">
+  
+      <div class="row">
+        <form class="col-md-7 offset-md-3" method="post" action="????????????????????????????????????????????????.php">
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Intitulé du semestre</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="exampleFormControlInput1" name="new_first_name">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Date</label>
+            <div class="col-sm-8">
+              <input id="datepicker1"/>
+              <script>
+                $('#datepicker1').datepicker({
+                  footer: true, 
+                  modal: true,
+                  uiLibrary: 'bootstrap5'
+                });
+                </script>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Date</label>
+            <div class="col-sm-8">
+              <input id="datepicker2"/>
+              <script>
+                $('#datepicker2').datepicker({
+                  footer: true, 
+                  modal: true,
+                  uiLibrary: 'bootstrap5'
+                });
+                </script>
+            </div>
+          </div>
+
+          <input class="btn text-bg-danger mt-3 col-md-4 offset-md-3" type="submit" value="Ajouter" name="add_user">
+        </form>
+      </div>
+
+    </div>
+     
   </main>
 
 
