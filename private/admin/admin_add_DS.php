@@ -14,7 +14,6 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
   <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-
 </head>
 
 <body class="d-flex flex-column h-100 justify-content-between">
@@ -132,12 +131,70 @@
       <div class="row">
         <form class="col-md-7 offset-md-3" method="post" action="????????????????????????????????????????????????.php">
 
-          <input id="datepicker" width="276" />
-          <script>
-            $('#datepicker').datepicker({
-              uiLibrary: 'bootstrap5'
-            });
-          </script>
+          <div class="input-group mb-3">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Classe</label>
+            <div class="col-sm-8">
+            <select class="form-select" id="inputGroupSelect01">
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Semestre</label>
+            <div class="col-sm-8">
+            <select class="form-select" id="inputGroupSelect01">
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Cours</label>
+            <div class="col-sm-8">
+            <select class="form-select" id="inputGroupSelect01">
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Intitulé du DS</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="exampleFormControlInput1" name="new_first_name">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Date</label>
+            <div class="col-sm-8">
+              <input id="datetimepicker"/>
+              <script>
+                $('#datetimepicker').datetimepicker({
+                  footer: true, 
+                  modal: true,
+                  uiLibrary: 'bootstrap5'
+                });
+                </script>
+            </div>
+          </div>
+        
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Coefficient</label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control" id="exampleFormControlInput1" step="0.5" name="new_first_name">
+            </div>
+          </div>
+
+          
+        
+          
           
           <input class="btn text-bg-danger mt-3" type="submit" value="Ajouter" name="add_user">
         </form>
@@ -151,10 +208,18 @@
   </main>
 
 
-  <footer>
-    <hr>
-    <small>© CUEFF Allan, FOSSE Raphaël, LE GOFF Quentin</small>
+  <footer class="footer py-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+          <hr>
+          <small>© CUEFF Allan, FOSSE Raphaël, LE GOFF Quentin</small>
+        </div>
+        <div class="col">
+          <img src="../../logo-iSEN-Nantes-ingenieur-400.jpg" id="logo" width="160px" height="80px">
+        </div>
+      </div>
+    </div>
   </footer>
-  <img src="../../logo-iSEN-Nantes-ingenieur-400.jpg" id="logo" width="160px" height="80px">
 
 </body>
