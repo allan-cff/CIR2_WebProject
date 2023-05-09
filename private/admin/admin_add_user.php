@@ -125,13 +125,13 @@
     <div class="container">
   
       <div class="row">
-        <form class="col-md-7 offset-md-3" method="post" action="????????????????????????????????????????????????.php">
+        <form class="col-md-7 offset-md-3" method="post" action="admin_add_user.php">
 
           <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+            <input type="radio" class="btn-check" name="professeur" id="btnradio1" autocomplete="off" checked>
             <label class="btn btn-outline-danger" for="btnradio1">professeur</label>
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+            <input type="radio" class="btn-check" name="élève" id="btnradio2" autocomplete="off">
             <label class="btn btn-outline-danger" for="btnradio2">éleve</label>
           </div>
         
