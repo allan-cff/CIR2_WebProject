@@ -185,6 +185,14 @@
             $sql->execute();
             return $sql->rowCount() === 1;
         }
+        public function addAppreciation($mailStudent, $semester, $appreciation){
+            $sql = $this->database->conn->prepare('INSERT INTO public.appreciation (appraisal, semester_id, student_id) VALUES (:appreciation, (SELECT semester_id FROM public.semester WHERE date_begin = :semester), (SELECT student_id FROM public.student where mail = :mailStudent));');
+            $sql->bindParam(':mailStudent', $mailStudent);
+            $sql->bindParam(':semester', $semester);
+            $sql->bindParam(':appreciation', $appreciation);
+            $sql->execute();
+            return $sql->rowCount() === 1;
+        }
         // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED ADMINISTRATOR CAN USE    
     }
 ?>    
