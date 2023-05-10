@@ -194,7 +194,7 @@
             return $sql->rowCount() === 1;
         }
         public function listClasses(){
-            $sql = $this->database->conn->prepare('SELECT * FROM public.classes;');
+            $sql = $this->database->conn->prepare('SELECT class_name, study_year, campus_name, cycle FROM public.class JOIN public.campus using (campus_id) JOIN public.cycle USING (cycle_id);');
             $sql->execute();
             $classesList = $sql->fetchAll(PDO::FETCH_ASSOC);
             $listOfClassesObjects = [];
