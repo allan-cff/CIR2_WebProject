@@ -35,20 +35,21 @@
             $evaluationList = $sql->fetchAll(PDO::FETCH_ASSOC);
             $result = array();
             foreach($evaluationList as $value){
-                $evalArray = array_intersect_key($evaluationList, array(
+                $evalArray = array_intersect_key($value, array(
                     "average" => null,
                     "not_null" => null,
                     "coeff" => null, 
                     "begin_datetime" => null
                 ));
                 if(!isset($result[$value["lesson_id"]])){
-                    $result[$value["lesson_id"]] = array_intersect_key($evaluationList, array(
+                    $result[$value["lesson_id"]] = array_intersect_key($value, array(
                         "subject" => null,
                         "class_name" => null, 
                         "cycle" => null, 
                         "study_year" => null, 
                         "campus_name" => null
                     ));
+                    $result[$value["lesson_id"]]["evaluations"] = array();
                 }
                 array_push($result[$value["lesson_id"]]["evaluations"], $evalArray);
             }
