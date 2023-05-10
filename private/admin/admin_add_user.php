@@ -192,7 +192,7 @@
     </div>
   </main>
   <?php
-  /*      if(isset($_POST['add_user'])){
+        if(isset($_POST['add_user'])){
           if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'professeur'){
             if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
               $values = array(
@@ -217,7 +217,7 @@
             $student = new Student($values);
             $this->addStudent($student,$_POST['new_password']);
           }
-        }}*/
+        }}
       ?>
 
   <footer class="footer py-3">

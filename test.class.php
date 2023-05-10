@@ -81,6 +81,7 @@
                 echo "&#x274C; - I can't add an evaluation of FHS on 2019-01-29 8:00:00 for CIR2 : SHOULD NOT HAPPEN<br>";
             }
             $success = $me->addClass('CIR1', 'Nantes', '');
+            print_r($me->listClasses());
         }
     }
 ?>

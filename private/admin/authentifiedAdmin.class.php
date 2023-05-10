@@ -193,6 +193,16 @@
             $sql->execute();
             return $sql->rowCount() === 1;
         }
+        public function listClasses(){
+            $sql = $this->database->conn->prepare('SELECT * FROM public.classes;');
+            $sql->execute();
+            $classesList = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $listOfClassesObjects = [];
+            foreach($classesList as $class){
+                array_push($listOfClassesObjects, new SchoolClass($class));
+            }
+            return $listOfClassesObjects;
+        }
         // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED ADMINISTRATOR CAN USE    
     }
 ?>    
