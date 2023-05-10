@@ -14,7 +14,7 @@
         }
         public function connect(){
             return $this->database->connect();
-        } 
+        }
         // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED STUDENT CAN USE    
     }
 ?>

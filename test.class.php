@@ -111,5 +111,11 @@
             echo "Should have 3 not null and an average of 12.33<br>";
             print_r($me->listEvaluations());
         }
+        $me = $database->authentify("allan@isen.fr", "passwordRandomPasHaché"); 
+        $me->connect();
+        $listTeacher = $me->listTeachers();
+        foreach($listTeacher as $teacher){
+            echo "<br>" . $teacher->getFullName();
+        }
     }
 ?>

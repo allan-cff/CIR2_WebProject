@@ -14,7 +14,7 @@
             $this->name = $dbRow['name'];
             $this->surname = $dbRow['surname'];
             $this->phone = $dbRow['phone'];
-            $this->is_admin = $dbRow['is_admin'];
+            $this->is_admin = $dbRow['is_admin'] ?? false;
         }
         public function getFullName(){
             return $this->surname . ' ' . $this->name;

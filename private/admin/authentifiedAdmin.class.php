@@ -203,6 +203,22 @@
             }
             return $listOfClassesObjects;
         }
-        // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED ADMINISTRATOR CAN USE    
+        public function listSemesters(){
+            $sql == $this->database->conn->prepare('SELECT * FROM public.semester;');
+            $sql->execute();
+            return $semestersList = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function listTeachers(){
+            $usersList = false;
+            $sql = $this->database->conn->prepare('SELECT * FROM public.teacher JOIN public.user USING (mail);');
+            $sql->execute();
+            $teachersList = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $toTeacherClass = function($teacherDbRow){
+                return new Teacher($teacherDbRow);
+            };
+            return array_map($toTeacherClass, $teachersList);
+        }
+          // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED ADMINISTRATOR CAN USE    
     }
 ?>    
