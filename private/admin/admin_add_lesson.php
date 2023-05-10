@@ -162,15 +162,12 @@
           <div class="input-group mb-3">
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Intitulé du cours</label>
             <div class="col-sm-8">
-            <select class="form-select" id="inputGroupSelect01">
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
+              <input type="text" class="form-control" id="exampleFormControlInput1" name="new_first_name">
+            </div>
             </div>
           </div>
 
-          <input class="btn text-bg-danger mt-3 col-md-4 offset-md-3" type="submit" value="Ajouter" name="add_user">
+          <input class="btn text-bg-danger mt-3 col-md-2 offset-md-5" type="submit" value="Ajouter" name="add_user">
         </form>
       </div>
 
