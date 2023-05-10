@@ -24,16 +24,15 @@
           <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
           </svg>
         </button>
-
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
           <div class="offcanvas-header">
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
             <hr>
           </div>
-
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+
               <li class="nav-item">
                 <a class="nav-link" href="admin_home.php">
                   Accueil administrateur
@@ -43,7 +42,6 @@
                 </a>
               </li>
 
-              <span style="background-color: #e8e7e7">
               <li class="nav-item">
                 <a class="nav-link" href="admin_add_user.php">
                   Ajout d'utilisateur
@@ -53,16 +51,17 @@
                   </svg>
                 </a>
               </li> 
-              </span>
 
+              <span style="background-color: #e8e7e7">
               <li class="nav-item">
-                <a class="nav-link" href="admin_modification_user_table.php">
+                <a class="nav-link" href="admin_modification_user.php">
                   Modification d'utilisateur
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-gear" viewBox="0 0 16 16">
                   <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm.256 7a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Zm3.63-4.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382l.045-.148ZM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z"/>
                   </svg>
                 </a>
               </li> 
+              </span>
 
               <li class="nav-item">
                 <a class="nav-link" href="admin_add_DS.php">
@@ -97,7 +96,7 @@
           </div>
         </div>
 
-        <h3>AJOUT UTILISATEUR</h3>
+        <h3>MODIFICATION UTILISATEUR</h3>
               
         <div class="dropdown-center">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $user->getFullName(); ?></a>
@@ -112,7 +111,7 @@
               </a>
             </li>
           </ul>
-        </div>
+        </div>       
       </div>
     </nav>
   </header>
@@ -120,126 +119,10 @@
 
   <main>
     <div class="container">
-      <div class="row">
-        <form class="col-md-7 offset-md-3" method="post" action="admin_add_user.php">
-          <div class="btn-group mt-3 mb-3 col-md-4 offset-md-3" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" value="eleve" autocomplete="off" checked>
-            <label class="btn btn-outline-danger" for="btnradio1">éleve</label>
-
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" value="professeur" autocomplete="off">
-            <label class="btn btn-outline-danger" for="btnradio2">professeur</label>
-          </div>
-        
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Nom</label>
-
-            <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Dupont" name="new_last_name">
-            </div>
-          </div>
-
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Prénom</label>
-
-            <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="jean" name="new_first_name">
-            </div>
-          </div>
-
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Téléphone</label>
-
-            <div class="col-sm-8">
-              <input type="num" class="form-control" placeholder="0123456789" name="new_phone">
-            </div>
-          </div>
-
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Adresse mail</label>
-
-            <div class="col-sm-8">
-              <input type="email" class="form-control" placeholder="jean.dupont@messagerie.fr" name="new_mail">
-            </div>
-          </div>
-
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label"> Confirmation Email</label>
-
-            <div class="col-sm-8">
-              <input type="email" class="form-control" placeholder="jean.dupont@messagerie.fr" name="new_mail_validation">
-            </div>
-          </div>
-
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Mot de passe</label>
-
-            <div class="col-sm-8">
-              <input type="password" class="form-control" placeholder="motdepasse" name="new_password">
-            </div>
-          </div>
-
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Confirmation du mot de passe</label>
-
-            <div class="col-sm-8">
-              <input type="password" class="form-control" placeholder="motdepasse" name="new_password_validation">
-            </div>
-          </div>
-
-          <div class="input-group mb-3 row" id="class">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Classe</label>
-
-            <div class="col-sm-8">
-              <select class="form-select" name="new_class">
-                <option value="X">Example</option>
-              </select>
-            </div>
-          </div>
-          
-          <script>
-            document.getElementById("btnradio1").addEventListener('change', showClass);
-            document.getElementById("btnradio2").addEventListener('change', showClass);
-            function showClass() {
-              document.getElementById("class").classList.toggle('d-none');
-            }
-          </script>
-
-          <input class="btn text-bg-danger mt-3 col-md-4 offset-md-3" type="submit" value="Ajouter" name="add_user">
-        </form>
-      </div>
+        retourner dans le menu burger puis recliquer sur modification utilisateur pour aller sur la seconde page modification
     </div>
   </main>
 
-  <?php
-    if(isset($_POST['add_user'])){
-      if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'professeur'){
-        if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
-          $values = array(
-            "mail" => $_POST['new_mail'],
-            "name" => $_POST['new_last_name'],
-            "surname" => $_POST['new_first_name'],
-            "phone" => $_POST['new_phone'],
-            "is_admin" => false
-          );
-          $teacher = new Teacher($values);              
-          $user->addTeacher($teacher,$_POST['new_password']);
-        }
-      } 
-      if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'eleve'){
-        if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
-          $values = array(
-            "mail" => $_POST['new_mail'],
-            "name" => $_POST['new_last_name'],
-            "surname" => $_POST['new_first_name'],
-            "phone" => $_POST['new_phone'],
-            "is_admin" => false
-          );
-          $student = new Student($values);
-          $user->addStudent($student,$_POST['new_password']);
-        }
-      }
-    }
-  ?>
 
   <footer class="footer py-3">
     <div class="container">
