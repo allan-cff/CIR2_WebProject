@@ -168,7 +168,7 @@
         }
 
         public function deleteClass($className, $campusName, $cycle){
-            $sql = $this->database->conn->prepare('DELETE FROM public.class WHERE campus_id = (SELECT FROM public.campus where campus_name = :campusName) AND cycle_id = (SELECT FROM public.cycle where cycle = :cycle) AND class_name = :className;');
+            $sql = $this->database->conn->prepare('DELETE FROM public.class WHERE campus_id = (SELECT campus_id FROM public.campus where campus_name = :campusName) AND cycle_id = (SELECT cycle_id FROM public.cycle where cycle = :cycle) AND class_name = :className;');
             $sql->bindParam(':campusName', $campusName);
             $sql->bindParam(':className', $className);
             $sql->bindParam(':cycle', $cycle);
@@ -177,11 +177,11 @@
         }
 
         public function addClass($className, $campusName, $cycle, $studyYear){
-            $sql = $this->database->conn->prepare('INSERT INTO public.class (class_name, campus_id, cycle_id, study_year) VALUES (:className, (SELECT campus_id FROM public.campus WHERE campus_name = :campusName), (SELECT cycle_id FROM public.cycle WHERE cycle = :cycle), :study_year);');
+            $sql = $this->database->conn->prepare('INSERT INTO public.class (class_name, campus_id, cycle_id, study_year) VALUES (:className, (SELECT campus_id FROM public.campus WHERE campus_name = :campusName), (SELECT cycle_id FROM public.cycle WHERE cycle = :cycle), :studyYear);');
             $sql->bindParam(':className', $className);
             $sql->bindParam(':campusName', $campusName);
             $sql->bindParam(':cycle', $cycle);
-            $sql->bindParam(':studyYear', $studyYear);
+            $sql->bindParam(':studyYear', $studyYear, PDO::PARAM_INT);
             $sql->execute();
             return $sql->rowCount() === 1;
         }
@@ -193,6 +193,32 @@
             $sql->execute();
             return $sql->rowCount() === 1;
         }
-        // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED ADMINISTRATOR CAN USE    
+        public function listClasses(){
+            $sql = $this->database->conn->prepare('SELECT class_name, study_year, campus_name, cycle FROM public.class JOIN public.campus using (campus_id) JOIN public.cycle USING (cycle_id);');
+            $sql->execute();
+            $classesList = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $listOfClassesObjects = [];
+            foreach($classesList as $class){
+                array_push($listOfClassesObjects, new SchoolClass($class));
+            }
+            return $listOfClassesObjects;
+        }
+        public function listSemesters(){
+            $sql == $this->database->conn->prepare('SELECT * FROM public.semester;');
+            $sql->execute();
+            return $semestersList = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function listTeachers(){
+            $usersList = false;
+            $sql = $this->database->conn->prepare('SELECT * FROM public.teacher JOIN public.user USING (mail);');
+            $sql->execute();
+            $teachersList = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $toTeacherClass = function($teacherDbRow){
+                return new Teacher($teacherDbRow);
+            };
+            return array_map($toTeacherClass, $teachersList);
+        }
+          // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED ADMINISTRATOR CAN USE    
     }
 ?>    
