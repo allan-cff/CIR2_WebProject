@@ -127,12 +127,12 @@
         
         <form class="col-md-7 offset-md-3" method="post" action="admin_add_user.php">
 
-          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" value="professeur" autocomplete="off" checked>
-            <label class="btn btn-outline-danger" for="btnradio1">professeur</label>
+          <div class="btn-group mt-3 mb-3 col-md-4 offset-md-3" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" value="eleve" autocomplete="off" checked>
+            <label class="btn btn-outline-danger" for="btnradio1">éleve</label>
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" value="élève" autocomplete="off">
-            <label class="btn btn-outline-danger" for="btnradio2">éleve</label>
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" value="professeur" autocomplete="off">
+            <label class="btn btn-outline-danger" for="btnradio2">professeur</label>
           </div>
         
           <div class="mb-3 row">
@@ -184,6 +184,26 @@
             </div>
           </div>
 
+          <div class="input-group mb-3 row" id="class">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Classe</label>
+            <div class="col-sm-8">
+              <select class="form-select" id="inputGroupSelect01">
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+          </div>
+          
+          <script>
+            document.getElementById("btnradio1").addEventListener('change', showClass);
+            document.getElementById("btnradio2").addEventListener('change', showClass);
+            function showClass() {
+              document.getElementById("class").classList.toggle('d-none');
+            }
+          </script>
+
+
           <input class="btn text-bg-danger mt-3 col-md-4 offset-md-3" type="submit" value="Ajouter" name="add_user">
         </form>
       </div>
@@ -191,34 +211,37 @@
       
     </div>
   </main>
+
   <?php
-        if(isset($_POST['add_user'])){
-          if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'professeur'){
-            if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
-              $values = array(
-                "mail" => $_POST['new_mail'],
-                "name" => $_POST['new_last_name'],
-                "surname" => $_POST['new_first_name'],
-                "phone" => $_POST['new_phone'],
-                "is_admin" => false
-              );
-            $student = new Student($values);              
-            $this->addTeacher($teacher,$_POST['new_password']);
-            }}
-          else{
-            if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
-              $values = array(
-                "mail" => $_POST['new_mail'],
-                "name" => $_POST['new_last_name'],
-                "surname" => $_POST['new_first_name'],
-                "phone" => $_POST['new_phone'],
-                "is_admin" => false
-              );
-            $student = new Student($values);
-            $this->addStudent($student,$_POST['new_password']);
-          }
-        }}
-      ?>
+    if(isset($_POST['add_user'])){
+      if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'professeur'){
+        if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
+          $values = array(
+            "mail" => $_POST['new_mail'],
+            "name" => $_POST['new_last_name'],
+            "surname" => $_POST['new_first_name'],
+            "phone" => $_POST['new_phone'],
+            "is_admin" => false
+          );
+          $teacher = new Teacher($values);              
+          $user->addTeacher($teacher,$_POST['new_password']);
+        }
+      } 
+      if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'eleve'){
+        if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
+          $values = array(
+            "mail" => $_POST['new_mail'],
+            "name" => $_POST['new_last_name'],
+            "surname" => $_POST['new_first_name'],
+            "phone" => $_POST['new_phone'],
+            "is_admin" => false
+          );
+          $student = new Student($values);
+          $user->addStudent($student,$_POST['new_password']);
+        }
+      }
+    }
+  ?>
 
   <footer class="footer py-3">
     <div class="container">
