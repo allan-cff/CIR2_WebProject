@@ -2,35 +2,36 @@
   require_once(realpath(dirname(__FILE__) . '/../../header.php'));
 ?>
 <!DOCTYPE html>
-<html>
+<html class="h-100">
 
 <head>
   <title>WebAurion++</title>
   <meta charset="utf-8">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-  <link href="style_student.css" rel="stylesheet">
+
+  <link href="../../style.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="d-flex flex-column h-100 justify-content-between">
 
   <header>
     <nav class="navbar text-bg-danger justify-content-center" >
-
       <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-          <a>
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-list" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-            </svg>
-          </a>
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-list" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+          </svg>
         </button>
+
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
           <div class="offcanvas-header">
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
             <hr>
           </div>
+
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               <span style="background-color: #e8e7e7">
@@ -43,6 +44,7 @@
                 </a>
               </li>
               </span>
+
               <li class="nav-item">
                 <a class="nav-link" href="student_grade.php">
                   Note et moyenne
@@ -52,7 +54,6 @@
                   </svg>
                 </a>
              </li>  
-
             </ul>       
           </div>
         </div>
@@ -61,6 +62,7 @@
               
         <div class="dropdown-center">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $user->getFullName(); ?></a>
+
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
               <a class="dropdown-item" href="../../login.html">Déconnexion
@@ -71,42 +73,73 @@
               </a>
             </li>
           </ul>
-        </div>
-        
+        </div> 
       </div>
     </nav>
-
   </header>
 
   
-  <div class="card" id="card_1">
-    <div class="card-body">
+  <main>
+    <div class="container">
+      <div class="row align-items-end">
+        <!-- top-left card -->
+        <div class="card col-md-4 offset-md-1 p-5 rounded-5" name="top_left_card" method="post">
+          
+          
+          
+        </div>
 
+        <div class="col-2  p-5 rounded-5" method="post"></div>
+
+        <!-- top-right card -->
+        <div class="card col-4 p-5 rounded-5" name="top_right_card" method="post">
+          
+          
+          
+        </div>
+      </div>
+
+      <div class="row align-items-center">
+        <div class="col-4 p-5 rounded-5" method="post"></div>
+      </div>
+      <div class="row align-items-center">
+        <div class="col-4 p-5 rounded-5" method="post"></div>
+      </div>
+
+      <div class="row align-items-end">
+        <!-- bottom-left card -->
+        <div class="card col-md-4 offset-md-1 p-5 rounded-5" name="bottom_left_card" method="post">
+          
+          
+          
+        </div>
+
+        <div class="col-2  p-5 rounded-5" method="post"></div>
+
+        <!-- bottom-right card -->
+        <div class="card col-4 p-5 rounded-5" name="bottom_right_card" method="post">
+            
+          
+          
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="card" id="card_2">
-    <div class="card-body">
-      
-    </div>
-  </div>
-  <div class="card" id="card_3">
-    <div class="card-body">
-      
-    </div>
-  </div>
-  <div class="card" id="card_4">
-    <div class="card-body">
-      
-    </div>
-  </div>
-    
-  
+  </main>
 
 
-  <footer>
-    <hr>
-    <small>© CUEFF Allan, FOSSE Raphaël, LE GOFF Quentin</small>
+  <footer class="footer py-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+          <hr>
+          <small>© CUEFF Allan, FOSSE Raphaël, LE GOFF Quentin</small>
+        </div>
+
+        <div class="col">
+          <img src="../../logo-iSEN-Nantes-ingenieur-400.jpg" id="logo" width="160px" height="80px">
+        </div>
+      </div>
+    </div>
   </footer>
-  <img src="../../logo-iSEN-Nantes-ingenieur-400.jpg" id="logo" width="160px" height="80px">
 
 </body>
