@@ -77,26 +77,52 @@
   </header>
 
 
-  <div class="card" id="card_1">
-    <div class="card-body">
-      
+  <main>
+    <div class="container">
+      <div class="row align-items-end">
+        <!-- top-left card -->
+        <div class="card col-md-4 offset-md-1 p-5 rounded-5" name="top_left_card" method="post">
+          
+          
+          
+        </div>
+
+        <div class="col-2  p-5 rounded-5" method="post"></div>
+
+        <!-- top-right card -->
+        <div class="card col-4 p-5 rounded-5" name="top_right_card" method="post">
+          
+          
+          
+        </div>
+      </div>
+
+      <div class="row align-items-center">
+        <div class="col-4 p-5 rounded-5" method="post"></div>
+      </div>
+      <div class="row align-items-center">
+        <div class="col-4 p-5 rounded-5" method="post"></div>
+      </div>
+
+      <div class="row align-items-end">
+        <!-- bottom-left card -->
+        <div class="card col-md-4 offset-md-1 p-5 rounded-5" name="bottom_left_card" method="post">
+          
+          
+          
+        </div>
+
+        <div class="col-2  p-5 rounded-5" method="post"></div>
+
+        <!-- bottom-right card -->
+        <div class="card col-4 p-5 rounded-5" name="bottom_right_card" method="post">
+            
+          
+          
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="card" id="card_2">
-    <div class="card-body">
-      
-    </div>
-  </div>
-  <div class="card" id="card_3">
-    <div class="card-body">
-      
-    </div>
-  </div>
-  <div class="card" id="card_4">
-    <div class="card-body">
-      
-    </div>
-  </div>
+  </main>
 
 
   <footer class="footer py-3">

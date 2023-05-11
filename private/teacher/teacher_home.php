@@ -57,7 +57,7 @@
 
              <li class="nav-item">
                 <a class="nav-link" href="teacher_add_appreciation.php">
-                  Ajout d'une appreciation
+                  Ajout d'une appréciation
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
                     <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z"/>
                     <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
@@ -101,6 +101,41 @@
 
   <main>
     <div class="container">
+      <div class="row align-items-end">
+        <!-- top-left card -->
+        <div class="card col-md-4 offset-md-1 p-5 rounded-5" name="top_left_card" method="post">
+          
+          
+          
+        </div>
+
+        <div class="col-2  p-5 rounded-5" method="post"></div>
+
+        <!-- top-right card -->
+        <div class="card col-4 p-5 rounded-5" name="top_right_card" method="post">
+          
+          
+          
+        </div>
+      </div>
+
+      <div class="row align-items-center">
+        <div class="col-4 p-5 rounded-5" method="post"></div>
+      </div>
+
+      <div class="row align-items-end">
+
+        <div class="col"></div>
+
+        <!-- bottom-center card -->
+        <div class="card col p-5 rounded-5" name="bottom_right_card" method="post">
+            
+          
+          
+        </div>
+
+        <div class="col"></div>
+      </div>
     </div>
   </main>
 
