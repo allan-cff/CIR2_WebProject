@@ -95,6 +95,26 @@
                 }    
             }
             print_r($me->listClasses());
+            $success = $me->addLesson('FHS', 'mateosorin@isen.fr', 'CIR1', '2018-09-01');
+            if($success){
+                echo "&#9989; - I just added an FHS Lesson with mateosorin@isen.fr teaching CIR1 from 2018-09-01 to end of semester<br>";
+            }
+            $lessonsList = $me->listLessons();
+            foreach($lessonsList as $lesson){
+                echo $lesson->teacher->getFullName() . " is teaching " . $lesson->subject . " to the " . $lesson->class->name . "<br>";
+            }
+            $success = $me->addEvaluation($lessonsList[1], '2018-11-18 8:00:00', '2018-11-18 9:30:00', 1, 'blabla');
+            if($success){
+                echo "&#9989; - I just added an evaluation of FHS on 2018-11-18 8:00:00 for CIR1<br>";
+            } else {
+                echo "&#x274C; - I can't add an evaluation of FHS on 2018-11-18 8:00:00 for CIR1 : SHOULD NOT HAPPEN<br>";
+            }
+            $success = $me->addEvaluation($lessonsList[1], '2019-01-29 8:00:00', '2019-01-29 9:30:00', 1, 'deuxième DS');
+            if($success){
+                echo "&#9989; - I just added an evaluation of FHS on 2019-01-29 8:00:00 for CIR1<br>";
+            } else {
+                echo "&#x274C; - I can't add an evaluation of FHS on 2019-01-29 8:00:00 for CIR1 : SHOULD NOT HAPPEN<br>";
+            }
         }
         $me = $database->authentify("mateosorin@isen.fr", "superSecure");
         $me->connect();
@@ -102,14 +122,20 @@
             echo "<br><b>New login</b><br>&#9989; - My name is " . $me->getFullName() . "<br>";
             echo "&#9989; - I am an " . get_class($me) . "<br>";
             echo "<b>GRADES</b><br>";
-            $me->addGrade("lara.clette@messagerie.fr", $lessonsList[1], 16);
+            $me->addGrade("lara.clette@messagerie.fr", $lessonsList[2], '2019-01-29 8:00:00', 16);
             echo "Adding a 16 in FHS to lara.clette<br>";
-            $me->addGrade("jacques.ouzi@messagerie.fr", $lessonsList[1], 12);
+            $me->addGrade("jacques.ouzi@messagerie.fr", $lessonsList[2], '2019-01-29 8:00:00', 12);
             echo "Adding a 12 in FHS to jacques.ouzi<br>";
-            $me->addGrade("bernard.tichaud@messagerie.fr", $lessonsList[1], 9);
+            $me->addGrade("bernard.tichaud@messagerie.fr", $lessonsList[2], '2019-01-29 8:00:00', 9);
+            echo "Adding a 9 in FHS to bernard.tichaud<br>";
+            $me->addGrade("lara.clette@messagerie.fr", $lessonsList[2], '2018-11-18 8:00:00', 14);
+            echo "Adding a 16 in FHS to lara.clette<br>";
+            $me->addGrade("jacques.ouzi@messagerie.fr", $lessonsList[2], '2018-11-18 8:00:00', 11);
+            echo "Adding a 12 in FHS to jacques.ouzi<br>";
+            $me->addGrade("bernard.tichaud@messagerie.fr", $lessonsList[2], '2018-11-18 8:00:00', 11);
             echo "Adding a 9 in FHS to bernard.tichaud<br>";
             echo "Should have 3 not null and an average of 12.33<br>";
-            print_r($me->listEvaluations());
+            print_r($me->listLessons());
         }
         $me = $database->authentify("allan@isen.fr", "passwordRandomPasHaché"); 
         $me->connect();
