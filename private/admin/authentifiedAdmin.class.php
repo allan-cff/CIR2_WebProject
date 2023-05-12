@@ -132,6 +132,17 @@
             $lessonInsert->execute();
             return $lessonInsert->rowCount() === 1;
         }
+
+        public function addGrade($mail, $dateEvalBegin, $lesson){
+            $gradeInsert = $this->database->conn->prepare("INSERT INTO public.grade (grade, eval_id, student_id) VALUES(:grade, (SELECT eval_id FROM public.evaluation WHERE :dateEvalBegin = begin_datetime) , (SELECT student_id FROM public.student WHERE mail = :mail));");
+            $gradeInsert->bindParam(':mail', $mail);
+            $gradeInsert->bindParam(':dateEval', $dateEval);
+            $gradeInsert->bindParam(':lesson', $lesson);
+            $gradeInsert->execute();
+            return $gradeInsert->rowCount() === 1;
+
+        }
+
         public function listLessons(){
             $lessonsList = false;
             $sql = $this->database->conn->prepare('SELECT subject, class_name, study_year, cycle, campus_name, latitude, longitude, mail, name, surname, EXISTS (SELECT mail FROM public.admin WHERE mail = teacher) AS "is_admin", last_login, phone, date_begin, date_end FROM public.lesson JOIN public.semester USING (semester_id) JOIN public.class USING (class_id) JOIN public.cycle USING (cycle_id) JOIN public.campus USING (campus_id) JOIN public.teacher ON teacher = mail JOIN public.user USING (mail);');

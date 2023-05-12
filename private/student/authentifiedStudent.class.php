@@ -15,6 +15,20 @@
         public function connect(){
             return $this->database->connect();
         }
+
+        public function listLessons(){
+            $sql = $this->database->conn->prepare('SELECT * FROM public.lesson JOIN public.student USING (mail);');
+            $sql->execute;
+            $lessonsList = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $toLessonClass = function($lessonDbRow){
+                return new Lesson($lessonDbRow);
+            };       
+            return array_map($toLessonClass, $lessonsList);
+        }
+
+        public function averageInLesson($lesson, $mailStudent){
+            $sql = $this->database->conn->prepare('SELECT * FROM public.grade')
+        }
         // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED STUDENT CAN USE    
     }
 ?>
