@@ -85,7 +85,7 @@
 
       <thead>
         <tr>
-          <th scope="col">classe</th>
+          <th scope="col">Matière</th>
           <th scope="col">Moyenne</th>
           <th scope="col">Moyenne de classe</th>
           <th scope="col">Appréciation</th>

@@ -61,6 +61,14 @@
             return $rank;
         }
         
+        public function appreciationInLesson($lesson, $mail){
+            $sql = $this->database->conn->prepare("SELECT appreciation FROM public.appreciation WHERE student_id = (SELECT student_id FROM public.student WHERE mail = :mail) AND lesson_id = (SELECT lesson_id FROM public.lesson WHERE subject = :lesson_name);");
+            $sql->bindParam(':lesson_name', $lesson);
+            $sql->bindParam(':mail', $mail);
+            $sql->execute;
+            $appreciation = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $appreciation;
+        }
         // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED STUDENT CAN USE    
     }
 ?>
