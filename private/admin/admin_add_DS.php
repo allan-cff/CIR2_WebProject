@@ -131,7 +131,12 @@
 
             <div class="col-sm-8">
               <select class="form-select" name="class_add_ds">
-                <option value="X">Example</option>
+              <?php
+                  $classList = $user->listClasses();
+                  foreach($classList as $schoolClass){
+                    echo "<option value=" . serialize($schoolClass) . ">" . $schoolClass->name . "</option>";
+                  }
+                ?>
               </select>
             </div>
           </div>
@@ -141,8 +146,14 @@
 
             <div class="col-sm-8">
               <select class="form-select" name="semester_add_ds">
-                <option value="X">Example</option>
-              </select>
+                  <?php
+                    $semesterList = $user->listSemesters();
+                    foreach($semesterList as $semester){
+                      print_r($semester);
+                      echo "<option value=" . serialize($semester) . ">" . $semester['date_begin'] .','. $semester['date_end']  . "</option>";
+                    }
+                  ?>
+            </select>
             </div>
           </div>
 
@@ -151,8 +162,13 @@
 
             <div class="col-sm-8">
               <select class="form-select" name="lesson_add_ds">
-                <option value="X">Example</option>
-              </select>
+                  <?php
+                    $lessonsList = $user->listLessons();
+                    foreach($lessonsList as $lesson){
+                      echo "<option value=" . serialize($lesson) . ">" . $lesson->subject . "</option>";
+                    }
+                  ?>                ?>
+            </select>
             </div>
           </div>
 
@@ -165,14 +181,30 @@
           </div>
 
           <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Date</label>
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Date de début</label>
 
             <!-- Attention /!\ le datetimepicker renvoi sous la forme -> heure:minute mois/jour/année -->
             <div class="col-sm-8">
-              <input name="datetimepicker_add_ds" id="datetimepicker_add_ds"/>
+              <input name="datetimepicker_add_ds_begin" id="datetimepicker_add_ds_begin"/>
 
               <script>
-                $('#datetimepicker_add_ds').datetimepicker({
+                $('#datetimepicker_add_ds_begin').datetimepicker({
+                  footer: true, 
+                  modal: true,
+                  uiLibrary: 'bootstrap5'
+                });
+              </script>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Date de fin</label>
+
+            <!-- Attention /!\ le datetimepicker renvoi sous la forme -> heure:minute mois/jour/année -->
+            <div class="col-sm-8">
+              <input name="datetimepicker_add_ds_end" id="datetimepicker_add_ds_end"/>
+
+              <script>
+                $('#datetimepicker_add_ds_end').datetimepicker({
                   footer: true, 
                   modal: true,
                   uiLibrary: 'bootstrap5'
@@ -195,6 +227,19 @@
       </div>
     </div>
   </main>
+  <?php
+    if(isset($_POST['add_ds']) && isset($_POST['class_add_ds']) && isset($_POST['semester_add_ds']) && isset($_POST['lesson_add_ds']) && isset($_POST['new_ds_name']) && isset($_POST['datetimepicker_add_ds']) && isset($_POST['coef_add_ds'])){
+      $class = unserialize($_POST['class_add_ds']);
+      $semester = unserialize($_POST['semester_add_ds']);
+      $lesson = unserialize($_POST['lesson_add_ds']);
+      $name = $_POST['new_ds_name'];
+      $dateBegin = $_POST['datetimepicker_add_ds_begin'];
+      $dateEnd = $_POST['datetimepicker_add_ds_end'];
+      $coef = $_POST['coef_add_ds'];
+
+      $user->addEvaluation($lesson, $dateBegin, $dateEnd, $coeff, $coef);
+    }
+  ?>
 
   <?php require_once('../../footer.php') ?>
 

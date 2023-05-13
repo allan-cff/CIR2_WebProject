@@ -204,7 +204,7 @@
             return $listOfClassesObjects;
         }
         public function listSemesters(){
-            $sql == $this->database->conn->prepare('SELECT * FROM public.semester;');
+            $sql = $this->database->conn->prepare('SELECT * FROM public.semester;');
             $sql->execute();
             return $semestersList = $sql->fetchAll(PDO::FETCH_ASSOC);
         }
