@@ -97,13 +97,11 @@
         <?php
         $lessons = $user->listLessons();
         print_r($lessons);
-        for($i = 0; $i < count($lessons); $i++) {
-          print_r($user->personalAverageInLesson($lessons[$i]->subject));
+        foreach($lessons as $lesson) {
           echo '
             <tr>
-              <td>' . $lessons[$i]->subject . '</td>
-              <td>' . $user->personalAverageInLesson($lessons[$i]->subject) . '</td>
-              <td>' . $user->classAverageInLesson($lessons[$i]->subject) . '</td>
+              <td>' . $lesson->subject . '</td>
+              
             </tr>';
         }
           ?>
