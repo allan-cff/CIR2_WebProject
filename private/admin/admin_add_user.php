@@ -142,7 +142,7 @@
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Prénom</label>
 
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="jean" name="new_first_name">
+              <input type="text" class="form-control" placeholder="Jean" name="new_first_name">
             </div>
           </div>
 
@@ -186,12 +186,17 @@
             </div>
           </div>
 
-          <div class="input-group mb-3 row" id="class">
+          <div class="mb-3 row" id="class">
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Classe</label>
 
             <div class="col-sm-8">
               <select class="form-select" name="new_class">
-                <option value="X">Example</option>
+                <?php
+                  $classList = $user->listClasses();
+                  foreach($classList as $schoolClass){
+                    echo "<option value=" . serialize($schoolClass) . ">" . $schoolClass->print() . "</option>";
+                  }
+                ?>
               </select>
             </div>
           </div>
@@ -227,15 +232,18 @@
       } 
       if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'eleve'){
         if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
-          $values = array(
-            "mail" => $_POST['new_mail'],
-            "name" => $_POST['new_last_name'],
-            "surname" => $_POST['new_first_name'],
-            "phone" => $_POST['new_phone'],
-            "is_admin" => false
-          );
-          $student = new Student($values);
-          $user->addStudent($student,$_POST['new_password']);
+          if(isset($_POST['new_class']) && get_class(unserialize($_POST['new_class'])) === "SchoolClass"){
+            $studClass = unserialize($_POST['new_class']);
+            $values = array(
+              "mail" => $_POST['new_mail'],
+              "name" => $_POST['new_last_name'],
+              "surname" => $_POST['new_first_name'],
+              "phone" => $_POST['new_phone'],
+              "is_admin" => false
+            );
+            $student = new Student(array_merge($values, $studClass->getDbRow()));
+            $success = $user->addStudent($student,$_POST['new_password']);
+          }
         }
       }
     }

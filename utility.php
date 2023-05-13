@@ -51,7 +51,18 @@
             $this->studyYear = $dbRow['study_year'];
             $this->name = $dbRow['class_name'];
             $this->campus = $dbRow['campus_name'];
-        } 
+        }
+        public function print(){
+            return $this->name . ", " . $this->campus . ", " . $this->cycle . ", " . $this->studyYear;
+        }
+        public function getDbRow(){
+            return array(              
+                "cycle" => $this->cycle,
+                "study_year" => $this->studyYear,
+                "campus_name" => $this->campus,
+                "class_name" => $this->name
+            );
+        }
     }
 
     class Lesson {
