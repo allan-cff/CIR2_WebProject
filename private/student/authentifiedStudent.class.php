@@ -27,7 +27,7 @@
             return array_map($toLessonClass, $lessonsList);
         }
 
-        public function personalAverageInLesson($lesson){
+        public function personalAverageInLesson($lesson, $dateBegin){
             $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade JOIN public.student USING(student_id) JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) WHERE subject = :lesson AND mail = :mail AND public.lesson.semester_id = public.semester.semester_id) AS \"average\" FROM public.semester;");
             $sql->bindParam(':mail', $this->mail);
             $sql->bindParam(':lesson', $lesson);
@@ -36,7 +36,7 @@
             return $average;
         }
 
-        public function classAverageInLesson($lesson){
+        public function classAverageInLesson($lesson, $dateBegin){
             $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) WHERE subject = :lesson AND public.lesson.semester_id = public.semester.semester_id AND class_id = (SELECT class_id FROM public.class WHERE class_name = :class AND study_year = :study_year AND cycle_id = (SELECT cycle_id FROM public.cycle WHERE cycle = :cycle) AND campus_id = (SELECT campus_id FROM public.campus WHERE campus_name = :campus))) AS \"average\" FROM public.semester;");
             $sql->bindParam(':class', $this->class->name);
             $sql->bindParam(':study_year', $this->class->studyYear);
