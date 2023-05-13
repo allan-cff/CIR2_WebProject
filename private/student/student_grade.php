@@ -98,10 +98,12 @@
         $lessons = $user->listLessons();
         print_r($lessons);
         foreach($lessons as $lesson) {
+          echo '<br>';
+          print_r($user->personalAverageInLesson($lesson->subject));
           echo '
             <tr>
               <td>' . $lesson->subject . '</td>
-              
+              <td>' . $user->personalAverageInLesson($lesson->subject)[1]['average'] . '</td>
             </tr>';
         }
           ?>
