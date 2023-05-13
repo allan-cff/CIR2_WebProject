@@ -95,30 +95,15 @@
       </thead>
 
       <tbody>
-        <tr>
-          <td>Mathématique</td>
-          <td>17.5</td>
-          <td>9</td>
-          <td>Non renseigner</td>
-          <td>3</td>
-          <td>non</td>
-        </tr>
-        <tr>
-          <td>C++</td>
-          <td>12</td>
-          <td>12</td>
-          <td>Nils est un bronies</td>
-          <td>12</td>
-          <td>non</td>
-        </tr>
-        <tr>
-          <td>Physique</td>
-          <td>9</td>
-          <td>11</td>
-          <td>Non renseigner</td>
-          <td>15</td>
-          <td>oui</td>
-        </tr>
+          <tr>
+            <td><?php echo $user->getSubject()->getName(); ?></td>
+            <td><?php echo $user->getGrade(); ?></td>
+            <td><?php echo $user->getAverage(); ?></td>
+            <td><?php echo $user->getAppreciation(); ?></td>
+            <td><?php echo $user->getRank(); ?></td>
+            <td><?php echo $user->getCatchUp(); ?></td>
+          </tr>
+        }
       </tbody>
     </table>
 
