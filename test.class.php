@@ -156,7 +156,7 @@
             foreach($classFHSAverage as $av){
                 echo "My class average in FHS is : " . ($av["average"] ?? "undefined") . " for semester going from " . $av["date_begin"] ." to " . $av["date_end"] . "<br>";
             }
-            $persoFHSAverage = $me->personnalAverageInLesson('FHS');
+            $persoFHSAverage = $me->personalAverageInLesson('FHS');
             foreach($persoFHSAverage as $av){
                 echo "My personnal average in FHS is : " . ($av["average"] ?? "undefined") . " for semester going from " . $av["date_begin"] ." to " . $av["date_end"] . "<br>";
             } 

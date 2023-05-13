@@ -88,23 +88,26 @@
           <th scope="col">Matière</th>
           <th scope="col">Moyenne</th>
           <th scope="col">Moyenne de classe</th>
-          <th scope="col">Appréciation</th>
           <th scope="col">Rang</th>
           <th scope="col">Rattrapage</th>
         </tr>
       </thead>
 
       <tbody>
-          <tr>
-            <td><?php echo $user->getSubject()->getName(); ?></td>
-            <td><?php echo $user->getGrade(); ?></td>
-            <td><?php echo $user->getAverage(); ?></td>
-            <td><?php echo $user->getAppreciation(); ?></td>
-            <td><?php echo $user->getRank(); ?></td>
-            <td><?php echo $user->getCatchUp(); ?></td>
-          </tr>
+        <?php
+        $lessons = $user->listLessons();
+        print_r($lessons);
+        for($i = 0; $i < count($lessons); $i++) {
+          print_r($user->personalAverageInLesson($lessons[$i]->subject));
+          echo '
+            <tr>
+              <td>' . $lessons[$i]->subject . '</td>
+              <td>' . $user->personalAverageInLesson($lessons[$i]->subject) . '</td>
+              <td>' . $user->classAverageInLesson($lessons[$i]->subject) . '</td>
+            </tr>';
         }
-      </tbody>
+          ?>
+          </tbody>
     </table>
 
   </div>
