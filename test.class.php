@@ -11,7 +11,7 @@
         $me = $database->authentify("allan@isen.fr", "passwordRandomPasHaché");
         $me->connect();
         if($me){
-            echo "<b>Login</b><br>&#9989; - My name is " . $me->getFullName() . "<br>";
+            echo "<b>LOG IN AS AN ADMIN</b><br>&#9989; - My name is " . $me->getFullName() . "<br>";
             echo "&#9989; - I am an " . get_class($me) . "<br>";
             $mSorinInfos = '{
                 "mail": "mateosorin@isen.fr",
@@ -76,11 +76,11 @@
             } else {
                 echo "&#x274C; - I can't add an evaluation of FHS on 2018-11-18 8:00:00 for CIR2 : SHOULD NOT HAPPEN<br>";
             }
-            $success = $me->addEvaluation($lessonsList[1], '2019-01-29 8:00:00', '2019-01-29 9:30:00', 1, 'deuxième DS');
+            $success = $me->addEvaluation($lessonsList[1], '2019-01-29 8:00:00', '2019-01-29 9:30:00', 2, 'deuxième DS');
             if($success){
-                echo "&#9989; - I just added an evaluation of FHS on 2019-01-29 8:00:00 for CIR2<br>";
+                echo "&#9989; - I just added an evaluation of FHS coeff 2 on 2019-01-29 8:00:00 for CIR2<br>";
             } else {
-                echo "&#x274C; - I can't add an evaluation of FHS on 2019-01-29 8:00:00 for CIR2 : SHOULD NOT HAPPEN<br>";
+                echo "&#x274C; - I can't add an evaluation of FHS coeff 2 on 2019-01-29 8:00:00 for CIR2 : SHOULD NOT HAPPEN<br>";
             }
             $success = $me->addClass('CIR1', 'Nantes', 'CIR', 1);
             if($success){
@@ -115,11 +115,15 @@
             } else {
                 echo "&#x274C; - I can't add an evaluation of FHS on 2019-01-29 8:00:00 for CIR1 : SHOULD NOT HAPPEN<br>";
             }
+            $listTeacher = $me->listTeachers();
+            foreach($listTeacher as $teacher){
+                echo "<br>" . $teacher->getFullName();
+            }
         }
         $me = $database->authentify("mateosorin@isen.fr", "superSecure");
         $me->connect();
         if($me){
-            echo "<br><b>New login</b><br>&#9989; - My name is " . $me->getFullName() . "<br>";
+            echo "<br><b>LOG IN AS A TEACHER</b><br>&#9989; - My name is " . $me->getFullName() . "<br>";
             echo "&#9989; - I am an " . get_class($me) . "<br>";
             echo "<b>GRADES</b><br>";
             $me->addGrade("lara.clette@messagerie.fr", $lessonsList[2], '2019-01-29 8:00:00', 16);
@@ -129,19 +133,33 @@
             $me->addGrade("bernard.tichaud@messagerie.fr", $lessonsList[2], '2019-01-29 8:00:00', 9);
             echo "Adding a 9 in FHS to bernard.tichaud<br>";
             $me->addGrade("lara.clette@messagerie.fr", $lessonsList[2], '2018-11-18 8:00:00', 14);
-            echo "Adding a 16 in FHS to lara.clette<br>";
+            echo "Adding a 14 in FHS to lara.clette on the other eval<br>";
             $me->addGrade("jacques.ouzi@messagerie.fr", $lessonsList[2], '2018-11-18 8:00:00', 11);
-            echo "Adding a 12 in FHS to jacques.ouzi<br>";
+            echo "Adding a 11 in FHS to jacques.ouzi on the other eval<br>";
             $me->addGrade("bernard.tichaud@messagerie.fr", $lessonsList[2], '2018-11-18 8:00:00', 11);
-            echo "Adding a 9 in FHS to bernard.tichaud<br>";
-            echo "Should have 3 not null and an average of 12.33<br>";
+            echo "Adding a 11 in FHS to bernard.tichaud on the other eval<br>";
+            echo "Should have 3 not null and an average of 12.33 for the first eval<br>";
+            echo "Should have 3 not null and an average of 12 for the second eval<br>";
             print_r($me->listLessons());
         }
-        $me = $database->authentify("allan@isen.fr", "passwordRandomPasHaché"); 
+        $me = $database->authentify("lara.clette@messagerie.fr", "passwordRandomPasHaché"); 
         $me->connect();
-        $listTeacher = $me->listTeachers();
-        foreach($listTeacher as $teacher){
-            echo "<br>" . $teacher->getFullName();
-        }
+        if($me){
+            echo "<br><b>LOG IN AS A STUDENT</b><br>&#9989; - My name is " . $me->getFullName() . "<br>";
+            echo "&#9989; - I am an " . get_class($me) . "<br>";
+            echo "<b>LESSONS</b><br>";
+            $lessonsList = $me->listLessons();
+            foreach($lessonsList as $lesson){
+                echo $lesson->subject . "<br>";
+            }
+            $classFHSAverage = $me->classAverageInLesson('FHS');
+            foreach($classFHSAverage as $av){
+                echo "My class average in FHS is : " . ($av["average"] ?? "undefined") . " for semester going from " . $av["date_begin"] ." to " . $av["date_end"] . "<br>";
+            }
+            $persoFHSAverage = $me->personnalAverageInLesson('FHS');
+            foreach($persoFHSAverage as $av){
+                echo "My personnal average in FHS is : " . ($av["average"] ?? "undefined") . " for semester going from " . $av["date_begin"] ." to " . $av["date_end"] . "<br>";
+            } 
+        }       
     }
 ?>
