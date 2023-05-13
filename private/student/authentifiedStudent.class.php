@@ -48,9 +48,9 @@
             return $average;
         }
 
-        public function rankInLesson($lesson, $mail){
-            $sql = $this->database->conn->prepare("SELECT COUNT(*) + 1 AS student_rank FROM (SELECT g1.student_id, AVG(g1.grade) AS student_average FROM public.grade g1 JOIN public.evaluation e1 ON g1.eval_id = e1.eval_id WHERE e1.lesson_id = (SELECT lesson_id FROM public.lesson WHERE subject = :lesson_name) GROUP BY g1.student_id) AS t1 WHERE t1.student_average > (SELECT AVG(g2.grade) AS class_average FROM public.grade g2 JOIN public.evaluation e2 ON g2.eval_id = e2.eval_id WHERE e2.lesson_id = (SELECT lesson_id FROM public.lesson WHERE subject = :lesson_name)) AND t1.student_id = (SELECT student_id FROM public.student WHERE mail = :mail);");
-            $sql->bindParam(':lesson_name', $this->lesson->subject);
+        public function rankInLesson($lesson){
+            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT COUNT(*) + 1 AS \"rank\" FROM public.student s WHERE (SELECT AVG(grade) FROM public.grade g JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) WHERE subject = :lesson_name AND s.student_id = g.student_id AND public.lesson.semester_id = public.semester.semester_id) > (SELECT AVG(grade) FROM public.grade g JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) WHERE subject = :lesson_name AND public.lesson.semester_id = public.semester.semester_id AND g.student_id = (SELECT student_id FROM public.student WHERE mail = :mail))) FROM public.semester;");
+            $sql->bindParam(':lesson_name', $lesson);
             $sql->bindParam(':mail', $this->mail);
             $sql->execute();
             $rank = $sql->fetchAll(PDO::FETCH_ASSOC);

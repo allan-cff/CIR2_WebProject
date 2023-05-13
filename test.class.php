@@ -160,6 +160,56 @@
             foreach($persoFHSAverage as $av){
                 echo "My personnal average in FHS is : " . ($av["average"] ?? "undefined") . " for semester going from " . $av["date_begin"] ." to " . $av["date_end"] . "<br>";
             } 
+            $FHSranks = $me->rankInLesson('FHS');
+            foreach($FHSranks as $rank){
+                echo "My rank in FHS is : " . ($rank["rank"] ?? "undefined") . " for semester going from " . $rank["date_begin"] ." to " . $rank["date_end"] . "<br>";
+            }
+        }
+        $me = $database->authentify("jacques.ouzi@messagerie.fr", "passwordRandomPasHaché"); 
+        $me->connect();
+        if($me){
+            echo "<br><b>LOG IN AS A STUDENT</b><br>&#9989; - My name is " . $me->getFullName() . "<br>";
+            echo "&#9989; - I am an " . get_class($me) . "<br>";
+            echo "<b>LESSONS</b><br>";
+            $lessonsList = $me->listLessons();
+            foreach($lessonsList as $lesson){
+                echo $lesson->subject . "<br>";
+            }
+            $classFHSAverage = $me->classAverageInLesson('FHS');
+            foreach($classFHSAverage as $av){
+                echo "My class average in FHS is : " . ($av["average"] ?? "undefined") . " for semester going from " . $av["date_begin"] ." to " . $av["date_end"] . "<br>";
+            }
+            $persoFHSAverage = $me->personalAverageInLesson('FHS');
+            foreach($persoFHSAverage as $av){
+                echo "My personnal average in FHS is : " . ($av["average"] ?? "undefined") . " for semester going from " . $av["date_begin"] ." to " . $av["date_end"] . "<br>";
+            } 
+            $FHSranks = $me->rankInLesson('FHS');
+            foreach($FHSranks as $rank){
+                echo "My rank in FHS is : " . ($rank["rank"] ?? "undefined") . " for semester going from " . $rank["date_begin"] ." to " . $rank["date_end"] . "<br>";
+            }
+        }
+        $me = $database->authentify("bernard.tichaud@messagerie.fr", "passwordRandomPasHaché"); 
+        $me->connect();
+        if($me){
+            echo "<br><b>LOG IN AS A STUDENT</b><br>&#9989; - My name is " . $me->getFullName() . "<br>";
+            echo "&#9989; - I am an " . get_class($me) . "<br>";
+            echo "<b>LESSONS</b><br>";
+            $lessonsList = $me->listLessons();
+            foreach($lessonsList as $lesson){
+                echo $lesson->subject . "<br>";
+            }
+            $classFHSAverage = $me->classAverageInLesson('FHS');
+            foreach($classFHSAverage as $av){
+                echo "My class average in FHS is : " . ($av["average"] ?? "undefined") . " for semester going from " . $av["date_begin"] ." to " . $av["date_end"] . "<br>";
+            }
+            $persoFHSAverage = $me->personalAverageInLesson('FHS');
+            foreach($persoFHSAverage as $av){
+                echo "My personnal average in FHS is : " . ($av["average"] ?? "undefined") . " for semester going from " . $av["date_begin"] ." to " . $av["date_end"] . "<br>";
+            } 
+            $FHSranks = $me->rankInLesson('FHS');
+            foreach($FHSranks as $rank){
+                echo "My rank in FHS is : " . ($rank["rank"] ?? "undefined") . " for semester going from " . $rank["date_begin"] ." to " . $rank["date_end"] . "<br>";
+            }
         }       
     }
 ?>
