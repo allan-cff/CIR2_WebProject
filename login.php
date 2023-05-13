@@ -10,21 +10,23 @@
         $success = $database->connect();
         if($success){
             $user = $database->authentify($_POST["mail"], $_POST["password"]);
-            if((get_class($user) === "AuthentifiedAdmin")){
+            if($user && (get_class($user) === "AuthentifiedAdmin")){
                 $_SESSION['user'] = serialize($user);
                 header('Location: private/admin/admin_home.php');
                 exit;
             }
-            if((get_class($user) === "AuthentifiedTeacher")){
+            if($user && (get_class($user) === "AuthentifiedTeacher")){
                 $_SESSION['user'] = serialize($user);
                 header('Location: private/teacher/teacher_home.php');
                 exit;
             }
-            if((get_class($user) === "AuthentifiedStudent")){
+            if($user && (get_class($user) === "AuthentifiedStudent")){
                 $_SESSION['user'] = serialize($user);
                 header('Location: private/student/student_home.php');
                 exit;
             }
         }    
     }
+    header('Location: login.html');
+    exit;
 ?>
