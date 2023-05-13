@@ -23,7 +23,7 @@
   <header>
     <nav class="navbar text-bg-danger justify-content-center" >
       <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">         
+        <button class="navbar-dark navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-list" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
           </svg>
@@ -196,20 +196,6 @@
     </div>
   </main>
 
-
-  <footer class="footer py-3">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 offset-md-2 text-center">
-          <hr>
-          <small>© CUEFF Allan, FOSSE Raphaël, LE GOFF Quentin</small>
-        </div>
-
-        <div class="col">
-          <img src="../../logo-iSEN-Nantes-ingenieur-400.jpg" id="logo" width="160px" height="80px">
-        </div>
-      </div>
-    </div>
-  </footer>
+  <?php require_once('../../footer.php') ?>
 
 </body>
