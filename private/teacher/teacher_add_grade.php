@@ -104,34 +104,63 @@
       <div class="row">
         <form class="col-md-7 offset-md-3" method="post" action="admin_add_user.php">
           <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">ID etudiant</label>
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Mail etudiant</label>
 
             <div class="col-sm-8">
-              <input type="text" class="form-control" name="new_password_validation">
+              <input type="text" class="form-control" name="mail_etudiant">
             </div>
           </div>
 
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">ID devoir</label>
-
+          <div class="mb-3 row" id="class">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Semestre</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" name="new_password_validation">
+              <select class="form-select" name="semester">  
+                <?php
+                  $lessonsList = $user->listLessons();
+                  foreach ($lessonsList as $lesson) {
+                    echo '<option value="'. $lesson.'">'.$lesson['subject'] . '</option>';
+                  }
+                ?>
+              </select>
             </div>
-          </div>
+          </div>  
+
+          <div class="mb-3 row" id="class">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Semestre</label>
+            <div class="col-sm-8">
+              <select class="form-select" name="semester">  
+                <?php
+                  $semestersList = $user->listSemesters();
+                  foreach ($semestersList as $semester) {
+                    echo '<option value="'. $semester.'">'.$semester['date_begin'] .', ' .$semester['date_end'].'</option>';
+                  }
+                ?>
+              </select>
+            </div>
+          </div>   
 
           <div class="mb-3 row">
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Note</label>
 
             <div class="col-sm-8">
-              <input type="number" class="form-control" name="new_password_validation">
+              <input type="number" class="form-control" name="grade">
             </div>
           </div>
 
-          <input class="btn text-bg-danger mt-3 col-md-4 offset-md-3" type="submit" value="Ajouter" name="add_user">
+          <input class="btn text-bg-danger mt-3 col-md-4 offset-md-3" type="submit" value="Ajouter" name="add_grade">
         </form>
       </div>
     </div>
   </main>
+  <?php
+    if(isset($_POST['add_user'])){
+      $mail = $_POST['mail_etudiant'];
+      $date = ($_POST['semester'])['date_begin'];
+      $subject = $_POST['subject_evaluation'];
+      $grade = $_POST['grade'];
+      $user->addGrade($mail, $subject, $date, $grade);
+    }
+  ?>
 
   <?php require_once('../../footer.php') ?>
 

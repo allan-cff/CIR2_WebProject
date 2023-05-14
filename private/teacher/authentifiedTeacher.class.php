@@ -57,6 +57,21 @@
             }
             return $result;
         }
+
+        public function listSemesters(){
+            $sql = $this->database->conn->prepare('SELECT * FROM public.semester;');
+            $sql->execute();
+            return $semestersList = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function addAppreciation($mailStudent, $beginDate, $appreciation){
+            $sql = $this->database->conn->prepare('INSERT INTO public.appreciation (appraisal, semester_id, student_id) VALUES (:appreciation, (SELECT semester_id FROM public.semester WHERE date_begin = :dateBegin), (SELECT student_id FROM public.student where mail = :mailStudent));');
+            $sql->bindParam(':mailStudent', $mailStudent);
+            $sql->bindParam(':dateBegin', $beginDate);
+            $sql->bindParam(':appreciation', $appreciation);
+            $sql->execute();
+            return $sql->rowCount() === 1;
+        }
         // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED STUDENT CAN USE  
         // TODO : check if student is in class for grade addition and listing
     }      

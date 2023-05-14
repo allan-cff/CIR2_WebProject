@@ -102,28 +102,49 @@
   <main>
     <div class="container">
       <div class="row">
-        <form class="col-md-7 offset-md-3" method="post" action="admin_add_user.php">
+        <form class="col-md-7 offset-md-3" method="post" action="teacher_add_appreciation.php">
           <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">ID etudiant</label>
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Mail etudiant</label>
 
             <div class="col-sm-8">
-              <input type="text" class="form-control" name="new_password_validation">
+              <input type="text" class="form-control" name="mail_etudiant">
             </div>
           </div>
-
+          <div class="mb-3 row" id="class">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Semestre</label>
+            <div class="col-sm-8">
+              <select class="form-select" name="add_semester">  
+                <?php
+                  $semestersList = $user->listSemesters();
+                  foreach ($semestersList as $semester) {
+                    echo '<option value="'. $semester.'">'.$semester['date_begin'] .', ' .$semester['date_end'].'</option>';
+                  }
+                ?>
+              </select>
+            </div>
+          </div>    
+          
           <div class="mb-3 row">
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Appréciation</label>
 
             <div class="col-sm-8">
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <textarea class="form-control" id="appreciation" name="appreciation" rows="3"></textarea>
             </div>
           </div>
+          
 
           <input class="btn text-bg-danger mt-3 col-md-4 offset-md-3" type="submit" value="Ajouter" name="add_appreciation">
         </form>
       </div>
     </div>
   </main>
+  <?php
+    if (isset($_POST['add_appreciation'])) {
+      $semester = var_dump($_POST['add_semester']);
+      $date_begin = $semester['date_begin'];
+      $user->addAppreciation($_POST['mail_etudiant'], $date_begin, $_POST['appreciation']);
+    }
+  ?>
 
   <?php require_once('../../footer.php') ?>
 
