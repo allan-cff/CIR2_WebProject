@@ -108,7 +108,7 @@
 
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
-              <a class="dropdown-item" href="../../login.html">Déconnexion
+              <a class="dropdown-item" href="../../disconnect.php">Déconnexion
                 <svg xmlns="http://www.w3.org/2000/svg" width="18%" height="18%" fill="currentColor" class="bi bi-box-arrow-right " viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
                   <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
@@ -125,7 +125,7 @@
   <main>
     <div class="container">
       <div class="row">
-        <form class="col-md-7 offset-md-3" method="post" action="?????.php">
+        <form class="col-md-7 offset-md-3" method="post" action="admin_add_DS.php">
           <div class="input-group mb-3">
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Classe</label>
 
@@ -134,7 +134,7 @@
               <?php
                   $classList = $user->listClasses();
                   foreach($classList as $schoolClass){
-                    echo "<option value=" . serialize($schoolClass) . ">" . $schoolClass->name . "</option>";
+                    echo "<option value=\"" . urlencode(serialize($schoolClass)) . "\">" . $schoolClass->name . "</option>";
                   }
                 ?>
               </select>
@@ -150,7 +150,7 @@
                     $semesterList = $user->listSemesters();
                     foreach($semesterList as $semester){
                       print_r($semester);
-                      echo "<option value=" . serialize($semester) . ">" . $semester['date_begin'] .','. $semester['date_end']  . "</option>";
+                      echo "<option value=\"" . serialize($semester) . "\">" . $semester['date_begin'] .', '. $semester['date_end']  . "</option>";
                     }
                   ?>
             </select>
@@ -165,15 +165,14 @@
                   <?php
                     $lessonsList = $user->listLessons();
                     foreach($lessonsList as $lesson){
-                      echo "<option value=" . serialize($lesson) . ">" . $lesson->subject . "</option>";
-                    }
-                  ?>                ?>
+                      echo "<option value=\"" . serialize($lesson) . "\">" . $lesson->subject . "</option>";                    }
+                  ?>                
             </select>
             </div>
           </div>
 
           <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Intitulé du DS</label>
+            <label for="exampleFormControlInput1" id="noteDS" value="noteDS" class="col-sm-3 col-form-label">Intitulé du DS</label>
 
             <div class="col-sm-8">
               <input type="text" class="form-control" name="new_ds_name">
@@ -228,16 +227,16 @@
     </div>
   </main>
   <?php
-    if(isset($_POST['add_ds']) && isset($_POST['class_add_ds']) && isset($_POST['semester_add_ds']) && isset($_POST['lesson_add_ds']) && isset($_POST['new_ds_name']) && isset($_POST['datetimepicker_add_ds']) && isset($_POST['coef_add_ds'])){
-      $class = unserialize($_POST['class_add_ds']);
-      $semester = unserialize($_POST['semester_add_ds']);
-      $lesson = unserialize($_POST['lesson_add_ds']);
-      $name = $_POST['new_ds_name'];
+    if(isset($_POST['add_ds'])){ //&& isset($_POST['class_add_ds']) && isset($_POST['semester_add_ds']) && isset($_POST['lesson_add_ds']) && isset($_POST['datetimepicker_add_ds_begin']) && isset($_POST['coef_add_ds'])){
+      $class = unserialize(utf8_encode($_POST['class_add_ds']));
+      $semester = unserialize(utf8_encode($_POST['semester_add_ds']));
+      $lesson = unserialize(utf8_encode($_POST['lesson_add_ds']));
       $dateBegin = $_POST['datetimepicker_add_ds_begin'];
       $dateEnd = $_POST['datetimepicker_add_ds_end'];
       $coef = $_POST['coef_add_ds'];
+      $noteDs = $_POST['noteDS'];
 
-      $user->addEvaluation($lesson, $dateBegin, $dateEnd, $coeff, $coef);
+      $user->addEvaluation($lesson, $dateBegin, $dateEnd, $coef, $noteDs);
     }
   ?>
 
