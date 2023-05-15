@@ -79,8 +79,9 @@
           </div>
         </div>
 
-        <h3><?php $myClass = unserialize($_GET["class"]);
-                  echo $myClass->print();
+        <h3><?php 
+          $myLesson = $user->listLessonGrades($_GET["lesson"]);
+            print_r($myLesson);
         ?></h3>
               
         <div class="dropdown-center">

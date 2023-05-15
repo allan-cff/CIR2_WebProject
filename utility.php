@@ -57,7 +57,7 @@
             $this->id = $dbRow['class_id'];
         }
         public function print(){
-            return $this->name . ", " . $this->campus . ", " . $this->cycle . ", " . $this->studyYear;
+            return $this->name . ", " . $this->campus . ", " . $this->cycle . ", " . $this->firstYear . "/" . $this->graduationYear;
         }
         public function getDbRow(){
             return array(              
