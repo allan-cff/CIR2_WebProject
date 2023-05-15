@@ -33,6 +33,9 @@
             }
             return $connected;
         }
+        public function getNewDb(){
+            return new self($this->dbname, $this->host, $this->port, $this->user, $this->password);
+        }
         public function authentify($mail, $password){
             $sql = $this->conn->prepare('SELECT *, EXISTS (SELECT mail FROM public.student WHERE mail = public.user.mail) AS "is_student", EXISTS (SELECT mail FROM public.teacher WHERE mail = public.user.mail) AS "is_teacher", EXISTS (SELECT mail FROM public.admin WHERE mail = public.user.mail) AS "is_admin" FROM public.user LEFT JOIN public.student USING (mail) LEFT JOIN public.class USING (class_id) LEFT JOIN public.cycle USING (cycle_id) LEFT JOIN public.campus USING (campus_id) WHERE mail = :mail;');
             $sql->bindParam(':mail', $mail);

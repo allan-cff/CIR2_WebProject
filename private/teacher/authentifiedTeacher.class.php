@@ -19,10 +19,10 @@
         }        
         public function changeToAdmin(){
             if($this->isAdmin()){
-                $sql = $this->database->conn->prepare('SELECT *, EXISTS (SELECT mail FROM public.teacher WHERE mail = public.user.mail) AS "is_teacher", EXISTS (SELECT mail FROM public.admin WHERE mail = public.user.mail) AS "is_admin" FROM public.user WHERE mail = :mail');
+                $sql = $this->database->conn->prepare('SELECT *, EXISTS (SELECT mail FROM public.teacher WHERE mail = public.user.mail) AS "is_teacher", EXISTS (SELECT mail FROM public.admin WHERE mail = public.user.mail) AS "is_admin" FROM public.user WHERE mail = :mail;');
                 $sql->bindParam(':mail', $this->mail);
                 $sql->execute();
-                return new AuthentifiedAdmin($this->database, $sql->fetch(PDO::FETCH_ASSOC));
+                return new AuthentifiedAdmin($this->database->getNewDb(), $sql->fetch(PDO::FETCH_ASSOC));
             }
         }
         public function addGrade($mailStudent, $lessonId, $evalDate, $grade){

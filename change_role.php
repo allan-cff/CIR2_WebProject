@@ -7,19 +7,30 @@
     require_once(realpath(dirname(__FILE__) . '/private/admin/authentifiedAdmin.class.php'));
 
     $user = unserialize($_SESSION['user']);
+    try {
+        $user->connect();
+    } catch(Exception $e) {
+        echo $e;
+    }
 
     if($user->isAdmin() && get_class($user) === "AuthentifiedTeacher"){
-        
-        $new_user = $user->changeToAdmin();
+        try {
+            $new_user = $user->changeToAdmin();
+        } catch(Exception $e) {
+            echo $e;
+        }
         $_SESSION['user'] = serialize($new_user);
-        //header('Location: private/admin/admin_home.php');
-        //exit;
+        header('Location: private/admin/admin_home.php');
+        exit;
     }
     if($user->isTeacher() && get_class($user) === "AuthentifiedAdmin"){
-
-        $new_user = $user->changeToTeacher();
+        try {
+            $new_user = $user->changeToTeacher();
+        } catch(Exception $e) {
+            echo $e;
+        }
         $_SESSION['user'] = serialize($new_user);
-        //header('Location: private/teacher/teacher_home.php');
-        //exit;
+        header('Location: private/teacher/teacher_home.php');
+        exit;
     }
 ?>
