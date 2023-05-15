@@ -33,7 +33,7 @@
             $sql->bindParam(':lessonId', $lessonId);
             $sql->bindParam(':dateBegin', $dateBegin);
             $sql->execute();
-            $average = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $average = $sql->fetch(PDO::FETCH_ASSOC);
             return $average;
         }
 
@@ -43,7 +43,7 @@
             $sql->bindParam(':lessonId', $lessonId);
             $sql->bindParam(':dateBegin', $dateBegin);
             $sql->execute();
-            $average = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $average = $sql->fetch(PDO::FETCH_ASSOC);
             return $average;
         }
 
@@ -53,7 +53,7 @@
             $sql->bindParam(':lessonId', $lessonId);
             $sql->bindParam(':dateBegin', $dateBegin);
             $sql->execute();
-            $rank = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $rank = $sql->fetch(PDO::FETCH_ASSOC);
             return $rank;
         }
         public function listSemesters(){
