@@ -44,11 +44,6 @@
                 if($user['is_student']){
                     return new AuthentifiedStudent($database, $user);
                 }    
-                if($user['is_teacher'] && $user['is_admin']){
-                    // I DONT KNOW WHAT APPEND HERE
-                    // ASK USER TO CONNECT AS AN ADMIN OR AS A TEACHER
-                    // ADD A BUTTON TO SWITCH BETWEEN TEACHER AND ADMIN SPACES
-                }
                 if($user['is_teacher']){
                     return new AuthentifiedTeacher($database, $user);
                 }

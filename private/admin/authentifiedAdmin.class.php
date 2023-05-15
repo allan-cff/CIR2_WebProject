@@ -8,13 +8,18 @@
 
     class AuthentifiedAdmin extends User {
         private $database;
+        private $is_teacher;
         public function __construct($db, $dbRow){
             parent::__construct($dbRow);
             $this->database = $db;
+            $this->is_teacher = $dbRow["is_teacher"];
         }
         public function connect(){
             return $this->database->connect();
         } 
+        public function isTeacher(){
+            return $this->is_teacher;
+        }
         public function addUser($user, $password){
             if(!is_subclass_of($user, "User")){ // check if $user is instance of class User or child
                 return false;
