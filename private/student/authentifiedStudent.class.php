@@ -28,7 +28,7 @@
         }
 
         public function personalAverageInLesson($subject, $dateBegin){
-            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade JOIN public.student USING(student_id) JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) JOIN public.matter USING(matter_id) WHERE subject = :subject AND mail = :mail AND public.lesson.semester_id = public.semester.semester_id) AS \"average\" FROM public.semester WHERE date_begin = :dateBegin;");
+            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.matter WHERE subject = :subject AND mail = :mail AND public.lesson.semester_id = public.semester.semester_id) AS \"average\" FROM public.semester WHERE date_begin = :dateBegin;");
             $sql->bindParam(':mail', $this->mail);
             $sql->bindParam(':subject', $subject);
             $sql->bindParam(':dateBegin', $dateBegin);
@@ -38,11 +38,8 @@
         }
 
         public function classAverageInLesson($subject, $dateBegin){
-            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) JOIN public.matter USING(matter_id) WHERE subject = :subject AND public.lesson.semester_id = public.semester.semester_id AND class_id = (SELECT class_id FROM public.class WHERE class_name = :class AND study_year = :study_year AND cycle_id = (SELECT cycle_id FROM public.cycle WHERE cycle = :cycle) AND campus_id = (SELECT campus_id FROM public.campus WHERE campus_name = :campus))) AS \"average\" FROM public.semester WHERE date_begin = :dateBegin;");
-            $sql->bindParam(':class', $this->class->name);
-            $sql->bindParam(':study_year', $this->class->studyYear);
-            $sql->bindParam(':cycle', $this->class->cycle);
-            $sql->bindParam(':campus', $this->class->campus);
+            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.matter WHERE subject = :subject AND public.lesson.semester_id = public.semester.semester_id AND class_id = :class_id) AS \"average\" FROM public.semester WHERE date_begin = :dateBegin;");
+            $sql->bindParam(':class_id', $this->class->id);
             $sql->bindParam(':subject', $subject);
             $sql->bindParam(':dateBegin', $dateBegin);
             $sql->execute();
@@ -51,7 +48,7 @@
         }
 
         public function rankInLesson($subject, $dateBegin){
-            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT COUNT(*) + 1 AS \"rank\" FROM public.student s WHERE (SELECT AVG(grade) FROM public.grade g JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) JOIN public.matter USING(matter_id) WHERE subject = :subject AND s.student_id = g.student_id AND public.lesson.semester_id = public.semester.semester_id) > (SELECT AVG(grade) FROM public.grade g JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) JOIN public.matter USING(matter_id) WHERE subject = :subject AND public.lesson.semester_id = public.semester.semester_id AND g.student_id = (SELECT student_id FROM public.student WHERE mail = :mail))) FROM public.semester WHERE date_begin = :dateBegin;");
+            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT COUNT(*) + 1 AS \"rank\" FROM public.student s WHERE (SELECT AVG(grade) FROM public.grade g NATURAL JOIN public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.matter WHERE subject = :subject AND s.mail = g.mail AND public.lesson.semester_id = public.semester.semester_id) > (SELECT AVG(grade) FROM public.grade g JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) JOIN public.matter USING(matter_id) WHERE subject = :subject AND public.lesson.semester_id = public.semester.semester_id AND g.mail = :mail)) FROM public.semester WHERE date_begin = :dateBegin;");
             $sql->bindParam(':subject', $subject);
             $sql->bindParam(':mail', $this->mail);
             $sql->bindParam(':dateBegin', $dateBegin);

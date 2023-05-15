@@ -119,6 +119,7 @@
             $semesterInsert->bindParam(':dateBegin', $dateBegin);
             $semesterInsert->bindParam(':dateEnd', $dateEnd);
             $semesterInsert->bindParam(':name', $name);
+            $semesterInsert->execute();
             return $dateBegin;
         }
         public function deleteSemester($dateBegin){
@@ -128,13 +129,13 @@
             return $sql->rowCount() === 1;
         }
         public function addLesson($subject, $mailTeacher, $classId, $semesterBeginDate){
-            $lessonInsert = $this->database->conn->prepare("INSERT INTO public.lesson (matter_id, class_id, teacher, semester_id) VALUES((SELECT matter_id FROM public.matter WHERE subject = :subject),:classId, :mailTeacher, (SELECT semester_id FROM public.semester WHERE date_begin = :semesterBeginDate));");
+            $lessonInsert = $this->database->conn->prepare("INSERT INTO public.lesson (matter_id, class_id, teacher, semester_id) VALUES((SELECT matter_id FROM public.matter WHERE subject = :subject),:classId, :mailTeacher, (SELECT semester_id FROM public.semester WHERE date_begin = :semesterBeginDate)) RETURNING lesson_id;");
             $lessonInsert->bindParam(':subject', $subject);
             $lessonInsert->bindParam(':mailTeacher', $mailTeacher);
             $lessonInsert->bindParam(':classId', $classId);
             $lessonInsert->bindParam(':semesterBeginDate', $semesterBeginDate);
             $lessonInsert->execute();
-            return $lessonInsert->lastInsertId();
+            return $lessonInsert->fetch(PDO::FETCH_ASSOC)["lesson_id"];
         }
         public function listLessons(){
             $sql = $this->database->conn->prepare('SELECT *, EXISTS (SELECT mail FROM public.admin WHERE mail = teacher) AS "is_admin" FROM public.lesson JOIN public.matter USING (matter_id) JOIN public.semester USING (semester_id) JOIN public.class USING (class_id) JOIN public.cycle USING (cycle_id) JOIN public.campus USING (campus_id) JOIN public.teacher ON teacher = mail JOIN public.user USING (mail);');
@@ -156,26 +157,26 @@
             if($isOverlapping["exists"]){
                 throw new Exception('Overlapping evaluation'); //STOPS execution here : we don't insert an overlapping Evaluation in the DB
             }*/
-            $evaluationInsert = $this->database->conn->prepare("INSERT INTO public.evaluation (coeff, begin_datetime, end_datetime, description, lesson_id) VALUES (:coeff, :beginDate, :endDate, :description, :lessonId);"); 
+            $evaluationInsert = $this->database->conn->prepare("INSERT INTO public.evaluation (coeff, begin_datetime, end_datetime, description, lesson_id) VALUES (:coeff, :beginDate, :endDate, :description, :lessonId) RETURNING eval_id;"); 
             $evaluationInsert->bindParam(':coeff', $coeff);
             $evaluationInsert->bindParam(':beginDate', $dateBegin);
             $evaluationInsert->bindParam(':endDate', $dateEnd);
             $evaluationInsert->bindParam(':description', $description);
             $evaluationInsert->bindParam(':lessonId', $lessonId);
             $evaluationInsert->execute();
-            return $evaluationInsert->lastInsertId();
+            return $evaluationInsert->fetch(PDO::FETCH_ASSOC)["eval_id"];
         }
         public function addCycle($cycle){
             $sql = $this->database->conn->prepare('INSERT INTO public.cycle (cycle) VALUES (:cycle);');
             $sql->bindParam(':cycle', $cycle);
             $sql->execute();
-            return $sql->lastInsertId();
+            return $cycle;
         }
         public function addMatter($matter){
             $sql = $this->database->conn->prepare('INSERT INTO public.matter (subject) VALUES (:matter);');
             $sql->bindParam(':matter', $matter);
             $sql->execute();
-            return $sql->lastInsertId();
+            return $matter;
         }
         public function deleteClass($classId){
             $sql = $this->database->conn->prepare('DELETE FROM public.class WHERE class_id = :classId');
@@ -184,22 +185,22 @@
             return $sql->rowCount() === 1;
         }
         public function addClass($className, $campusName, $cycle, $firstYear, $graduationYear){
-            $sql = $this->database->conn->prepare('INSERT INTO public.class (class_name, campus_id, cycle_id, first_year, graduation_year) VALUES (:className, (SELECT campus_id FROM public.campus WHERE campus_name = :campusName), (SELECT cycle_id FROM public.cycle WHERE cycle = :cycle), :firstYear, :graduationYear);');
+            $sql = $this->database->conn->prepare('INSERT INTO public.class (class_name, campus_id, cycle_id, first_year, graduation_year) VALUES (:className, (SELECT campus_id FROM public.campus WHERE campus_name = :campusName), (SELECT cycle_id FROM public.cycle WHERE cycle = :cycle), :firstYear, :graduationYear) RETURNING class_id;');
             $sql->bindParam(':className', $className);
             $sql->bindParam(':campusName', $campusName);
             $sql->bindParam(':cycle', $cycle);
             $sql->bindParam(':firstYear', $firstYear, PDO::PARAM_INT);
             $sql->bindParam(':graduationYear', $graduationYear, PDO::PARAM_INT);
             $sql->execute();
-            return $sql->lastInsertId();
+            return $sql->fetch(PDO::FETCH_ASSOC)["class_id"];
         }
         public function addAppreciation($mailStudent, $semesterBeginDate, $appreciation){
-            $sql = $this->database->conn->prepare('INSERT INTO public.appreciation (appraisal, semester_id, student_id) VALUES (:appreciation, (SELECT semester_id FROM public.semester WHERE date_begin = :semester), (SELECT student_id FROM public.student where mail = :mailStudent));');
+            $sql = $this->database->conn->prepare('INSERT INTO public.appreciation (appraisal, semester_id, student_id) VALUES (:appreciation, (SELECT semester_id FROM public.semester WHERE date_begin = :semester), (SELECT student_id FROM public.student where mail = :mailStudent)) RETURNING appreciation_id;');
             $sql->bindParam(':mailStudent', $mailStudent);
             $sql->bindParam(':semester', $semesterBeginDate);
             $sql->bindParam(':appreciation', $appreciation);
             $sql->execute();
-            return $sql->lastInsertId();
+            return $sql->fetch(PDO::FETCH_ASSOC)["appreciation_id"];
         }
         public function listClasses(){
             $sql = $this->database->conn->prepare('SELECT * FROM public.class JOIN public.campus using (campus_id) JOIN public.cycle USING (cycle_id);');

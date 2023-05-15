@@ -16,7 +16,7 @@
             return $this->database->connect();
         }
         public function addGrade($mailStudent, $lessonId, $evalDate, $grade){
-            $gradeInsert = $this->database->conn->prepare("INSERT INTO public.grade (student_id, grade, eval_id) VALUES((SELECT student_id FROM public.student WHERE mail = :mailStudent), :grade, (SELECT eval_id FROM public.evaluation WHERE lesson_id = :lessonId AND begin_datetime = :startDate));");
+            $gradeInsert = $this->database->conn->prepare("INSERT INTO public.grade (mail, grade, eval_id) VALUES(:mailStudent, :grade, (SELECT eval_id FROM public.evaluation WHERE lesson_id = :lessonId AND begin_datetime = :startDate));");
             $gradeInsert->bindParam(':mailStudent', $mailStudent);
             $gradeInsert->bindParam(':grade', $grade);
             $gradeInsert->bindParam(':startDate', $evalDate);
