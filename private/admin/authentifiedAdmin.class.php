@@ -178,6 +178,14 @@
             $sql->execute();
             return $matter;
         }
+        public function addCampus($name, $latitude, $longitude){
+            $sql = $this->database->conn->prepare('INSERT INTO public.campus (campus_name, latitude, longitude) VALUES (:name, :latitude, :longitude);');
+            $sql->bindParam(':name', $name);
+            $sql->bindParam(':latitude', $latitude);
+            $sql->bindParam(':longitude', $longitude);
+            $sql->execute();
+            return $matter;
+        }
         public function deleteClass($classId){
             $sql = $this->database->conn->prepare('DELETE FROM public.class WHERE class_id = :classId');
             $sql->bindParam(':classId', $classId);
