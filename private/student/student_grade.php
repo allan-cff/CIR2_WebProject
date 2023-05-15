@@ -108,7 +108,7 @@
       <?php
       $semesters = $user->listSemesters();
       foreach($semesters as $semester){
-        echo '<li><a class="dropdown-item" href="?date_begin='. $semester["date_begin"]. '">'. $semester['date_begin'] .'</a></li>';
+        echo '<li><a class="dropdown-item" href="?date_begin='. $semester["date_begin"]. '">'. $semester['date_begin']. ', '. $semester['date_end'] .'</a></li>';
       }
       ?>
     </ul>
@@ -134,5 +134,4 @@
 
   
   <?php require_once('../../footer.php') ?>
-9
 </body>

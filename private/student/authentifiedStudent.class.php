@@ -56,6 +56,10 @@
             $rank = $sql->fetchAll(PDO::FETCH_ASSOC);
             return $rank;
         }
-        // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED STUDENT CAN USE    
+        public function listSemesters(){
+            $sql = $this->database->conn->prepare('SELECT * FROM public.semester;');
+            $sql->execute();
+            return $semestersList = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }        // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED STUDENT CAN USE    
     }
 ?>
