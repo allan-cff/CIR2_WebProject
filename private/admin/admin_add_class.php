@@ -170,6 +170,39 @@
   </header>
 
 
+  <?php
+    if(isset($_POST['add_class']) && isset($_POST['new_name'])&& isset($_POST['new_cycle'])&& isset($_POST['new_campus'])&& isset($_POST['datepicker_add_class_begin'])&& isset($_POST['datepicker_add_class_end'])){
+      try {
+        $dateBegin = DateTimeImmutable::createFromFormat('m/d/Y', $_POST['datepicker_add_class_begin']);
+        $dateEnd = DateTimeImmutable::createFromFormat('m/d/Y', $_POST['datepicker_add_class_end']);
+        $user->addClass($_POST['new_name'],$_POST['new_campus'],$_POST['new_cycle'], $dateBegin->format('Y'), $dateEnd->format('Y'));
+        echo '
+        <div class="container">
+          <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </svg>  
+            &nbsp;Classe ajoutée avec succès !
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+        ';
+      } catch(Exception $e) {
+        echo '
+        <div class="container">
+          <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+            </svg>
+              &nbsp;Erreur durant l\'ajout de la classe !
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>  
+        ';
+      }
+    }
+  ?>
+
   <main>
     <div class="container">
       <div class="row">
@@ -198,14 +231,14 @@
           </div>
 
           <div class="mb-3 row" id="class">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Classe</label>
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Campus</label>
 
             <div class="col-sm-8">
-              <select class="form-select" name="new_class">
+              <select class="form-select" name="new_campus">
                 <?php
-                  $classList = $user->listClasses();
-                  foreach($classList as $schoolClass){
-                    echo "<option value=" . $schoolClass->id . ">" . $schoolClass->print() . "</option>";
+                  $campusList = $user->listCampus();
+                  foreach($campusList as $campus){
+                    echo "<option value=" . $campus['campus_name'] . ">" . $campus['campus_name'] . "</option>";
                   }
                 ?>
               </select>
@@ -216,10 +249,10 @@
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Date de début</label>
 
             <div class="col-sm-8">
-              <input name="datetimepicker_add_ds_begin" id="datetimepicker_add_class_begin"/>
+              <input name="datepicker_add_class_begin" id="datepicker_add_class_begin"/>
 
               <script>
-                $('#datetimepicker_add_ds_begin').datetimepicker({
+                $('#datepicker_add_class_begin').datepicker({
                   footer: true, 
                   modal: true,
                   uiLibrary: 'bootstrap5'
@@ -231,10 +264,10 @@
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Date de fin</label>
 
             <div class="col-sm-8">
-              <input name="datetimepicker_add_ds_end" id="datetimepicker_addclass_end"/>
+              <input name="datepicker_add_class_end" id="datepicker_add_class_end"/>
 
               <script>
-                $('#datetimepicker_add_ds_end').datetimepicker({
+                $('#datepicker_add_class_end').datepicker({
                   footer: true, 
                   modal: true,
                   uiLibrary: 'bootstrap5'
@@ -243,7 +276,7 @@
             </div>
           </div>
 
-          <input class="btn text-bg-danger mt-3 col-md-4 offset-md-3" type="submit" value="Modifier" name="addclass">
+          <input class="btn text-bg-danger mt-3 col-md-4 offset-md-3" type="submit" value="Modifier" name="add_class">
         </form>
       </div>
     </div>

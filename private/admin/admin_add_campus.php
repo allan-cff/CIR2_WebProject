@@ -165,8 +165,9 @@
     </nav>
   </header>
 
+
   <?php
-    if(isset($_POST['new_campus']) && isset($_POST['city'])&& isset($_POST['latitude'])&& isset($_POST['longitude'])){
+    if(isset($_POST['add_campus']) && isset($_POST['city'])&& isset($_POST['latitude'])&& isset($_POST['longitude'])){
       try {
         $user->addCampus($_POST['city'],$_POST['latitude'],$_POST['longitude']);
         echo '
@@ -196,7 +197,6 @@
     }
   ?>
 
-
   <main>
   <div class="container">
       <div class="row">
@@ -212,22 +212,23 @@
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Latitude</label>
 
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="" name="latitude">
+              <input type="number" class="form-control" placeholder="" name="latitude">
             </div>
           </div>
           <div class="mb-3 row">
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Longitude</label>
 
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="" name="longitude">
+              <input type="number" class="form-control" placeholder="" name="longitude">
             </div>
           </div>
 
-          <input class="btn text-bg-danger mt-3 col-md-4 offset-md-3" type="submit" value="Ajouter" name="new_campus">
+          <input class="btn text-bg-danger mt-3 col-md-4 offset-md-3" type="submit" value="Ajouter" name="add_campus">
         </form>
       </div>
     </div>
   </main>
+
 
   <?php require_once('../../footer.php') ?>
 
