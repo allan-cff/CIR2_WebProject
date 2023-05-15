@@ -102,7 +102,7 @@
   <?php
     if(isset($_POST['add_grade']) && isset($_POST['matter']) && isset($_POST['mail_etudiant']) && isset($_POST['semester']) && isset($_POST['grade'])){
       try {
-        $user->addGrade($_POST['mail_etudiant'], $_POST['matter'], $_POST['semester'], $_POST['grade']);
+        $user->setGrade($_POST['mail_etudiant'], $_POST['eval'], $_POST['grade']);
         echo '
         <div class="container">
           <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
@@ -121,7 +121,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
             </svg>
-              &nbsp;Erreur durant l\'ajout de la note
+              &nbsp;Erreur durant l\'ajout de la note'.$e.'
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
         </div>  
@@ -132,38 +132,55 @@
 
   <main>
     <div class="container">
+      <div class="d-flex justify-content-center mx-auto mb-3">
+        <div class="btn-group">
+          <button type="button" id="buttonLesson" class="btn btn-danger dropdown-toggle mx-auto" data-bs-toggle="dropdown" aria-expanded="false">
+            <?php if(!isset($_GET['lesson'])){
+              echo 'Sélectionnez un cours dans lequel renseigner les notes';
+            } else {
+              $lessons = $user->listLessons();
+              foreach($lessons as $l){
+                if($l["lesson"]->id == $_GET['lesson']){
+                  echo $l["lesson"]->subject . ' ' . $l["lesson"]->class->name . ' ' . $l["lesson"]->start . '-' . $l["lesson"]->end;
+                }
+              }
+            }
+            ?>
+          </button>
+          <ul class="dropdown-menu">
+            <?php
+              $lessons = $user->listLessons();
+              foreach($lessons as $l){
+                echo '<li><a class="dropdown-item" href="?lesson='. $l["lesson"]->id. '">'. $l["lesson"]->subject . ' ' . $l["lesson"]->class->name . ' ' . $l["lesson"]->start . '-' . $l["lesson"]->end .'</a></li>';
+              }
+            ?>
+          </ul>
+        </div>
+      </div>
       <div class="row">
-        <form class="col-md-7 offset-md-3" method="post" action="teacher_add_grade.php">
+        <form class="col-md-7 offset-md-3" method="post" action="teacher_add_grade.php<?php
+        if(isset($_GET['lesson'])){
+          echo '?lesson='.$_GET['lesson'];
+        }
+          ?>">
           <div class="mb-3 row">
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Mail etudiant</label>
-
             <div class="col-sm-8">
-              <input type="text" class="form-control" name="mail_etudiant">
+              <input type="text" class="form-control" name="mail_etudiant" <?php
+                if(isset($_GET["student"])){
+                  echo 'value=' . $_GET["student"];
+                }
+              ?>>
             </div>
-          </div>
+          </div> 
 
           <div class="mb-3 row" id="class">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Matière</label>
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Horaires du DS</label>
             <div class="col-sm-8">
-              <select class="form-select" name="matter">  
+              <select class="form-select" name="eval">  
                 <?php
-                  $mattersList = $user->listMatters();
-                  foreach ($mattersList as $matter) {
-                    echo '<option value="'. $matter_id.'">'.$matter . '</option>';
-                  }
-                ?>
-              </select>
-            </div>
-          </div>  
-
-          <div class="mb-3 row" id="class">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Semestre</label>
-            <div class="col-sm-8">
-              <select class="form-select" name="semester">  
-                <?php
-                  $semestersList = $user->listSemesters();
-                  foreach ($semestersList as $semester) {
-                    echo '<option value="'. $semester.'">'.$semester['date_begin'] .', ' .$semester['date_end'].'</option>';
+                  foreach($l["evaluations"] as $evaluation){
+                    echo '<option value="'. $evaluation['eval_id'].'">'.$evaluation['begin_datetime'] .' - ' .$evaluation['end_datetime'].'</option>';
                   }
                 ?>
               </select>

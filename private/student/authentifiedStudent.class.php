@@ -61,6 +61,13 @@
             $sql->execute();
             return $semestersList = $sql->fetchAll(PDO::FETCH_ASSOC);
         }
+        public function getAppreciation($semesterBegin){
+            $sql = $this->database->conn->prepare("SELECT appraisal FROM public.appreciation NATURAL JOIN public.user NATURAL JOIN public.student NATURAL JOIN public.semester WHERE date_begin = :semesterBegin AND mail = :mail;");
+            $sql->bindParam(':semesterBegin', $semesterBegin);
+            $sql->bindParam(':mail', $this->mail);
+            $sql->execute();
+            return $sql->fetch(PDO::FETCH_ASSOC)["appraisal"];
+        }
         // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED STUDENT CAN USE    
     }
 ?>

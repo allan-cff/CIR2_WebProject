@@ -102,7 +102,7 @@
   <?php
     if (isset($_POST['add_appreciation'])) {
       try {
-        $user->addAppreciation($_POST['mail_etudiant'], $_POST['add_semester'], $_POST['appreciation']);
+        $user->setAppreciation($_POST['mail_etudiant'], $_POST['add_semester'], $_POST['appreciation']);
         echo '
         <div class="container">
           <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
@@ -138,7 +138,11 @@
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Mail etudiant</label>
 
             <div class="col-sm-8">
-              <input type="text" class="form-control" name="mail_etudiant">
+              <input type="text" class="form-control" name="mail_etudiant" <?php
+                  if(isset($_GET["student"])){
+                    echo 'value=' . $_GET["student"];
+                  }
+                ?>>
             </div>
           </div>
           <div class="mb-3 row" id="class">
@@ -148,7 +152,11 @@
                 <?php
                   $semestersList = $user->listSemesters();
                   foreach ($semestersList as $semester) {
-                    echo '<option value="'. $semester['date_begin'].'">'.$semester['date_begin'] .', ' .$semester['date_end'].'</option>';
+                    if(isset($_GET["semester_begin"]) && $_GET["semester_begin"] === $semester['date_begin']){
+                      echo '<option selected value="'. $semester['date_begin'].'">'.$semester['date_begin'] .', ' .$semester['date_end'].'</option>';
+                    } else {
+                      echo '<option value="'. $semester['date_begin'].'">'.$semester['date_begin'] .', ' .$semester['date_end'].'</option>';
+                    }
                   }
                 ?>
               </select>

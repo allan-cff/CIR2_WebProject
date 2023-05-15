@@ -80,9 +80,41 @@
 
   
 
-<mail>
-  <div id="student_table_grade justify-content-center mx-auto">
-
+<main>
+  <div class="container">
+    <div class="d-flex justify-content-center mx-auto mb-3">
+      <div class="btn-group">
+        <button type="button" id="buttonSemester" class="btn btn-danger dropdown-toggle mx-auto" data-bs-toggle="dropdown" aria-expanded="false">
+          <?php if(!isset($_GET['date_begin'])){
+            echo 'Sélectionnez un semestre pour y voir vos notes';
+          } else {
+            $semesters = $user->listSemesters();
+            foreach($semesters as $semester){
+              if($semester["date_begin"] == $_GET['date_begin']){
+                echo $semester['semester_name'] . ' : ' . $semester['date_begin']. ', '. $semester['date_end'];
+              }
+            }
+          }
+          ?>
+        </button>
+        <ul class="dropdown-menu">
+          <?php
+          $semesters = $user->listSemesters();
+          foreach($semesters as $semester){
+            echo '<li><a class="dropdown-item" href="?date_begin='. $semester["date_begin"]. '">'. $semester['semester_name'] . ' : ' . $semester['date_begin']. ', '. $semester['date_end'] .'</a></li>';
+          }
+          ?>
+        </ul>
+      </div>
+    </div>
+    <?php
+      if(isset($_GET['date_begin'])){
+        $appreciation = $user->getAppreciation($_GET['date_begin']);
+        if(isset($appreciation)){
+          echo '<h5>Appréciation : </h5><p>' . $appreciation . '</p>';
+        }
+      }  
+    ?>
     <table class="table table-striped">
 
       <?php
@@ -99,43 +131,28 @@
         }
       ?>
 
-<div class="d-flex justify-content-center mx-auto">
-  <div class="btn-group<?php if(isset($_GET['date_begin'])) { echo ' d-none'; } ?>">
-    <button type="button" id="buttonSemester" class="btn btn-danger dropdown-toggle mx-auto" data-bs-toggle="dropdown" aria-expanded="false">
-      Sélectionnez un semestre pour y voir vos notes
-    </button>
-    <ul class="dropdown-menu">
-      <?php
-      $semesters = $user->listSemesters();
-      foreach($semesters as $semester){
-        echo '<li><a class="dropdown-item" href="?date_begin='. $semester["date_begin"]. '">'. $semester['date_begin']. ', '. $semester['date_end'] .'</a></li>';
-      }
-      ?>
-    </ul>
-  </div>
-</div>
-
-<tbody>
-  <?php
-  if(isset($_GET['date_begin'])){
-    $lessons = $user->listLessons();
-    foreach($lessons as $lesson){
-      echo '<tr>
-        <td>'. $lesson->subject .'</td>
-        <td>'. $user->personalAverageInLesson($lesson->id, $_GET['date_begin'])['average'] .'</td>
-        <td>'. $user->classAverageInLesson($lesson->id, $_GET['date_begin'])['average'] .'</td>
-        <td>'. $user->rankInLesson($lesson->id, $_GET['date_begin'])['rank'] .'</td>';
-        if($user->personalAverageInLesson($lesson->id, $_GET['date_begin']) < 10){
-          echo '<td class="bg-danger text-white"> Rattrapages </td>';
-        } else {
-          echo '<td> Pas de rattrapages </td>';
+      <tbody>
+        <?php
+        if(isset($_GET['date_begin'])){
+          $lessons = $user->listLessons();
+          foreach($lessons as $lesson){
+            echo '<tr>
+              <td>'. $lesson->subject .'</td>
+              <td>'. round($user->personalAverageInLesson($lesson->id, $_GET['date_begin'])['average'],2) .'</td>
+              <td>'. round($user->classAverageInLesson($lesson->id, $_GET['date_begin'])['average'],2) .'</td>
+              <td>'. $user->rankInLesson($lesson->id, $_GET['date_begin'])['rank'] .'</td>';
+              if($user->personalAverageInLesson($lesson->id, $_GET['date_begin']) < 10){
+                echo '<td class="bg-danger text-white"> Rattrapages </td>';
+              } else {
+                echo '<td> Pas de rattrapages </td>';
+              }
+            echo '</tr>';
+          }
         }
-      echo '</tr>';
-    }
-  }
-  ?>
-</tbody>
-</table>
+        ?>
+      </tbody>
+    </table>
+  </div>  
 </main>
   <?php require_once('../../footer.php') ?>
 </body>
