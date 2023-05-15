@@ -60,6 +60,7 @@
             $sql = $this->database->conn->prepare('SELECT * FROM public.semester;');
             $sql->execute();
             return $semestersList = $sql->fetchAll(PDO::FETCH_ASSOC);
-        }        // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED STUDENT CAN USE    
+        }
+        // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED STUDENT CAN USE    
     }
 ?>

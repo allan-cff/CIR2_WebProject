@@ -170,48 +170,9 @@
 
   <main>
     <div class="container">
-      <div class="row align-items-end">
-        <!-- top-left card -->
-        <div class="card col-md-4 offset-md-1 p-5 rounded-5" name="top_left_card" method="post">
-          
-          
-          
-        </div>
-
-        <div class="col-2  p-5 rounded-5" method="post"></div>
-
-        <!-- top-right card -->
-        <div class="card col-4 p-5 rounded-5" name="top_right_card" method="post">
-          
-          
-          
-        </div>
-      </div>
-
-      <div class="row align-items-center">
-        <div class="col-4 p-5 rounded-5" method="post"></div>
-      </div>
-      <div class="row align-items-center">
-        <div class="col-4 p-5 rounded-5" method="post"></div>
-      </div>
-
-      <div class="row align-items-end">
-        <!-- bottom-left card -->
-        <div class="card col-md-4 offset-md-1 p-5 rounded-5" name="bottom_left_card" method="post">
-          
-          
-          
-        </div>
-
-        <div class="col-2  p-5 rounded-5" method="post"></div>
-
-        <!-- bottom-right card -->
-        <div class="card col-4 p-5 rounded-5" name="bottom_right_card" method="post">
-            
-          
-          
-        </div>
-      </div>
+      <div class="mb-3 row text-center">
+        <h1>Bienvenue sur votre espace administrateur.</h1>
+      </div>  
     </div>
   </main>
 
