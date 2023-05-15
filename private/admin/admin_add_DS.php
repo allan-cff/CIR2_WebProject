@@ -172,11 +172,11 @@
     if(isset($_POST['add_ds']) && isset($_POST['class_add_ds']) && isset($_POST['semester_add_ds']) && isset($_POST['lesson_add_ds']) && isset($_POST['datetimepicker_add_ds_begin']) && isset($_POST['coef_add_ds'])){
       $lessonId = $_POST['lesson_add_ds'];
       $name = $_POST['new_ds_name'];
-      $dateBegin = implode(' ', array_reverse(explode(' ', $_POST['datetimepicker_add_ds_begin']))) . ":00";
-      $dateEnd = implode(' ', array_reverse(explode(' ', $_POST['datetimepicker_add_ds_end']))) . ":00";
+      $dateBegin = DateTimeImmutable::createFromFormat('H:i m/d/Y', $_POST['datetimepicker_add_ds_begin']);
+      $dateEnd = DateTimeImmutable::createFromFormat('H:i m/d/Y', $_POST['datetimepicker_add_ds_end']);
       $coef = $_POST['coef_add_ds'];
       try {
-        $user->addEvaluation($lessonId, $dateBegin, $dateEnd, $coef, $name);
+        $user->addEvaluation($lessonId, $dateBegin->format('Y-m-d H:i:s'), $dateEnd->format('Y-m-d H:i:s'), $coef, $name);
         echo '
         <div class="container">
           <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
