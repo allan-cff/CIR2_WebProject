@@ -48,7 +48,11 @@
             if(!(get_class($teacher) === "Teacher")){
                 return false;
             }
-            $this->addUser($teacher, $password);
+            try {
+                $this->addUser($teacher, $password);
+            } catch(Exception $e){
+                //USER ALREADY EXISTS
+            }
             $teacherInsert = $this->database->conn->prepare('INSERT INTO teacher (mail) VALUES (:mail);');
             $teacherInsert->bindParam(':mail', $teacher->mail);
             $teacherInsert->execute();
@@ -58,7 +62,11 @@
             if(!is_subclass_of($user, "User")){ // check if $user is instance of class User or child
                 return false;
             }
-            $this->addUser($user, $password);
+            try {
+                $this->addUser($teacher, $password);
+            } catch(Exception $e){
+                //USER ALREADY EXISTS
+            }
             $adminInsert = $this->database->conn->prepare('INSERT INTO public.admin (mail) VALUES (:mail);');
             $adminInsert->bindParam(':mail', $admin->mail);
             $adminInsert->execute();
