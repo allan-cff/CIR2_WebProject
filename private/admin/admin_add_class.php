@@ -173,7 +173,7 @@
   <main>
     <div class="container">
       <div class="row">
-        <form class="col-md-7 offset-md-3" method="post" action="admin_add_user.php">
+        <form class="col-md-7 offset-md-3" method="post" action="admin_add_class.php">
           <div class="mb-3 row">
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Nom</label>
 

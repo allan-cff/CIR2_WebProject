@@ -153,6 +153,8 @@
             echo "Should have 3 not null and an average of 12.33 for the first eval<br>";
             echo "Should have 3 not null and an average of 12 for the second eval<br>";
             print_r($me->listLessons());
+            echo "<br><br>";
+            print_r($me->listLessonGrades($cir2FHSLessonId));
         }
         $me = $database->authentify("lara.clette@messagerie.fr", "passwordRandomPasHaché"); 
         $me->connect();

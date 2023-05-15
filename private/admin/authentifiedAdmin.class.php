@@ -184,7 +184,7 @@
             $sql->bindParam(':latitude', $latitude);
             $sql->bindParam(':longitude', $longitude);
             $sql->execute();
-            return $matter;
+            return $name;
         }
         public function deleteClass($classId){
             $sql = $this->database->conn->prepare('DELETE FROM public.class WHERE class_id = :classId');
