@@ -28,7 +28,7 @@
         }
 
         public function personalAverageInLesson($lessonId, $dateBegin){
-            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson WHERE lesson_id = :lessonId AND mail = :mail AND public.lesson.semester_id = public.semester.semester_id) AS \"average\" FROM public.semester WHERE date_begin = :dateBegin;");
+            $sql = $this->database->conn->prepare("SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.semester WHERE lesson_id = :lessonId AND mail = :mail AND date_begin = :dateBegin;");
             $sql->bindParam(':mail', $this->mail);
             $sql->bindParam(':lessonId', $lessonId);
             $sql->bindParam(':dateBegin', $dateBegin);
@@ -38,7 +38,7 @@
         }
 
         public function classAverageInLesson($lessonId, $dateBegin){
-            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson WHERE lesson_id = :lessonId AND public.lesson.semester_id = public.semester.semester_id AND class_id = :class_id) AS \"average\" FROM public.semester WHERE date_begin = :dateBegin;");
+            $sql = $this->database->conn->prepare("SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.semester WHERE lesson_id = :lessonId AND class_id = :class_id AND date_begin = :dateBegin;");
             $sql->bindParam(':class_id', $this->class->id);
             $sql->bindParam(':lessonId', $lessonId);
             $sql->bindParam(':dateBegin', $dateBegin);
@@ -48,7 +48,7 @@
         }
 
         public function rankInLesson($lessonId, $dateBegin){
-            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT COUNT(*) + 1 AS \"rank\" FROM public.student s WHERE (SELECT AVG(grade) FROM public.grade g NATURAL JOIN public.evaluation NATURAL JOIN public.lesson WHERE lesson_id = :lessonId AND s.mail = g.mail AND public.lesson.semester_id = public.semester.semester_id) > (SELECT AVG(grade) FROM public.grade g JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) lesson_id = :lessonId AND public.lesson.semester_id = public.semester.semester_id AND g.mail = :mail)) FROM public.semester WHERE date_begin = :dateBegin;");
+            $sql = $this->database->conn->prepare("SELECT (SELECT COUNT(*) + 1 AS rank FROM public.student s WHERE (SELECT AVG(grade) FROM public.grade g NATURAL JOIN public.evaluation NATURAL JOIN public.lesson WHERE lesson_id = :lessonId AND s.mail = g.mail AND public.lesson.semester_id = public.semester.semester_id) > (SELECT AVG(grade) FROM public.grade g JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) WHERE lesson_id = :lessonId AND public.lesson.semester_id = public.semester.semester_id AND g.mail = :mail)) FROM public.semester WHERE date_begin = :dateBegin;");
             $sql->bindParam(':mail', $this->mail);
             $sql->bindParam(':lessonId', $lessonId);
             $sql->bindParam(':dateBegin', $dateBegin);
