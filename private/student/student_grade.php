@@ -80,7 +80,7 @@
 
   
 
-
+<mail>
   <div id="student_table_grade">
 
     <table class="table table-striped">
@@ -122,16 +122,7 @@
   }
   ?>
 </tbody>
-
-<script>
-  // Ajouter un gestionnaire d'événement pour le bouton
-  document.getElementById("buttonSemester").addEventListener('change', showClass);
-
-  function showClass() {
-    document.getElementById("class").classList.toggle('d-none');
-  }
-</script>
-
-  
+</table>
+</main>
   <?php require_once('../../footer.php') ?>
 </body>

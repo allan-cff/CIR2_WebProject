@@ -145,7 +145,7 @@
           </div>
         </div>
 
-        <h3>ACCEUIL ADMINISTRATEUR</h3>
+        <h3>ACCUEIL ADMINISTRATEUR</h3>
               
         <div class="dropdown-center">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $user->getFullName(); ?></a>
