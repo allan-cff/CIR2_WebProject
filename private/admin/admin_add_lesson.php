@@ -127,7 +127,12 @@
 
             <div class="col-sm-8">
               <select class="form-select" name="class_add_lesson">
-                <option value="X">Example</option>
+                <?php
+                  $classes = $user->listClasses();
+                  foreach ($classes as $classe) {
+                    echo '<option value="'.$classe->id.'">'.$classe->name.'</option>';
+                  }
+                ?>
               </select>
             </div>
           </div>
@@ -137,7 +142,12 @@
 
             <div class="col-sm-8">
               <select class="form-select" name="semester_add_lesson">
-                <option value="X">Example</option>
+                <?php
+                  $semesters = $user->listSemesters();
+                  foreach ($semesters as $semester) {
+                    echo '<option value="'.$semester['date_begin'].'">'.$semester['date_begin'].', '. $semester['date_end']. '</option>';
+                  }
+                ?>
               </select>
             </div>
           </div>
@@ -147,16 +157,28 @@
 
             <div class="col-sm-8">
               <select class="form-select" name="teacher_add_lesson">
-                <option value="X">Example</option>
+                <?php
+                  $teachers = $user->listTeachers();
+                  foreach ($teachers as $teacher) {
+                    echo '<option value="'.$teacher->id.'">'.$teacher->id.' '.$teacher->name.'</option>';
+                  }
+                ?>
               </select>
             </div>
           </div>
 
           <div class="input-group mb-3">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Intitulé du cours</label>
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Matière</label>
 
             <div class="col-sm-8">
-              <input type="text" class="form-control" name="name_add_lesson">
+              <select class="form-select" name="matter_add_lesson">
+                <?php
+                  $matterList = $user->listMatters();
+                  foreach($matterList as $subject){
+                    echo '<option value="'.$subject.'">'.$subject.'</option>';
+                  }
+                ?>
+              </select>
             </div>
           </div>
 
