@@ -27,30 +27,30 @@
             return array_map($toLessonClass, $lessonsList);
         }
 
-        public function personalAverageInLesson($subject, $dateBegin){
-            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.matter WHERE subject = :subject AND mail = :mail AND public.lesson.semester_id = public.semester.semester_id) AS \"average\" FROM public.semester WHERE date_begin = :dateBegin;");
+        public function personalAverageInLesson($lessonId, $dateBegin){
+            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson WHERE lesson_id = :lessonId AND mail = :mail AND public.lesson.semester_id = public.semester.semester_id) AS \"average\" FROM public.semester WHERE date_begin = :dateBegin;");
             $sql->bindParam(':mail', $this->mail);
-            $sql->bindParam(':subject', $subject);
+            $sql->bindParam(':lessonId', $lessonId);
             $sql->bindParam(':dateBegin', $dateBegin);
             $sql->execute();
             $average = $sql->fetchAll(PDO::FETCH_ASSOC);
             return $average;
         }
 
-        public function classAverageInLesson($subject, $dateBegin){
-            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.matter WHERE subject = :subject AND public.lesson.semester_id = public.semester.semester_id AND class_id = :class_id) AS \"average\" FROM public.semester WHERE date_begin = :dateBegin;");
+        public function classAverageInLesson($lessonId, $dateBegin){
+            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson WHERE lesson_id = :lessonId AND public.lesson.semester_id = public.semester.semester_id AND class_id = :class_id) AS \"average\" FROM public.semester WHERE date_begin = :dateBegin;");
             $sql->bindParam(':class_id', $this->class->id);
-            $sql->bindParam(':subject', $subject);
+            $sql->bindParam(':lessonId', $lessonId);
             $sql->bindParam(':dateBegin', $dateBegin);
             $sql->execute();
             $average = $sql->fetchAll(PDO::FETCH_ASSOC);
             return $average;
         }
 
-        public function rankInLesson($subject, $dateBegin){
-            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT COUNT(*) + 1 AS \"rank\" FROM public.student s WHERE (SELECT AVG(grade) FROM public.grade g NATURAL JOIN public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.matter WHERE subject = :subject AND s.mail = g.mail AND public.lesson.semester_id = public.semester.semester_id) > (SELECT AVG(grade) FROM public.grade g JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) JOIN public.matter USING(matter_id) WHERE subject = :subject AND public.lesson.semester_id = public.semester.semester_id AND g.mail = :mail)) FROM public.semester WHERE date_begin = :dateBegin;");
-            $sql->bindParam(':subject', $subject);
+        public function rankInLesson($lessonId, $dateBegin){
+            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT COUNT(*) + 1 AS \"rank\" FROM public.student s WHERE (SELECT AVG(grade) FROM public.grade g NATURAL JOIN public.evaluation NATURAL JOIN public.lesson WHERE lesson_id = :lessonId AND s.mail = g.mail AND public.lesson.semester_id = public.semester.semester_id) > (SELECT AVG(grade) FROM public.grade g JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) lesson_id = :lessonId AND public.lesson.semester_id = public.semester.semester_id AND g.mail = :mail)) FROM public.semester WHERE date_begin = :dateBegin;");
             $sql->bindParam(':mail', $this->mail);
+            $sql->bindParam(':lessonId', $lessonId);
             $sql->bindParam(':dateBegin', $dateBegin);
             $sql->execute();
             $rank = $sql->fetchAll(PDO::FETCH_ASSOC);
