@@ -122,11 +122,11 @@
     foreach($lessons as $lesson){
       echo '<tr>
         <td>'. $lesson->subject .'</td>
-        <td>'. $user->personalAverageInLesson($lesson->id, $_GET['date_begin']) .'</td>
-        <td>'. $user->classAverageInLesson($lesson->id, $_GET['date_begin']) .'</td>
-        <td>'. $user->rankInLesson($lesson->id, $_GET['date_begin']) .'</td>';
+        <td>'. $user->personalAverageInLesson($lesson->id, $_GET['date_begin'])['average'] .'</td>
+        <td>'. $user->classAverageInLesson($lesson->id, $_GET['date_begin'])['average'] .'</td>
+        <td>'. $user->rankInLesson($lesson->id, $_GET['date_begin'])['rank'] .'</td>';
         if($user->personalAverageInLesson($lesson->id, $_GET['date_begin']) < 10){
-          echo '<td> Rattrapages </td>';
+          echo '<td class="bg-danger text-white"> Rattrapages </td>';
         } else {
           echo '<td> Pas de rattrapages </td>';
         }

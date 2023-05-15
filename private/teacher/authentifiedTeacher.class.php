@@ -115,6 +115,11 @@
             $sql->execute();
             return $sql->fetchAll(PDO::FETCH_KEY_PAIR);
         }
+        public function listMatters(){
+            $sql = $this->database->conn->prepare('SELECT matter_id, subject FROM public.matter;');
+            $sql->execute();
+            return $mattersList = $sql->fetchAll(PDO::FETCH_KEY_PAIR);
+        }
         // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED STUDENT CAN USE  
         // TODO : check if student is in class for grade addition and listing
     }      

@@ -28,7 +28,7 @@
         }
 
         public function personalAverageInLesson($lessonId, $dateBegin){
-            $sql = $this->database->conn->prepare("SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.semester WHERE lesson_id = :lessonId AND mail = :mail AND date_begin = :dateBegin;");
+            $sql = $this->database->conn->prepare("SELECT SUM(grade * coeff)/SUM(coeff) as average FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.semester WHERE lesson_id = :lessonId AND mail = :mail AND date_begin = :dateBegin;");
             $sql->bindParam(':mail', $this->mail);
             $sql->bindParam(':lessonId', $lessonId);
             $sql->bindParam(':dateBegin', $dateBegin);
@@ -38,7 +38,7 @@
         }
 
         public function classAverageInLesson($lessonId, $dateBegin){
-            $sql = $this->database->conn->prepare("SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.semester WHERE lesson_id = :lessonId AND class_id = :class_id AND date_begin = :dateBegin;");
+        $sql = $this->database->conn->prepare("SELECT SUM(grade * coeff)/SUM(coeff) AS average FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.semester WHERE lesson_id = :lessonId AND class_id = :class_id AND date_begin = :dateBegin;");
             $sql->bindParam(':class_id', $this->class->id);
             $sql->bindParam(':lessonId', $lessonId);
             $sql->bindParam(':dateBegin', $dateBegin);
