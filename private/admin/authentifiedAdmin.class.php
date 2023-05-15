@@ -1,6 +1,8 @@
 <?php
     require_once(realpath(dirname(__FILE__) . '/../../utility.php'));
     require_once(realpath(dirname(__FILE__) . '/../../database.class.php'));
+    require_once(realpath(dirname(__FILE__) . '/../../private/teacher/authentifiedTeacher.class.php'));
+
     //Weird require as this file will be included and change location
 
     // THIS CLASS IS USABLE ONLY BY AN AUTHENTIFIED ADMIN
@@ -19,6 +21,14 @@
         } 
         public function isTeacher(){
             return $this->is_teacher;
+        }
+        public function changeToTeacher(){
+            if($this->is_teacher){
+                $sql = $this->database->conn->prepare('SELECT * FROM public.users WHERE mail = :mail');
+                $sql->bindParam(':mail', $this->mail);
+                $sql->execute();
+                return new AuthentifiedTeacher($sql->fetch(PDO::FETCH_ASSOC));
+            }
         }
         public function addUser($user, $password){
             if(!is_subclass_of($user, "User")){ // check if $user is instance of class User or child
