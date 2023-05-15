@@ -1,5 +1,9 @@
 <?php
   require_once(realpath(dirname(__FILE__) . '/../../header.php'));
+  if(!isset($_GET["class"])){
+    header("teacher_classes.php");
+    exit;
+  }
 ?>
 <!DOCTYPE html>
 <html>
@@ -75,7 +79,9 @@
           </div>
         </div>
 
-        <h3>(mettre classe spécifique)</h3>
+        <h3><?php $myClass = unserialize($_GET["class"]);
+                  echo $myClass->print();
+        ?></h3>
               
         <div class="dropdown-center">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $user->getFullName(); ?></a>

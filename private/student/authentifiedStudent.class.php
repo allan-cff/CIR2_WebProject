@@ -17,7 +17,7 @@
         }
 
         public function listLessons(){
-            $sql = $this->database->conn->prepare('SELECT * FROM public.lesson JOIN public.class USING (class_id) JOIN public.cycle USING (cycle_id) JOIN public.campus USING (campus_id) JOIN public.semester USING (semester_id) JOIN public.user ON teacher = mail JOIN public.student USING (class_id) WHERE student.mail = :mail;');
+            $sql = $this->database->conn->prepare('SELECT * FROM public.lesson JOIN public.class USING (class_id) JOIN public.cycle USING (cycle_id) JOIN public.campus USING (campus_id) JOIN public.semester USING (semester_id) JOIN public.matter USING(matter_id) JOIN public.user ON teacher = mail JOIN public.student USING (class_id) WHERE student.mail = :mail;');
             $sql->bindParam(':mail', $this->mail);
             $sql->execute();
             $lessonsList = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -27,31 +27,34 @@
             return array_map($toLessonClass, $lessonsList);
         }
 
-        public function personalAverageInLesson($lesson, $dateBegin){
-            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade JOIN public.student USING(student_id) JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) WHERE subject = :lesson AND mail = :mail AND public.lesson.semester_id = public.semester.semester_id) AS \"average\" FROM public.semester;");
+        public function personalAverageInLesson($subject, $dateBegin){
+            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade JOIN public.student USING(student_id) JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) JOIN public.matter USING(matter_id) WHERE subject = :subject AND mail = :mail AND public.lesson.semester_id = public.semester.semester_id) AS \"average\" FROM public.semester WHERE date_begin = :dateBegin;");
             $sql->bindParam(':mail', $this->mail);
-            $sql->bindParam(':lesson', $lesson);
+            $sql->bindParam(':subject', $subject);
+            $sql->bindParam(':dateBegin', $dateBegin);
             $sql->execute();
             $average = $sql->fetchAll(PDO::FETCH_ASSOC);
             return $average;
         }
 
-        public function classAverageInLesson($lesson, $dateBegin){
-            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) WHERE subject = :lesson AND public.lesson.semester_id = public.semester.semester_id AND class_id = (SELECT class_id FROM public.class WHERE class_name = :class AND study_year = :study_year AND cycle_id = (SELECT cycle_id FROM public.cycle WHERE cycle = :cycle) AND campus_id = (SELECT campus_id FROM public.campus WHERE campus_name = :campus))) AS \"average\" FROM public.semester;");
+        public function classAverageInLesson($subject, $dateBegin){
+            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) JOIN public.matter USING(matter_id) WHERE subject = :subject AND public.lesson.semester_id = public.semester.semester_id AND class_id = (SELECT class_id FROM public.class WHERE class_name = :class AND study_year = :study_year AND cycle_id = (SELECT cycle_id FROM public.cycle WHERE cycle = :cycle) AND campus_id = (SELECT campus_id FROM public.campus WHERE campus_name = :campus))) AS \"average\" FROM public.semester WHERE date_begin = :dateBegin;");
             $sql->bindParam(':class', $this->class->name);
             $sql->bindParam(':study_year', $this->class->studyYear);
             $sql->bindParam(':cycle', $this->class->cycle);
             $sql->bindParam(':campus', $this->class->campus);
-            $sql->bindParam(':lesson', $lesson);
+            $sql->bindParam(':subject', $subject);
+            $sql->bindParam(':dateBegin', $dateBegin);
             $sql->execute();
             $average = $sql->fetchAll(PDO::FETCH_ASSOC);
             return $average;
         }
 
-        public function rankInLesson($lesson){
-            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT COUNT(*) + 1 AS \"rank\" FROM public.student s WHERE (SELECT AVG(grade) FROM public.grade g JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) WHERE subject = :lesson_name AND s.student_id = g.student_id AND public.lesson.semester_id = public.semester.semester_id) > (SELECT AVG(grade) FROM public.grade g JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) WHERE subject = :lesson_name AND public.lesson.semester_id = public.semester.semester_id AND g.student_id = (SELECT student_id FROM public.student WHERE mail = :mail))) FROM public.semester;");
-            $sql->bindParam(':lesson_name', $lesson);
+        public function rankInLesson($subject, $dateBegin){
+            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT COUNT(*) + 1 AS \"rank\" FROM public.student s WHERE (SELECT AVG(grade) FROM public.grade g JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) JOIN public.matter USING(matter_id) WHERE subject = :subject AND s.student_id = g.student_id AND public.lesson.semester_id = public.semester.semester_id) > (SELECT AVG(grade) FROM public.grade g JOIN public.evaluation USING(eval_id) JOIN public.lesson USING(lesson_id) JOIN public.matter USING(matter_id) WHERE subject = :subject AND public.lesson.semester_id = public.semester.semester_id AND g.student_id = (SELECT student_id FROM public.student WHERE mail = :mail))) FROM public.semester WHERE date_begin = :dateBegin;");
+            $sql->bindParam(':subject', $subject);
             $sql->bindParam(':mail', $this->mail);
+            $sql->bindParam(':dateBegin', $dateBegin);
             $sql->execute();
             $rank = $sql->fetchAll(PDO::FETCH_ASSOC);
             return $rank;

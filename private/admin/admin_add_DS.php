@@ -120,8 +120,42 @@
       </div>
     </nav>
   </header>
+  <?php
+    if(isset($_POST['add_ds']) && isset($_POST['class_add_ds']) && isset($_POST['semester_add_ds']) && isset($_POST['lesson_add_ds']) && isset($_POST['datetimepicker_add_ds_begin']) && isset($_POST['coef_add_ds'])){
+      $lessonId = $_POST['lesson_add_ds'];
+      $name = $_POST['new_ds_name'];
+      $dateBegin = implode(' ', array_reverse(explode(' ', $_POST['datetimepicker_add_ds_begin']))) . ":00";
+      $dateEnd = implode(' ', array_reverse(explode(' ', $_POST['datetimepicker_add_ds_end']))) . ":00";
+      $coef = $_POST['coef_add_ds'];
+      try {
+        $user->addEvaluation($lessonId, $dateBegin, $dateEnd, $coef, $name);
+        echo '
+        <div class="container">
+          <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </svg>  
+            &nbsp;DS ajouté avec succès !
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+        ';
+      } catch(Exception $e) {
+        echo '
+        <div class="container">
+          <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+            </svg>
+              &nbsp;Erreur durant l\'ajout du DS
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>  
+        ';
+      }
+    }
+  ?>
 
-  
   <main>
     <div class="container">
       <div class="row">
@@ -134,7 +168,7 @@
               <?php
                   $classList = $user->listClasses();
                   foreach($classList as $schoolClass){
-                    echo "<option value=\"" . urlencode(serialize($schoolClass)) . "\">" . $schoolClass->name . "</option>";
+                    echo "<option value=\"" . $schoolClass->id . "\">" . $schoolClass->name . "</option>";
                   }
                 ?>
               </select>
@@ -149,8 +183,7 @@
                   <?php
                     $semesterList = $user->listSemesters();
                     foreach($semesterList as $semester){
-                      print_r($semester);
-                      echo "<option value=\"" . serialize($semester) . "\">" . $semester['date_begin'] .', '. $semester['date_end']  . "</option>";
+                      echo "<option value=\"" . $semester['date_begin'] . "\">" . $semester['date_begin'] .', '. $semester['date_end']  . "</option>";
                     }
                   ?>
             </select>
@@ -165,8 +198,9 @@
                   <?php
                     $lessonsList = $user->listLessons();
                     foreach($lessonsList as $lesson){
-                      echo "<option value=\"" . serialize($lesson) . "\">" . $lesson->subject . "</option>";                    }
-                  ?>                
+                      echo "<option value=\"" . $lesson->id . "\">" . $lesson->subject . "</option>";
+                    }
+                  ?>
             </select>
             </div>
           </div>
@@ -216,7 +250,7 @@
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Coefficient</label>
 
             <div class="col-sm-8">
-              <input type="number" class="form-control" name="coef_add_ds" step="0.5">
+              <input type="number" class="form-control" name="coef_add_ds" step="0.5" value="1">
             </div>
           </div>
 
@@ -226,19 +260,6 @@
       </div>
     </div>
   </main>
-  <?php
-    if(isset($_POST['add_ds'])){ //&& isset($_POST['class_add_ds']) && isset($_POST['semester_add_ds']) && isset($_POST['lesson_add_ds']) && isset($_POST['datetimepicker_add_ds_begin']) && isset($_POST['coef_add_ds'])){
-      $class = unserialize(utf8_encode($_POST['class_add_ds']));
-      $semester = unserialize(utf8_encode($_POST['semester_add_ds']));
-      $lesson = unserialize(utf8_encode($_POST['lesson_add_ds']));
-      $dateBegin = $_POST['datetimepicker_add_ds_begin'];
-      $dateEnd = $_POST['datetimepicker_add_ds_end'];
-      $coef = $_POST['coef_add_ds'];
-      $noteDs = $_POST['noteDS'];
-
-      $user->addEvaluation($lesson, $dateBegin, $dateEnd, $coef, $noteDs);
-    }
-  ?>
 
   <?php require_once('../../footer.php') ?>
 

@@ -43,14 +43,18 @@
 
     class SchoolClass {
         public $cycle;
-        public $studyYear;
+        public $firstYear;
+        public $graduationYear;
         public $name;
         public $campus;
+        public $id;
         public function __construct($dbRow){
             $this->cycle = $dbRow['cycle'];
-            $this->studyYear = $dbRow['study_year'];
+            $this->firstYear = $dbRow['first_year'];
+            $this->graduationYear = $dbRow['graduation_year'];
             $this->name = $dbRow['class_name'];
             $this->campus = $dbRow['campus_name'];
+            $this->id = $dbRow['class_id'];
         }
         public function print(){
             return $this->name . ", " . $this->campus . ", " . $this->cycle . ", " . $this->studyYear;
@@ -58,7 +62,8 @@
         public function getDbRow(){
             return array(              
                 "cycle" => $this->cycle,
-                "study_year" => $this->studyYear,
+                "first_year" => $this->firstYear,
+                "graduation_year" => $this->graduationYear,
                 "campus_name" => $this->campus,
                 "class_name" => $this->name
             );
@@ -71,12 +76,14 @@
         public $subject;
         public $start;
         public $end;
+        public $id;
         public function __construct($dbRow){
             $this->class = new SchoolClass($dbRow);
             $this->teacher = new Teacher($dbRow);
             $this->subject = $dbRow["subject"];
             $this->start = $dbRow["date_begin"];
             $this->end = $dbRow["date_end"];
+            $this->id = $dbRow["lesson_id"];
         }
     }
 ?>

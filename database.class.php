@@ -26,6 +26,7 @@
             $connected = false;
             try {
                 $this->conn = new PDO($dsn, $this->user, $this->password);
+                $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $connected = true;
             } catch(PDOException $e) {
                 error_log('Database connection failed : ' . $e);
@@ -33,7 +34,7 @@
             return $connected;
         }
         public function authentify($mail, $password){
-            $sql = $this->conn->prepare('SELECT mail, name, surname, last_login, phone, student_id, class_name, study_year, cycle, campus_name, latitude, longitude, EXISTS (SELECT mail FROM public.student WHERE mail = public.user.mail) AS "is_student", EXISTS (SELECT mail FROM public.teacher WHERE mail = public.user.mail) AS "is_teacher", EXISTS (SELECT mail FROM public.admin WHERE mail = public.user.mail) AS "is_admin" FROM public.user LEFT JOIN public.student USING (mail) LEFT JOIN public.class USING (class_id) LEFT JOIN public.cycle USING (cycle_id) LEFT JOIN public.campus USING (campus_id) WHERE mail = :mail;');
+            $sql = $this->conn->prepare('SELECT *, EXISTS (SELECT mail FROM public.student WHERE mail = public.user.mail) AS "is_student", EXISTS (SELECT mail FROM public.teacher WHERE mail = public.user.mail) AS "is_teacher", EXISTS (SELECT mail FROM public.admin WHERE mail = public.user.mail) AS "is_admin" FROM public.user LEFT JOIN public.student USING (mail) LEFT JOIN public.class USING (class_id) LEFT JOIN public.cycle USING (cycle_id) LEFT JOIN public.campus USING (campus_id) WHERE mail = :mail;');
             $sql->bindParam(':mail', $mail);
             $sql->execute();
             $user = $sql->fetch(PDO::FETCH_ASSOC);

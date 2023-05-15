@@ -114,12 +114,12 @@
         <tbody class="table-group-divider">
         <?php
           $lessonsList = $user->listLessons();
-          foreach($lessonsList as $lesson){
+          foreach($lessonsList as $l){
             echo '
             <tr>
-              <th scope="row">' . $lesson["subject"] . '</th>
-              <td>' . $lesson["class_name"] . '</td>
-              <td>' . $lesson["student_count"] . '
+              <th scope="row">' . $l->lesson->class->print() . '</th>
+              <td>' . $l->lesson->subject . '</td>
+              <td>' . $l["student_count"] . '
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                   <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
                 </svg>
@@ -128,8 +128,8 @@
                 <table class="table table-borderless m-0">
                   <tr class="border-0">';
             $i = 0;
-            $len = count($lesson["evaluations"]);    
-            foreach($lesson["evaluations"] as $evaluation){
+            $len = count($l["evaluations"]);    
+            foreach($l["evaluations"] as $evaluation){
               echo '<td';
               if($i != ($len - 1)){
                 echo ' class="border-end"';
@@ -159,7 +159,7 @@
                 </table>  
               </td>
               <td>Non renseigné</td>
-              <td><a href="#">Modifier</a></td>
+              <td><a href="teacher_detail_class.php?class=' . urlencode(serialize($l->lesson)) . '">Modifier</a></td>
             </tr>';
           };
         ?>
