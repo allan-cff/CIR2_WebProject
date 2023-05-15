@@ -81,7 +81,7 @@
   
 
 <mail>
-  <div id="student_table_grade">
+  <div id="student_table_grade justify-content-center mx-auto">
 
     <table class="table table-striped">
 
@@ -118,7 +118,20 @@
 <tbody>
   <?php
   if(isset($_GET['date_begin'])){
-    echo '<td> coucou </td>';
+    $lessons = $user->listLessons();
+    foreach($lessons as $lesson){
+      echo '<tr>
+        <td>'. $lesson->subject .'</td>
+        <td>'. $user->personalAverageInLesson($lesson->id, $_GET['date_begin']) .'</td>
+        <td>'. $user->classAverageInLesson($lesson->id, $_GET['date_begin']) .'</td>
+        <td>'. $user->rankInLesson($lesson->id, $_GET['date_begin']) .'</td>';
+        if($user->personalAverageInLesson($lesson->id, $_GET['date_begin']) < 10){
+          echo '<td> Rattrapages </td>';
+        } else {
+          echo '<td> Pas de rattrapages </td>';
+        }
+      echo '</tr>';
+    }
   }
   ?>
 </tbody>
