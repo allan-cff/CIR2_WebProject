@@ -53,7 +53,6 @@
                 </a>
               </li> 
 
-              <span style="background-color: #e8e7e7">
               <li class="nav-item">
                 <a class="nav-link" href="admin_modification_user.php">
                   Modification d'utilisateur
@@ -62,7 +61,6 @@
                   </svg>
                 </a>
               </li> 
-              </span>
 
               <li class="nav-item">
                 <a class="nav-link" href="admin_delete_user.php">
@@ -103,6 +101,8 @@
                 </a>
               </li>
 
+              
+              <span style="background-color: #e8e7e7">
               <li class="nav-item">
                 <a class="nav-link" href="admin_add_class.php">
                   Ajout classe
@@ -112,6 +112,7 @@
                   </svg>
                 </a>
               </li>
+              </span>
 
               <li class="nav-item">
                 <a class="nav-link" href="admin_add_matter.php">
@@ -146,7 +147,7 @@
           </div>
         </div>
 
-        <h3>MODIFICATION UTILISATEUR</h3>
+        <h3>AJOUT MATIERE</h3>
               
         <div class="dropdown-center">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $user->getFullName(); ?></a>
@@ -172,62 +173,14 @@
       <div class="row">
         <form class="col-md-7 offset-md-3" method="post" action="admin_add_user.php">
           <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Nom</label>
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Nom de la matière</label>
 
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Dupont" name="modif_last_name">
+              <input type="text" class="form-control" placeholder="Dupont" name="matter_name">
             </div>
           </div>
 
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Prénom</label>
-
-            <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="jean" name="modif_first_name">
-            </div>
-          </div>
-
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Téléphone</label>
-
-            <div class="col-sm-8">
-              <input type="num" class="form-control" placeholder="0123456789" name="modif_phone">
-            </div>
-          </div>
-
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Adresse mail</label>
-
-            <div class="col-sm-8">
-              <input type="email" class="form-control" placeholder="jean.dupont@messagerie.fr" name="modif_mail">
-            </div>
-          </div>
-
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label"> Confirmation Email</label>
-
-            <div class="col-sm-8">
-              <input type="email" class="form-control" placeholder="jean.dupont@messagerie.fr" name="modif_mail_validation">
-            </div>
-          </div>
-
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Mot de passe</label>
-
-            <div class="col-sm-8">
-              <input type="password" class="form-control" placeholder="motdepasse" name="modif_password">
-            </div>
-          </div>
-
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Confirmation du mot de passe</label>
-
-            <div class="col-sm-8">
-              <input type="password" class="form-control" placeholder="motdepasse" name="modif_password_validation">
-            </div>
-          </div>
-
-          <input class="btn text-bg-danger mt-3 col-md-4 offset-md-3" type="submit" value="Modifier" name="modif_user">
+          <input class="btn text-bg-danger mt-3 col-md-4 offset-md-3" type="submit" value="Ajouter" name="new_matter">
         </form>
       </div>
     </div>

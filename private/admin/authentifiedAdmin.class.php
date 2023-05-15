@@ -148,15 +148,15 @@
             return $listOfLessonsObjects;
         }
         public function addEvaluation($lessonId, $dateBegin, $dateEnd, $coeff = 1, $description = ""){
-        /*    $verifEvaluationOverlap = $this->database->conn->prepare("SELECT EXISTS (SELECT FROM public.evaluation WHERE lesson_id = :lessonId AND ((:dateBegin >= begin_datetime AND :dateBegin <= end_datetime) OR (:dateEnd >= begin_datetime AND :dateEnd <= end_datetime)));");
+            $verifEvaluationOverlap = $this->database->conn->prepare("SELECT EXISTS (SELECT FROM public.evaluation WHERE lesson_id = :lessonId AND ((:dateBegin >= begin_datetime AND :dateBegin <= end_datetime) OR (:dateEnd >= begin_datetime AND :dateEnd <= end_datetime)));");
             $verifEvaluationOverlap->bindParam(':dateBegin', $dateBegin);
             $verifEvaluationOverlap->bindParam(':dateEnd', $dateEnd);
-            $evaluationInsert->bindParam(':lessonId', $lessonId);
+            $verifEvaluationOverlap->bindParam(':lessonId', $lessonId);
             $verifEvaluationOverlap->execute();
             $isOverlapping = $verifEvaluationOverlap->fetch(PDO::FETCH_ASSOC);
             if($isOverlapping["exists"]){
                 throw new Exception('Overlapping evaluation'); //STOPS execution here : we don't insert an overlapping Evaluation in the DB
-            }*/
+            }
             $evaluationInsert = $this->database->conn->prepare("INSERT INTO public.evaluation (coeff, begin_datetime, end_datetime, description, lesson_id) VALUES (:coeff, :beginDate, :endDate, :description, :lessonId) RETURNING eval_id;"); 
             $evaluationInsert->bindParam(':coeff', $coeff);
             $evaluationInsert->bindParam(':beginDate', $dateBegin);
@@ -175,6 +175,14 @@
         public function addMatter($matter){
             $sql = $this->database->conn->prepare('INSERT INTO public.matter (subject) VALUES (:matter);');
             $sql->bindParam(':matter', $matter);
+            $sql->execute();
+            return $matter;
+        }
+        public function addCampus($name, $latitude, $longitude){
+            $sql = $this->database->conn->prepare('INSERT INTO public.campus (campus_name, latitude, longitude) VALUES (:name, :latitude, :longitude);');
+            $sql->bindParam(':name', $name);
+            $sql->bindParam(':latitude', $latitude);
+            $sql->bindParam(':longitude', $longitude);
             $sql->execute();
             return $matter;
         }
