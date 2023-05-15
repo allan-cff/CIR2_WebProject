@@ -21,14 +21,14 @@
                 "is_admin": false
             }';
             $mSorin = new Teacher(json_decode($mSorinInfos, true));
-            $success = $me->deleteUser('mateosorin@isen.fr');
-            if($success){
+            try {
+                $me->deleteUser('mateosorin@isen.fr');
                 echo "&#9989; - I just deleted mateosorin@isen.fr from the list <br>";
+            } catch(Exception $e){
+                echo "&#9989; - I cant delete mateosorin@isen.fr from the list as it probably doesnt exists<br>";
             }
-            $success = $me->addTeacher($mSorin, 'superSecure');
-            if($success){
-                echo "&#9989; - I just added " . $me->getUser("mateosorin@isen.fr")->getFullName() . " to the list <br>";
-            }
+            $me->addTeacher($mSorin, 'superSecure');
+            echo "&#9989; - I just added " . $me->getUser("mateosorin@isen.fr")->getFullName() . " to the list <br>";
             echo "<b>USERS</b><br>";
             $usersList = $me->listUsers();
             foreach($usersList as $user){
@@ -39,95 +39,92 @@
                 echo "<br>";
             }
             echo "<b>SEMESTERS</b><br>";
-            $success = $me->addSemester('2018-09-01', '2019-02-01', 'S1 2018/2019');
-            if($success){
+            try {
+                $me->addSemester('2018-09-01', '2019-02-01', 'S1 2018/2019');
                 echo "&#9989; - I added a semester from 2018-09-01 to 2019-02-01 <br>";
-            } else {
+            } catch(Exception $e) {
                 $me->deleteSemester('2018-09-01');
                 $success = $me->addSemester('2018-09-01', '2019-02-01', 'S1 2018/2019');
-                if($success){
-                    echo "&#9989; - I deleted and re-added a semester starting from 2018-09-01<br>";
-                } else {
-                    echo "&#9989; - I can't add a semester from 2018-09-01 to 2019-02-01 : SHOULD NOT HAPPEN<br>";
-                }
+                echo "&#9989; - I deleted and re-added a semester starting from 2018-09-01<br>";
             }
-            $success = $me->addSemester('2018-01-01', '2018-11-01', 'S2 2017/2018');
-            if($success){
+            try {
+                $me->addSemester('2018-01-01', '2018-11-01', 'S2 2017/2018');
                 echo "&#x274C; - I added a semester from 2018-01-01 to 2018-11-01 : SHOULD NOT HAPPEN<br>";
-            } else {
+            } catch (Exception $e){
                 echo "&#9989; - I can't add a semester from 2018-11-01 to 2018-11-01 as it is overlapping with other semester<br>";
             }
             echo "<b>LESSONS</b><br>";
-            $success = $me->addMatter('FHS');
-            if($success){
+            try {
+                $me->addMatter('FHS');
                 echo "&#9989; - I just added the matter FHS<br>";
+            } catch(Exception $e){
+                echo "&#9989; - FHS already exists<br>";
             }
-            $success = $me->addLesson('FHS', 'mateosorin@isen.fr', 'CIR2', '2023-04-25');
-            if($success){
-                echo "&#x274C; - This must not print as semester start doesn't exists<br>";
+            $cir2FHSLessonId;
+            try {
+                $cir2FHSLessonId = $me->addLesson('FHS', 'mateosorin@isen.fr', 1, '2023-04-25');
+                echo "&#x274C; - Added lesson id : ". $cir2FHSLessonId ." with a semester that doesnt exists<br>";
+            } catch(Exception $e) {
+                echo "&#9989; - Can't add a lesson with semester that doesnt exists<br>";
             }
-            $success = $me->addLesson('FHS', 'mateosorin@isen.fr', 'CIR2', '2018-09-01');
-            if($success){
-                echo "&#9989; - I just added an FHS Lesson with mateosorin@isen.fr teaching CIR2 from 2018-09-01 to february 2019<br>";
+            try {
+                $cir2FHSLessonId = $me->addLesson('FHS', 'mateosorin@isen.fr', 1, '2018-09-01');
+                echo "&#9989; - I just added an FHS Lesson id : ". $cir2FHSLessonId ." with mateosorin@isen.fr teaching CIR2 from 2018-09-01 to february 2019<br>";
+            } catch (Exception $e) {
+                echo "&#x274C; - I cant add an FHS Lesson with mateosorin@isen.fr teaching CIR2 from 2018-09-01 to february 2019<br>";
             }
             $lessonsList = $me->listLessons();
             foreach($lessonsList as $lesson){
-                if($lesson->class->name === "CIR2" && $lesson->subject === "FHS"){
-                    $cir2FHSLessonId = $lesson->id;
-                }
                 echo $lesson->teacher->getFullName() . " is teaching " . $lesson->subject . " to the " . $lesson->class->name . "<br>";
             }
-            $success = $me->addEvaluation($cir2FHSLessonId, '2018-11-18 8:00:00', '2018-11-18 9:30:00', 1, 'blabla');
-            if($success){
-                echo "&#9989; - I just added an evaluation of FHS on 2018-11-18 8:00:00 for CIR2<br>";
-            } else {
+            $cir2FHSeval1;
+            try {
+                $cir2FHSeval1 = $me->addEvaluation($cir2FHSLessonId, '2018-11-18 8:00:00', '2018-11-18 9:30:00', 1, 'blabla');
+                echo "&#9989; - I just added an evaluation id : ". $cir2FHSeval1 ." of FHS on 2018-11-18 8:00:00 for CIR2<br>";
+            } catch (Exception $e){
                 echo "&#x274C; - I can't add an evaluation of FHS on 2018-11-18 8:00:00 for CIR2 : SHOULD NOT HAPPEN<br>";
             }
-            $success = $me->addEvaluation($cir2FHSLessonId, '2019-01-29 8:00:00', '2019-01-29 9:30:00', 2, 'deuxième DS');
-            if($success){
-                echo "&#9989; - I just added an evaluation of FHS coeff 2 on 2019-01-29 8:00:00 for CIR2<br>";
-            } else {
+            try {
+                $cir2FHSeval1 = $me->addEvaluation($cir2FHSLessonId, '2019-01-29 8:00:00', '2019-01-29 9:30:00', 2, 'deuxième DS');
+                echo "&#9989; - I just added an evaluation id : ". $cir2FHSeval1 ." of FHS coeff 2 on 2019-01-29 8:00:00 for CIR2<br>";
+            } catch (Exception $e) {
                 echo "&#x274C; - I can't add an evaluation of FHS coeff 2 on 2019-01-29 8:00:00 for CIR2 : SHOULD NOT HAPPEN<br>";
             }
-            $success = $me->addClass('CIR1', 'Nantes', 'CIR', 2022, 2027);
-            if($success){
-                echo "&#9989; - I just added the CIR 1 class in Nantes<br>";
-            } else {
+            $cir1classId;
+            try {
+                $cir1classId = $me->addClass('CIR1', 'Nantes', 'CIR', 2022, 2027);
+                echo "&#9989; - I just added the CIR 1 class id : ". $cir1classId ." in Nantes<br>";
+            } catch(Exception $e) {
                 $classList = $me->listClasses();
                 foreach($classList as $class){
                     if($class->name === "CIR1" && $class->campus === "Nantes"){
                         $me->deleteClass($class->id);
                     }
                 }
-                $success = $me->addClass('CIR1', 'Nantes', 'CIR', 2022, 2027);
-                if($success){
-                    echo "&#9989; - I just deleted and re-added the CIR 1 class in Nantes<br>";
-                } else {
-                    echo "&#x274C; - I can't add the CIR 1 class in Nantes<br>";
-                }    
+                $cir1classId = $me->addClass('CIR1', 'Nantes', 'CIR', 2022, 2027);
+                echo "&#9989; - I just deleted and re-added the CIR 1 class id : " . $cir1classId . " in Nantes<br>";
             }
             print_r($me->listClasses());
-            $success = $me->addLesson('FHS', 'mateosorin@isen.fr', 'CIR1', '2018-09-01');
-            if($success){
+            try {
+                $cir1FHSLessonId = $me->addLesson('FHS', 'mateosorin@isen.fr', $cir1classId, '2018-09-01');
                 echo "<br>&#9989; - I just added an FHS Lesson with mateosorin@isen.fr teaching CIR1 from 2018-09-01 to end of semester<br>";
+            } catch(Exception $e) {
+                echo "<br>&#x274C; - I cant add an FHS Lesson with mateosorin@isen.fr teaching CIR1 from 2018-09-01 to end of semester<br>";
             }
             $lessonsList = $me->listLessons();
             foreach($lessonsList as $lesson){
-                if($lesson->class->name === "CIR1" && $lesson->subject === "FHS"){
-                    $cir1FHSLessonId = $lesson->id;
-                }
                 echo $lesson->teacher->getFullName() . " is teaching " . $lesson->subject . " to the " . $lesson->class->name . "<br>";
             }
-            $success = $me->addEvaluation($cir1FHSLessonId, '2018-11-18 8:00:00', '2018-11-18 9:30:00', 1, 'blabla');
-            if($success){
+            try {
+                $me->addEvaluation($cir1FHSLessonId, '2018-11-18 8:00:00', '2018-11-18 9:30:00', 1, 'blabla');
                 echo "&#9989; - I just added an evaluation of FHS on 2018-11-18 8:00:00 for CIR1<br>";
-            } else {
+            } catch(Excpetion $e) {
                 echo "&#x274C; - I can't add an evaluation of FHS on 2018-11-18 8:00:00 for CIR1 : SHOULD NOT HAPPEN<br>";
             }
-            $success = $me->addEvaluation($cir1FHSLessonId, '2019-01-29 8:00:00', '2019-01-29 9:30:00', 1, 'deuxième DS');
-            if($success){
+            try {
+                $me->addEvaluation($cir1FHSLessonId, '2019-01-29 8:00:00', '2019-01-29 9:30:00', 1, 'deuxième DS');
                 echo "&#9989; - I just added an evaluation of FHS on 2019-01-29 8:00:00 for CIR1<br>";
-            } else {
+            } catch (Exception $e){
                 echo "&#x274C; - I can't add an evaluation of FHS on 2019-01-29 8:00:00 for CIR1 : SHOULD NOT HAPPEN<br>";
             }
             $listTeacher = $me->listTeachers();

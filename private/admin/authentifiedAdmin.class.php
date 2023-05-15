@@ -27,11 +27,11 @@
             $userInsert->bindParam(':password', $hash);
             $userInsert->bindParam(':phone', $user->phone);
             $userInsert->execute();  
-            return $userInsert->rowCount() === 1;
+            return $user->mail;
         }
         public function addStudent($student, $password){
             if(!(get_class($student) === "Student")){
-                return false;
+                return false; //TODO : try catch if error is duplicate PK insert in student
             }
             $this->addUser($student, $password);
             $studentInsert = $this->database->conn->prepare('INSERT INTO public.student (mail, student_id, class_id) VALUES (:mail, :studentId, (SELECT class_id FROM public.class WHERE class_name = :class AND first_year = :firstYear AND cycle_id = (SELECT cycle_id FROM public.cycle WHERE cycle = :cycle) AND campus_id = (SELECT campus_id FROM public.campus WHERE campus_name = :campus)));');
@@ -42,7 +42,7 @@
             $studentInsert->bindParam(':cycle', $student->class->cycle);
             $studentInsert->bindParam(':campus', $student->class->campus);
             $studentInsert->execute();
-            return $studentInsert->rowCount() === 1;
+            return $student->mail;
         }
         public function addTeacher($teacher, $password){
             if(!(get_class($teacher) === "Teacher")){
@@ -52,7 +52,7 @@
             $teacherInsert = $this->database->conn->prepare('INSERT INTO teacher (mail) VALUES (:mail);');
             $teacherInsert->bindParam(':mail', $teacher->mail);
             $teacherInsert->execute();
-            return $teacherInsert->rowCount() === 1;
+            return $teacher->mail;
         }
         public function addAdmin($user, $password){
             if(!is_subclass_of($user, "User")){ // check if $user is instance of class User or child
@@ -62,7 +62,7 @@
             $adminInsert = $this->database->conn->prepare('INSERT INTO public.admin (mail) VALUES (:mail);');
             $adminInsert->bindParam(':mail', $admin->mail);
             $adminInsert->execute();
-            return $adminInsert->rowCount() === 1;
+            return $user->mail;
         }
         public function listUsers(){
             $usersList = false;
@@ -119,7 +119,7 @@
             $semesterInsert->bindParam(':dateBegin', $dateBegin);
             $semesterInsert->bindParam(':dateEnd', $dateEnd);
             $semesterInsert->bindParam(':name', $name);
-            return $semesterInsert->execute();
+            return $dateBegin;
         }
         public function deleteSemester($dateBegin){
             $sql = $this->database->conn->prepare('DELETE FROM public.semester WHERE date_begin = :dateBegin;');
@@ -134,7 +134,7 @@
             $lessonInsert->bindParam(':classId', $classId);
             $lessonInsert->bindParam(':semesterBeginDate', $semesterBeginDate);
             $lessonInsert->execute();
-            return $lessonInsert->rowCount() === 1;
+            return $lessonInsert->lastInsertId();
         }
         public function listLessons(){
             $sql = $this->database->conn->prepare('SELECT *, EXISTS (SELECT mail FROM public.admin WHERE mail = teacher) AS "is_admin" FROM public.lesson JOIN public.matter USING (matter_id) JOIN public.semester USING (semester_id) JOIN public.class USING (class_id) JOIN public.cycle USING (cycle_id) JOIN public.campus USING (campus_id) JOIN public.teacher ON teacher = mail JOIN public.user USING (mail);');
@@ -162,19 +162,20 @@
             $evaluationInsert->bindParam(':endDate', $dateEnd);
             $evaluationInsert->bindParam(':description', $description);
             $evaluationInsert->bindParam(':lessonId', $lessonId);
-            return $evaluationInsert->execute();
+            $evaluationInsert->execute();
+            return $evaluationInsert->lastInsertId();
         }
         public function addCycle($cycle){
             $sql = $this->database->conn->prepare('INSERT INTO public.cycle (cycle) VALUES (:cycle);');
             $sql->bindParam(':cycle', $cycle);
             $sql->execute();
-            return $sql->rowCount() === 1;
+            return $sql->lastInsertId();
         }
         public function addMatter($matter){
             $sql = $this->database->conn->prepare('INSERT INTO public.matter (subject) VALUES (:matter);');
             $sql->bindParam(':matter', $matter);
             $sql->execute();
-            return $sql->rowCount() === 1;
+            return $sql->lastInsertId();
         }
         public function deleteClass($classId){
             $sql = $this->database->conn->prepare('DELETE FROM public.class WHERE class_id = :classId');
@@ -190,7 +191,7 @@
             $sql->bindParam(':firstYear', $firstYear, PDO::PARAM_INT);
             $sql->bindParam(':graduationYear', $graduationYear, PDO::PARAM_INT);
             $sql->execute();
-            return $sql->rowCount() === 1;
+            return $sql->lastInsertId();
         }
         public function addAppreciation($mailStudent, $semesterBeginDate, $appreciation){
             $sql = $this->database->conn->prepare('INSERT INTO public.appreciation (appraisal, semester_id, student_id) VALUES (:appreciation, (SELECT semester_id FROM public.semester WHERE date_begin = :semester), (SELECT student_id FROM public.student where mail = :mailStudent));');
@@ -198,7 +199,7 @@
             $sql->bindParam(':semester', $semesterBeginDate);
             $sql->bindParam(':appreciation', $appreciation);
             $sql->execute();
-            return $sql->rowCount() === 1;
+            return $sql->lastInsertId();
         }
         public function listClasses(){
             $sql = $this->database->conn->prepare('SELECT * FROM public.class JOIN public.campus using (campus_id) JOIN public.cycle USING (cycle_id);');
