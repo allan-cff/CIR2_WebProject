@@ -23,11 +23,11 @@
             return $this->is_teacher;
         }
         public function changeToTeacher(){
-            if($this->is_teacher){
-                $sql = $this->database->conn->prepare('SELECT *, EXISTS (SELECT mail FROM public.admin WHERE mail = public.user.mail) AS "is_admin" FROM public.users WHERE mail = :mail');
+            if($this->isTeacher()){
+                $sql = $this->database->conn->prepare('SELECT *, EXISTS (SELECT mail FROM public.admin WHERE mail = public.user.mail) AS "is_admin" FROM public.user WHERE mail = :mail');
                 $sql->bindParam(':mail', $this->mail);
                 $sql->execute();
-                return new AuthentifiedTeacher($sql->fetch(PDO::FETCH_ASSOC));
+                return new AuthentifiedTeacher($this->database, $sql->fetch(PDO::FETCH_ASSOC));
             }
         }
         public function addUser($user, $password){
