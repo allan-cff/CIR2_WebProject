@@ -1,6 +1,8 @@
 <?php
     require_once(realpath(dirname(__FILE__) . '/../../utility.php'));
     require_once(realpath(dirname(__FILE__) . '/../../database.class.php'));
+    require_once(realpath(dirname(__FILE__) . '/../../private/teacher/authentifiedTeacher.class.php'));
+
     //Weird require as this file will be included and change location
 
     // THIS CLASS IS USABLE ONLY BY AN AUTHENTIFIED ADMIN
@@ -8,13 +10,26 @@
 
     class AuthentifiedAdmin extends User {
         private $database;
+        private $is_teacher;
         public function __construct($db, $dbRow){
             parent::__construct($dbRow);
             $this->database = $db;
+            $this->is_teacher = $dbRow["is_teacher"];
         }
         public function connect(){
             return $this->database->connect();
         } 
+        public function isTeacher(){
+            return $this->is_teacher;
+        }
+        public function changeToTeacher(){
+            if($this->is_teacher){
+                $sql = $this->database->conn->prepare('SELECT * FROM public.users WHERE mail = :mail');
+                $sql->bindParam(':mail', $this->mail);
+                $sql->execute();
+                return new AuthentifiedTeacher($sql->fetch(PDO::FETCH_ASSOC));
+            }
+        }
         public function addUser($user, $password){
             if(!is_subclass_of($user, "User")){ // check if $user is instance of class User or child
                 return false;
@@ -48,7 +63,11 @@
             if(!(get_class($teacher) === "Teacher")){
                 return false;
             }
-            $this->addUser($teacher, $password);
+            try {
+                $this->addUser($teacher, $password);
+            } catch(Exception $e){
+                //USER ALREADY EXISTS
+            }
             $teacherInsert = $this->database->conn->prepare('INSERT INTO teacher (mail) VALUES (:mail);');
             $teacherInsert->bindParam(':mail', $teacher->mail);
             $teacherInsert->execute();
@@ -58,7 +77,11 @@
             if(!is_subclass_of($user, "User")){ // check if $user is instance of class User or child
                 return false;
             }
-            $this->addUser($user, $password);
+            try {
+                $this->addUser($teacher, $password);
+            } catch(Exception $e){
+                //USER ALREADY EXISTS
+            }
             $adminInsert = $this->database->conn->prepare('INSERT INTO public.admin (mail) VALUES (:mail);');
             $adminInsert->bindParam(':mail', $admin->mail);
             $adminInsert->execute();

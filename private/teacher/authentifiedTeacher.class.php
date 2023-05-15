@@ -1,6 +1,8 @@
 <?php
     require_once(realpath(dirname(__FILE__) . '/../../utility.php'));
     require_once(realpath(dirname(__FILE__) . '/../../database.class.php'));
+    require_once(realpath(dirname(__FILE__) . '/../../private/admin/authentifiedAdmin.class.php'));
+
     //Weird require as this file will be included and change location
 
     // THIS CLASS IS USABLE ONLY BY AN AUTHENTIFIED TEACHER
@@ -14,6 +16,14 @@
         }
         public function connect(){
             return $this->database->connect();
+        }        
+        public function changeToAdmin(){
+            if($this->is_admin){
+                $sql = $this->database->conn->prepare('SELECT * FROM public.users WHERE mail = :mail');
+                $sql->bindParam(':mail', $this->mail);
+                $sql->execute();
+                return new AuthentifiedAdmin($sql->fetch(PDO::FETCH_ASSOC));
+            }
         }
         public function addGrade($mailStudent, $lessonId, $evalDate, $grade){
             $gradeInsert = $this->database->conn->prepare("INSERT INTO public.grade (mail, grade, eval_id) VALUES(:mailStudent, :grade, (SELECT eval_id FROM public.evaluation WHERE lesson_id = :lessonId AND begin_datetime = :startDate));");
@@ -70,31 +80,40 @@
             //GETTING EVAL LIST FOR THIS LESSON
             $sql = $this->database->conn->prepare("SELECT eval_id, AVG(grade) AS average, COUNT(grade) AS not_null FROM public.grade NATURAL JOIN public.evaluation NATURAL JOIN public.lesson WHERE lesson_id = :lessonId GROUP BY eval_id;");
             $sql->bindParam(':lessonId', $lessonId);
+            $sql->execute();
             $evalList = $sql->fetchAll(PDO::FETCH_ASSOC);
-            $result = array(
-                "lesson" => $lesson,
-                "evaluation" => array()
-            );
             foreach($evalList as $eval){
                 //GETTING GRADES LIST FOR THIS EVAL
-                $sql = $this->database->conn->prepare("SELECT * FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.user WHERE eval_id = :evalId;");
-                $sql->bindParam(':evalId', $data["eval_id"]);
-                $grades = $sql->fetchAll(PDO::FETCH_ASSOC);
-                $userGrades = array();
+                $userList = array();
+                $grades = $this->listEvalGrades($eval["eval_id"]);
                 foreach($grades as $grade){
-                    //SETTING MAIL AS KEY FOR GRADES ARRAY
-                    $userGrades[$grade["mail"]] = array(
-                        "user" => new Student($grade),
-                        "grade" => $grade["grade"]
-                    );
+                    $mail = $grade["mail"];
+                    $userList[$mail] = new Student($grade);
+                    $userGrades[$mail][$grade["eval_id"]] = $grade["grade"];
                 }
-                //ADDING GRADES LIST AND EVAL DATA TO EVAL ID KEY
-                $result["evaluations"][$eval["eval_id"]] = array(
-                    "grades" => $userGrades,
-                    "evaluation" => $eval
-                );    
+                $userGrades[$grade["mail"]]["average"] = $grades["average"];
+                $result["evaluations"][$eval["eval_id"]] = $eval;
             }
+            $result = array(
+                "lesson" => $lesson,
+                "evaluations" => $evalList,
+                "grades" => $userGrades,
+                "students" => $userList
+            );
             return $result;
+        }
+
+        public function listEvalGrades($evalId){
+            $sql = $this->database->conn->prepare("SELECT * FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.user NATURAL JOIN public.class NATURAL JOIN public.cycle NATURAL JOIN public.campus WHERE eval_id = :evalId;");
+            $sql->bindParam(':evalId', $evalId);
+            $sql->execute();
+            $grades = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+        public function listStudentsAverageInEval($evalId){
+            $sql = $this->database->conn->prepare("SELECT mail, SUM(grade * coeff)/SUM(coeff) AS average FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation WHERE eval_id = :evalId");
+            $sql->bindParam(':evalId', $evalId);
+            $sql->execute();
+            return $sql->fetchAll(PDO::FETCH_KEY_PAIR);
         }
         // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED STUDENT CAN USE  
         // TODO : check if student is in class for grade addition and listing
