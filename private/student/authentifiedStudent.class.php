@@ -28,12 +28,12 @@
         }
 
         public function personalAverageInLesson($lessonId, $dateBegin){
-            $sql = $this->database->conn->prepare("SELECT date_begin, date_end, (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson WHERE lesson_id = :lessonId AND mail = :mail AND public.lesson.semester_id = public.semester.semester_id) AS \"average\" FROM public.semester WHERE date_begin = :dateBegin;");
+            $sql = $this->database->conn->prepare("SELECT (SELECT SUM(grade * coeff)/SUM(coeff) FROM public.grade NATURAL JOIN public.student NATURAL JOIN public.evaluation NATURAL JOIN public.lesson WHERE lesson_id = :lessonId AND mail = :mail AND public.lesson.semester_id = public.semester.semester_id) AS \"average\" FROM public.semester WHERE date_begin = :dateBegin;");
             $sql->bindParam(':mail', $this->mail);
             $sql->bindParam(':lessonId', $lessonId);
             $sql->bindParam(':dateBegin', $dateBegin);
             $sql->execute();
-            $average = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $average = $sql->fetch(PDO::FETCH_ASSOC);
             return $average;
         }
 
