@@ -249,6 +249,37 @@
             };
             return array_map($toTeacherClass, $teachersList);
         }
+
+        public function modifyUser($mail, $password = null, $name = null, $surname = null, $phone = null){
+            $sql = $this->database->conn->prepare('SELECT * from public.user WHERE mail = :mail');
+            $sql->bindParam(':mail', $mail);
+            $sql->execute();
+            $user = new User($sql->fetch(PDO::FETCH_ASSOC));
+            $sql = $this->database->conn->prepare('UPDATE public.user SET password = :password, name = :name, surname = :surname, phone = :phone WHERE mail = :mail');
+            if($password !== null){
+                $sql->bindParam(':password', $password);
+            }else{
+                $sql->bindParam(':password', $user->password);
+            }
+            if($name !== null){
+                $sql->bindParam(':name', $name);
+            }else{
+                $sql->bindParam(':name', $user->name);
+            }
+            if($surname !== null){
+                $sql->bindParam(':surname', $surname);
+            }else{
+                $sql->bindParam(':surname', $user->surname);
+            }
+            if($phone !== null){
+                $sql->bindParam(':phone', $phone);
+            }else{
+                $sql->bindParam(':phone', $user->phone);
+            }
+            $sql->bindParam(':mail', $user->mail);
+            $sql->execute();
+            return $user;
+        }
           // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED ADMINISTRATOR CAN USE    
     }
-?>    
+?>

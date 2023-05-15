@@ -224,6 +224,13 @@
             foreach($FHSranks as $rank){
                 echo "My rank in FHS is : " . ($rank["rank"] ?? "undefined") . " for semester going from " . $rank["date_begin"] ." to " . $rank["date_end"] . "<br>";
             }
-        }       
+        }
+        echo"<br> TRYING TO CHANGE THE NAME OF JACQUES OUZI <br>";
+        $me = $database->authentify("allan@isen.fr", "passwordRandomPasHaché");
+        $me->connect();
+        if($me){
+            echo "&#9989".($me->modifyUser("jacques.ouzi@messagerie.fr", "passwordRandomPasHaché", "Ouziouzi", "Jacques", "0231456897")->name);
+            
+        }    
     }
 ?>

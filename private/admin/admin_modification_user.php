@@ -165,12 +165,41 @@
       </div>
     </nav>
   </header>
-
+  <?php
+    if(isset($_POST['modif_user']) && isset($_POST['modif_last_name']) && isset($_POST['modif_phone']) && isset($_POST['modif_first_name']) && isset($_POST['mail']) && isset($_POST['modif_password']) && $_POST['modif_password'] == $_POST['modif_password_validation']){
+      try {
+        $user->modifyUser($_POST['mail'], $_POST['modif_password'], $_POST['modif_last_name'], $_POST['modif_first_name'], $_POST['modif_phone']);
+        echo '
+        <div class="container">
+          <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </svg>  
+            &nbsp;Utilisateur modifié avec succès !
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+        ';
+      } catch(Exception $e) {
+        echo '
+        <div class="container">
+          <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+            </svg>
+              &nbsp;Erreur durant la modification de l\'utilisateur 
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>  
+        ';
+      }
+    }
+  ?>
 
   <main>
     <div class="container">
       <div class="row">
-        <form class="col-md-7 offset-md-3" method="post" action="admin_add_user.php">
+        <form class="col-md-7 offset-md-3" method="post" action="admin_modification_user.php">
           <div class="mb-3 row">
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Nom</label>
 
@@ -183,7 +212,7 @@
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Prénom</label>
 
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="jean" name="modif_first_name">
+              <input type="text" class="form-control" placeholder="Jean" name="modif_first_name">
             </div>
           </div>
 
@@ -199,15 +228,7 @@
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Adresse mail</label>
 
             <div class="col-sm-8">
-              <input type="email" class="form-control" placeholder="jean.dupont@messagerie.fr" name="modif_mail">
-            </div>
-          </div>
-
-          <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label"> Confirmation Email</label>
-
-            <div class="col-sm-8">
-              <input type="email" class="form-control" placeholder="jean.dupont@messagerie.fr" name="modif_mail_validation">
+              <input type="email" class="form-control" placeholder="jean.dupont@messagerie.fr" name="mail">
             </div>
           </div>
 
@@ -215,7 +236,7 @@
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Mot de passe</label>
 
             <div class="col-sm-8">
-              <input type="password" class="form-control" placeholder="motdepasse" name="modif_password">
+              <input type="password" class="form-control" placeholder="mot de passe" name="modif_password">
             </div>
           </div>
 
@@ -223,7 +244,7 @@
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Confirmation du mot de passe</label>
 
             <div class="col-sm-8">
-              <input type="password" class="form-control" placeholder="motdepasse" name="modif_password_validation">
+              <input type="password" class="form-control" placeholder="mot de passe confirmé" name="modif_password_validation">
             </div>
           </div>
 

@@ -78,40 +78,61 @@
     </nav>
   </header>
 
+  
+
 
   <div id="student_table_grade">
 
     <table class="table table-striped">
 
-      <thead>
-        <tr>
-          <th scope="col">Matière</th>
-          <th scope="col">Moyenne</th>
-          <th scope="col">Moyenne de classe</th>
-          <th scope="col">Rang</th>
-          <th scope="col">Rattrapage</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <?php
-        $lessons = $user->listLessons();
-        print_r($lessons);
-        foreach($lessons as $lesson) {
-          echo '<br>';
-          print_r($user->personalAverageInLesson($lesson->subject));
-          echo '
-            <tr>
-              <td>' . $lesson->subject . '</td>
-              <td>' . $user->personalAverageInLesson($lesson->subject)[1]['average'] . '</td>
-            </tr>';
+      <?php
+        if(isset($_GET['date_begin'])){
+        echo'<thead>
+          <tr>
+            <th scope="col">Matière</th>
+            <th scope="col">Moyenne</th>
+            <th scope="col">Moyenne de classe</th>
+            <th scope="col">Rang</th>
+            <th scope="col">Rattrapage</th>
+          </tr>
+        </thead>';
         }
-          ?>
-          </tbody>
-    </table>
+      ?>
 
+<div class="d-flex justify-content-center mx-auto">
+  <div class="btn-group<?php if(isset($_GET['date_begin'])) { echo ' d-none'; } ?>">
+    <button type="button" id="buttonSemester" class="btn btn-danger dropdown-toggle mx-auto" data-bs-toggle="dropdown" aria-expanded="false">
+      Sélectionnez un semestre pour y voir vos notes
+    </button>
+    <ul class="dropdown-menu">
+      <?php
+      $semesters = $user->listSemesters();
+      foreach($semesters as $semester){
+        echo '<li><a class="dropdown-item" href="?date_begin='. $semester["date_begin"]. '">'. $semester['date_begin'] .'</a></li>';
+      }
+      ?>
+    </ul>
   </div>
+</div>
+
+<tbody>
+  <?php
+  if(isset($_GET['date_begin'])){
+    echo '<td> coucou </td>';
+  }
+  ?>
+</tbody>
+
+<script>
+  // Ajouter un gestionnaire d'événement pour le bouton
+  document.getElementById("buttonSemester").addEventListener('change', showClass);
+
+  function showClass() {
+    document.getElementById("class").classList.toggle('d-none');
+  }
+</script>
+
   
   <?php require_once('../../footer.php') ?>
-
+9
 </body>
