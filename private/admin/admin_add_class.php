@@ -246,7 +246,7 @@
           </div>
 
           <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Date de début</label>
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Date de début d'études</label>
 
             <div class="col-sm-8">
               <input name="datepicker_add_class_begin" id="datepicker_add_class_begin"/>
@@ -261,7 +261,7 @@
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Date de fin</label>
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Date de diplomation</label>
 
             <div class="col-sm-8">
               <input name="datepicker_add_class_end" id="datepicker_add_class_end"/>
