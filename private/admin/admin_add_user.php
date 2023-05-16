@@ -165,6 +165,91 @@
     </nav>
   </header>
 
+  <?php
+  if(isset($_POST['add_user']))
+    if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'professeur'){
+        if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
+          try{
+          $values = array(
+            "mail" => $_POST['new_mail'],
+            "name" => $_POST['new_last_name'],
+            "surname" => $_POST['new_first_name'],
+            "phone" => $_POST['new_phone'],
+            "is_admin" => false
+          );
+          $teacher = new Teacher($values);              
+          $user->addTeacher($teacher,$_POST['new_password']);
+          echo '
+        <div class="container">
+          <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </svg>  
+            &nbsp;Professeur ajouté avec succès !
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+        ';
+        }
+        catch(Exception $e){
+          echo '
+          <div class="container">
+            <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+              </svg>
+                &nbsp;Erreur durant l\'ajout du professeur
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>  
+          ';
+        }
+      }
+    } 
+    if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'eleve'){
+      if(isset($_POST['new_student_id']) && $_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
+          if(isset($_POST['new_class']) && get_class(unserialize($_POST['new_class'])) === "SchoolClass"){
+            try{
+            $studClass = unserialize($_POST['new_class']);
+            $values = array(
+              "mail" => $_POST['new_mail'],
+              "name" => $_POST['new_last_name'],
+              "surname" => $_POST['new_first_name'],
+              "phone" => $_POST['new_phone'],
+              "student_id" => $_POST['new_student_id'],
+              "is_admin" => false
+            );
+            $student = new Student(array_merge($values, $studClass->getDbRow()));
+            $success = $user->addStudent($student,$_POST['new_password']);
+            echo '
+        <div class="container">
+          <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </svg>  
+            &nbsp;Étudiant ajouté avec succès !
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+        ';
+      }
+      catch(Exception $e){
+        echo '
+        <div class="container">
+          <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+            </svg>
+              &nbsp;Erreur durant l\'ajout de l\'étudiant
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>  
+        ';
+      }
+    }
+  }
+  }
+  ?>
 
   <main>
     <div class="container">
@@ -271,41 +356,6 @@
       </div>
     </div>
   </main>
-
-  <?php
-    if(isset($_POST['add_user'])){
-      if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'professeur'){
-        if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
-          $values = array(
-            "mail" => $_POST['new_mail'],
-            "name" => $_POST['new_last_name'],
-            "surname" => $_POST['new_first_name'],
-            "phone" => $_POST['new_phone'],
-            "is_admin" => false
-          );
-          $teacher = new Teacher($values);              
-          $user->addTeacher($teacher,$_POST['new_password']);
-        }
-      } 
-      if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'eleve'){
-        if(isset($_POST['new_student_id']) && $_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
-          if(isset($_POST['new_class']) && get_class(unserialize($_POST['new_class'])) === "SchoolClass"){
-            $studClass = unserialize($_POST['new_class']);
-            $values = array(
-              "mail" => $_POST['new_mail'],
-              "name" => $_POST['new_last_name'],
-              "surname" => $_POST['new_first_name'],
-              "phone" => $_POST['new_phone'],
-              "student_id" => $_POST['new_student_id'],
-              "is_admin" => false
-            );
-            $student = new Student(array_merge($values, $studClass->getDbRow()));
-            $success = $user->addStudent($student,$_POST['new_password']);
-          }
-        }
-      }
-    }
-  ?>
 
   <?php require_once('../../footer.php') ?>
 
