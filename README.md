@@ -26,9 +26,15 @@
     - `INSERT INTO public.user VALUES('charles.ottofraises@messagerie.fr', 'Ottofraises', 'Charles', 'test', '11/04/2023 15:30:00.000', '0612345686');`
 
 ## VSCode DB link setup :
+
 - Add new connection & fill as here : 
 
 ![vsCode connection setup page](vsCodeDBSetup.png)
 
 - Test connection and enter password 'password'
 - If succeed, save connection
+
+## Website organisation :
+
+- Start page id located at `login.html`
+- Initial database users have `test` as a password;
