@@ -91,7 +91,7 @@
             $semesters = $user->listSemesters();
             foreach($semesters as $semester){
               if($semester["date_begin"] == $_GET['date_begin']){
-                echo $semester['semester_name'] . ' : ' . $semester['date_begin']. ', '. $semester['date_end'];
+                echo $semester['semester_name'] . ' : du ' . $semester['date_begin']. ' au '. $semester['date_end'];
               }
             }
           }
@@ -101,7 +101,7 @@
           <?php
           $semesters = $user->listSemesters();
           foreach($semesters as $semester){
-            echo '<li><a class="dropdown-item" href="?date_begin='. $semester["date_begin"]. '">'. $semester['semester_name'] . ' : ' . $semester['date_begin']. ', '. $semester['date_end'] .'</a></li>';
+            echo '<li><a class="dropdown-item" href="?date_begin='. $semester["date_begin"]. '">'. $semester['semester_name'] . ' : du ' . $semester['date_begin']. ' au '. $semester['date_end'] .'</a></li>';
           }
           ?>
         </ul>

@@ -101,12 +101,37 @@
 
   <main>
     <div class="container">
+    <div class="d-flex justify-content-center mx-auto mb-5">
+      <div class="btn-group">
+        <button type="button" id="buttonSemester" class="btn btn-danger dropdown-toggle mx-auto" data-bs-toggle="dropdown" aria-expanded="false">
+          <?php if(!isset($_GET['date_begin'])){
+            echo 'Sélectionnez un semestre pour lister les cours';
+          } else {
+            $semesters = $user->listSemesters();
+            foreach($semesters as $semester){
+              if($semester["date_begin"] == $_GET['date_begin']){
+                echo $semester['semester_name'] . ' : du ' . $semester['date_begin']. ' au '. $semester['date_end'];
+              }
+            }
+          }
+          ?>
+        </button>
+        <ul class="dropdown-menu">
+          <?php
+          $semesters = $user->listSemesters();
+          foreach($semesters as $semester){
+            echo '<li><a class="dropdown-item" href="?date_begin='. $semester["date_begin"]. '">'. $semester['semester_name'] . ' : du ' . $semester['date_begin']. ' au '. $semester['date_end'] .'</a></li>';
+          }
+          ?>
+        </ul>
+      </div>
+    </div>
       <table class="table table-striped table-bordered align-middle">
         <thead>
           <tr>
-            <th scope="col" class="mh-25">Classe</th>
-            <th scope="col" class="mh-25">Matière</th>
-            <th scope="col" class="mh-25">Nombre d'élèves</th>
+            <th scope="col">Classe</th>
+            <th scope="col">Matière</th>
+            <th scope="col">Nombre d'élèves</th>
             <th scope="col">Evaluations</th>
             <th scope="col">Rattrapages</th>
             <th scope="col">Saisies</th>
@@ -114,7 +139,8 @@
         </thead>
         <tbody class="table-group-divider">
         <?php
-          $lessonsList = $user->listLessons();
+        if(isset($_GET['date_begin'])){
+          $lessonsList = $user->listLessons($_GET['date_begin']);
           foreach($lessonsList as $l){
             echo '
             <tr>
@@ -140,7 +166,11 @@
               if($evaluation["not_null"] > 0){
                 echo '
                       <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="' . round($evaluation["average"], 2) . '" aria-valuemin="0" aria-valuemax="20">
-                        <div class="progress-bar" style="width: ' . round($evaluation["average"]*5,2) . '%">' . round($evaluation["average"], 2) . '/20</div>
+                        <div class="progress-bar';
+                if($evaluation["average"] < 10) {
+                  echo ' bg-danger';
+                }        
+                echo '" style="width: ' . round($evaluation["average"]*5,2) . '%">' . round($evaluation["average"], 2) . '/20</div>
                       </div>
                     </td>
                 ';     
@@ -168,9 +198,10 @@
                 }
               }
               echo $underTen . '</td>
-              <td><a href="teacher_detail_class.php?lesson=' . $l["lesson"]->id . '">Modifier</a></td>
+              <td><a class="btn btn-outline-dark" href="teacher_detail_class.php?lesson=' . $l["lesson"]->id . '">Modifier</a></td>
             </tr>';
           };
+        }
         ?>
         </tbody>
       </table>

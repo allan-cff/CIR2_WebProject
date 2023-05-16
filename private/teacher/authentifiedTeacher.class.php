@@ -26,17 +26,25 @@
             }
         }
         public function setGrade($mailStudent, $evalId, $grade){
+            $evalSelect = $this->database->conn->prepare("SELECT EXISTS(SELECT FROM public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.class NATURAL JOIN public.student WHERE mail = :mailStudent AND eval_id = :evalId);");
+            $evalSelect->bindParam(':mailStudent', $mailStudent);
+            $evalSelect->bindParam(':evalId', $evalId);
+            $evalSelect->execute();
+            $exists = $evalSelect->fetch(PDO::FETCH_ASSOC)["exists"];
+            if(!$exists){
+                throw new Exception('Student cannot be graded on this evaluation'); //STOPS execution here
+            }
             $gradeInsert = $this->database->conn->prepare("INSERT INTO public.grade (mail, grade, eval_id) VALUES(:mailStudent, :grade, :evalId) ON CONFLICT (mail, eval_id) DO UPDATE SET grade = :grade;");
             $gradeInsert->bindParam(':mailStudent', $mailStudent);
             $gradeInsert->bindParam(':grade', $grade, PDO::PARAM_INT);
             $gradeInsert->bindParam(':evalId', $evalId);
-            $gradeInsert->bindParam(':lessonId', $lessonId);
             $gradeInsert->execute();
             return $gradeInsert->rowCount() === 1;
         }
-        public function listLessons(){
-            $sql = $this->database->conn->prepare("SELECT *, (SELECT AVG(grade) FROM public.grade WHERE eval_id = public.evaluation.eval_id) AS average, (SELECT COUNT(grade) FROM public.grade WHERE eval_id = public.evaluation.eval_id) AS not_null, (SELECT COUNT(*) FROM public.student WHERE class_id = public.class.class_id) AS student_count FROM public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.matter NATURAL JOIN public.class NATURAL JOIN public.cycle NATURAL JOIN public.campus NATURAL JOIN public.semester JOIN public.user ON(teacher = mail) WHERE teacher = :teacherMail;");
+        public function listLessons($dateBegin){
+            $sql = $this->database->conn->prepare("SELECT *, (SELECT AVG(grade) FROM public.grade WHERE eval_id = public.evaluation.eval_id) AS average, (SELECT COUNT(grade) FROM public.grade WHERE eval_id = public.evaluation.eval_id) AS not_null, (SELECT COUNT(*) FROM public.student WHERE class_id = public.class.class_id) AS student_count FROM public.evaluation NATURAL JOIN public.lesson NATURAL JOIN public.matter NATURAL JOIN public.class NATURAL JOIN public.cycle NATURAL JOIN public.campus NATURAL JOIN public.semester JOIN public.user ON(teacher = mail) WHERE teacher = :teacherMail AND date_begin = :dateBegin;");
             $sql->bindParam(':teacherMail', $this->mail);
+            $sql->bindParam(':dateBegin', $dateBegin);
             $sql->execute();
             $lessonsList = $sql->fetchAll(PDO::FETCH_ASSOC);
             $result = array();

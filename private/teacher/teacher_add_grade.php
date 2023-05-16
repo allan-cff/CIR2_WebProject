@@ -100,7 +100,7 @@
   </header>
 
   <?php
-    if(isset($_POST['add_grade']) && isset($_POST['matter']) && isset($_POST['mail_etudiant']) && isset($_POST['semester']) && isset($_POST['grade'])){
+    if(isset($_POST['add_grade']) && isset($_POST['mail_etudiant']) && isset($_POST['eval']) && isset($_POST['grade'])){
       try {
         $user->setGrade($_POST['mail_etudiant'], $_POST['eval'], $_POST['grade']);
         echo '
@@ -132,31 +132,61 @@
 
   <main>
     <div class="container">
-      <div class="d-flex justify-content-center mx-auto mb-3">
-        <div class="btn-group">
-          <button type="button" id="buttonLesson" class="btn btn-danger dropdown-toggle mx-auto" data-bs-toggle="dropdown" aria-expanded="false">
-            <?php if(!isset($_GET['lesson'])){
+    <div class="d-flex justify-content-center mx-auto mb-5">
+      <div class="btn-group">
+        <button type="button" id="buttonSemester" class="btn btn-danger dropdown-toggle mx-auto" data-bs-toggle="dropdown" aria-expanded="false">
+          <?php if(!isset($_GET['date_begin'])){
+            echo 'Sélectionnez un semestre pour lister les cours';
+          } else {
+            $semesters = $user->listSemesters();
+            foreach($semesters as $semester){
+              if($semester["date_begin"] == $_GET['date_begin']){
+                echo $semester['semester_name'] . ' : du ' . $semester['date_begin']. ' au '. $semester['date_end'];
+              }
+            }
+          }
+          ?>
+        </button>
+        <ul class="dropdown-menu">
+          <?php
+          $semesters = $user->listSemesters();
+          foreach($semesters as $semester){
+            echo '<li><a class="dropdown-item" href="?date_begin='. $semester["date_begin"]. '">'. $semester['semester_name'] . ' : du ' . $semester['date_begin']. ' au '. $semester['date_end'] .'</a></li>';
+          }
+          ?>
+        </ul>
+      </div>
+    </div>
+    <?php 
+      if(isset($_GET['date_begin'])){
+        echo '      
+        <div class="d-flex justify-content-center mx-auto mb-5">
+          <div class="btn-group">
+            <button type="button" id="buttonLesson" class="btn btn-danger dropdown-toggle mx-auto" data-bs-toggle="dropdown" aria-expanded="false">';
+            if(!isset($_GET['lesson'])){
               echo 'Sélectionnez un cours dans lequel renseigner les notes';
             } else {
-              $lessons = $user->listLessons();
+              $lessons = $user->listLessons($_GET['date_begin']);
               foreach($lessons as $l){
                 if($l["lesson"]->id == $_GET['lesson']){
-                  echo $l["lesson"]->subject . ' ' . $l["lesson"]->class->name . ' ' . $l["lesson"]->start . '-' . $l["lesson"]->end;
+                  echo $l["lesson"]->subject . ' ' . $l["lesson"]->class->name . ' du ' . $l["lesson"]->start . ' au ' . $l["lesson"]->end;
                 }
               }
             }
-            ?>
+        echo '
           </button>
           <ul class="dropdown-menu">
-            <?php
-              $lessons = $user->listLessons();
+        ';
+              $lessons = $user->listLessons($_GET['date_begin']);
               foreach($lessons as $l){
-                echo '<li><a class="dropdown-item" href="?lesson='. $l["lesson"]->id. '">'. $l["lesson"]->subject . ' ' . $l["lesson"]->class->name . ' ' . $l["lesson"]->start . '-' . $l["lesson"]->end .'</a></li>';
+                echo '<li><a class="dropdown-item" href="?lesson='. $l["lesson"]->id. '&date_begin='. $_GET['date_begin'] .'">'. $l["lesson"]->subject . ' ' . $l["lesson"]->class->name . ' du ' . $l["lesson"]->start . ' au ' . $l["lesson"]->end .'</a></li>';
               }
-            ?>
+        echo '
           </ul>
         </div>
       </div>
+      ';
+      }?>
       <div class="row">
         <form class="col-md-7 offset-md-3" method="post" action="teacher_add_grade.php<?php
         if(isset($_GET['lesson'])){
@@ -179,8 +209,13 @@
             <div class="col-sm-8">
               <select class="form-select" name="eval">  
                 <?php
-                  foreach($l["evaluations"] as $evaluation){
-                    echo '<option value="'. $evaluation['eval_id'].'">'.$evaluation['begin_datetime'] .' - ' .$evaluation['end_datetime'].'</option>';
+                  if(isset($_GET['lesson'])){
+                    $evalList = $user->listLessonEvaluations($_GET['lesson']);
+                    foreach($evalList as $evaluation){
+                      $begin = DateTimeImmutable::createFromFormat('Y-m-d H:i:se', $evaluation['begin_datetime']);
+                      $end = DateTimeImmutable::createFromFormat('Y-m-d H:i:se', $evaluation['end_datetime']);
+                      echo '<option value="'. $evaluation['eval_id'].'">Le '. $begin->format('d-m-Y') . ' de ' . $begin->format('H:i') .' à ' . $end->format('H:i') . '</option>';
+                    }  
                   }
                 ?>
               </select>
