@@ -65,7 +65,8 @@
                 "first_year" => $this->firstYear,
                 "graduation_year" => $this->graduationYear,
                 "campus_name" => $this->campus,
-                "class_name" => $this->name
+                "class_name" => $this->name,
+                "class_id" => $this->id
             );
         }
     }
