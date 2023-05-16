@@ -166,9 +166,9 @@
   </header>
 
   <?php
-    if(isset($_POST['delete_user']) && isset($_POST['mail_delete'])){
+    if(isset($_POST['delete_user']) && isset($_POST['delete_mail'])){
       try {
-        $user->deleteUser($_POST['mail_delete']);
+        $user->deleteUser($_POST['delete_mail']);
         echo '
         <div class="container">
           <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
