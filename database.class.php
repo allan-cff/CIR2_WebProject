@@ -43,15 +43,18 @@
             $user = $sql->fetch(PDO::FETCH_ASSOC);
             if($user){
                 $database = new self($this->dbname, $this->host, $this->port, $this->user, $this->password);
-                //password_verify here
-                if($user['is_student']){
-                    return new AuthentifiedStudent($database, $user);
-                }    
-                if($user['is_teacher']){
-                    return new AuthentifiedTeacher($database, $user);
-                }
-                if($user['is_admin']){
-                    return new AuthentifiedAdmin($database, $user);
+                if(password_verify($password, $user["password"])){
+                    if($user['is_student']){
+                        return new AuthentifiedStudent($database, $user);
+                    }    
+                    if($user['is_teacher']){
+                        return new AuthentifiedTeacher($database, $user);
+                    }
+                    if($user['is_admin']){
+                        return new AuthentifiedAdmin($database, $user);
+                    }
+                } else {
+                    return false;
                 }
             } else {
                 return false;

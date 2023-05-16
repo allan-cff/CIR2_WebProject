@@ -5,8 +5,8 @@
     //Weird require as header.php will be included and change location
     
     function redirect(){
-        //header('Location: ../../login.html');
-        //exit;
+        header('Location: ../../login.html');
+        exit;
     }
 
     session_start();
