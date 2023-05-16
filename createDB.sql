@@ -145,7 +145,7 @@ CREATE TABLE public.appreciation(
 ------------------------------------------------------------
 CREATE TABLE public.matter(
 	matter_ID   INT GENERATED ALWAYS AS IDENTITY ,
-	subject     VARCHAR (20) NOT NULL  ,
+	subject     VARCHAR (25) NOT NULL  ,
 	CONSTRAINT matter_PK PRIMARY KEY (matter_ID),
 	CONSTRAINT matter_AK UNIQUE (subject)
 )WITHOUT OIDS;
@@ -204,24 +204,85 @@ CREATE TABLE public.grade(
 -- INSERT TEST DATA
 ------------------------------------------------------------
 INSERT INTO public.cycle(cycle) VALUES('CIR');
-INSERT INTO public.campus(campus_name, latitude, longitude) VALUES('Nantes', 47.27487, -1.507627);
+INSERT INTO public.cycle(cycle) VALUES('EST');
+INSERT INTO public.cycle(cycle) VALUES('BIOST');
+INSERT INTO public.cycle(cycle) VALUES('CENT');
+INSERT INTO public.cycle(cycle) VALUES('MECA');
+INSERT INTO public.cycle(cycle) VALUES('CSI');
+
+INSERT INTO public.campus(campus_name, latitude, longitude) VALUES('Nantes', -1.507627, 47.27487);
+INSERT INTO public.campus(campus_name, latitude, longitude) VALUES('Rennes', -1.6926634, 48.127754);
+INSERT INTO public.campus(campus_name, latitude, longitude) VALUES('Caen', -0.3562123, 49.189164);
+INSERT INTO public.campus(campus_name, latitude, longitude) VALUES('Brest', -4.4981289, 48.4070589);
+
 INSERT INTO public.matter(subject) VALUES('Algorithmique - C++');
-INSERT INTO public.class(class_name, first_year, graduation_year, campus_id, cycle_id) VALUES('CIR2', 2021, 2026, (SELECT campus_id FROM public.campus WHERE campus_name = 'Nantes'), (SELECT cycle_id FROM public.cycle WHERE cycle = 'CIR'));
-INSERT INTO public.user VALUES('lara.clette@messagerie.fr', 'Clette', 'Lara', 'test', NULL, '0612345678');
-INSERT INTO public.student(mail, student_ID, class_ID) VALUES('lara.clette@messagerie.fr', 70012, (SELECT class_id FROM public.class WHERE class_name = 'CIR2'));
-INSERT INTO public.user VALUES('jacques.ouzi@messagerie.fr', 'Ouzi', 'Jacques', 'test', NULL, '0612345679');
-INSERT INTO public.student(mail, student_ID, class_ID) VALUES('jacques.ouzi@messagerie.fr', 70013, (SELECT class_id FROM public.class WHERE class_name = 'CIR2'));
-INSERT INTO public.user VALUES('bernard.tichaud@messagerie.fr', 'Tichaud', 'Bernard', 'test', NULL, '0612345681');
-INSERT INTO public.student(mail, student_ID, class_ID) VALUES('bernard.tichaud@messagerie.fr', 70014, (SELECT class_id FROM public.class WHERE class_name = 'CIR2'));
-INSERT INTO public.user VALUES('annalise.durine@messagerie.fr', 'Durine', 'Anna-Lise', 'test', NULL, '0612345682');
-INSERT INTO public.student(mail, student_ID, class_ID) VALUES('annalise.durine@messagerie.fr', 70015, (SELECT class_id FROM public.class WHERE class_name = 'CIR2'));
-INSERT INTO public.user VALUES('alain.terieur@messagerie.fr', 'Terieur', 'Alain', 'test', NULL, '0612345683');
-INSERT INTO public.student(mail, student_ID, class_ID) VALUES('alain.terieur@messagerie.fr', 70016, (SELECT class_id FROM public.class WHERE class_name = 'CIR2'));
-INSERT INTO public.user VALUES('abel.auboisdormant@messagerie.fr', 'Auboisdormant', 'Abel', 'test', NULL, '0612345684');
-INSERT INTO public.student(mail, student_ID, class_ID) VALUES('abel.auboisdormant@messagerie.fr', 70017, (SELECT class_id FROM public.class WHERE class_name = 'CIR2'));
-INSERT INTO public.user VALUES('maurice.dubois@messagerie.fr', 'Dubois', 'Maurice', 'test', NULL, '0612345685');
-INSERT INTO public.teacher VALUES('maurice.dubois@messagerie.fr');
-INSERT INTO public.semester(date_begin, date_end, semester_name) VALUES('2023-09-01', '2024-02-15', 'S1 2023/2024');
-INSERT INTO public.lesson(class_id, teacher, semester_id, matter_id) VALUES((SELECT class_id FROM public.class WHERE class_name = 'CIR2'), 'maurice.dubois@messagerie.fr', (SELECT semester_id FROM public.semester WHERE date_begin = '2023-09-01 8:00:00.000'), (SELECT matter_id FROM public.matter WHERE subject = 'Algorithmique - C++'));
-INSERT INTO public.user VALUES('allan@isen.fr', 'Cueff', 'Allan', 'test', NULL, '0616155975');
+INSERT INTO public.matter(subject) VALUES('FHS');
+INSERT INTO public.matter(subject) VALUES('Mathématiques');
+INSERT INTO public.matter(subject) VALUES('Anglais');
+INSERT INTO public.matter(subject) VALUES('Algorithmique - Python');
+INSERT INTO public.matter(subject) VALUES('Serveurs Web');
+INSERT INTO public.matter(subject) VALUES('Communication Web');
+INSERT INTO public.matter(subject) VALUES('Web Backend');
+
+INSERT INTO public.semester(date_begin, date_end, semester_name) VALUES('2022-09-01', '2023-02-15', 'S1 2022/2023');
+INSERT INTO public.semester(date_begin, date_end, semester_name) VALUES('2023-02-16', '2023-06-15', 'S2 2022/2023');
+INSERT INTO public.semester(date_begin, date_end, semester_name) VALUES('2023-09-03', '2024-02-11', 'S1 2023/2024');
+INSERT INTO public.semester(date_begin, date_end, semester_name) VALUES('2024-02-12', '2024-06-17', 'S2 2023/2024');
+
+INSERT INTO public.class(class_name, first_year, graduation_year, campus_id, cycle_id) VALUES('Promo 5', 2021, 2026, (SELECT campus_id FROM public.campus WHERE campus_name = 'Nantes'), (SELECT cycle_id FROM public.cycle WHERE cycle = 'CIR'));
+INSERT INTO public.class(class_name, first_year, graduation_year, campus_id, cycle_id) VALUES('Promo 6', 2022, 2027, (SELECT campus_id FROM public.campus WHERE campus_name = 'Nantes'), (SELECT cycle_id FROM public.cycle WHERE cycle = 'CIR'));
+INSERT INTO public.class(class_name, first_year, graduation_year, campus_id, cycle_id) VALUES('Promo 5', 2021, 2026, (SELECT campus_id FROM public.campus WHERE campus_name = 'Nantes'), (SELECT cycle_id FROM public.cycle WHERE cycle = 'CSI'));
+INSERT INTO public.class(class_name, first_year, graduation_year, campus_id, cycle_id) VALUES('Promo 5', 2021, 2026, (SELECT campus_id FROM public.campus WHERE campus_name = 'Nantes'), (SELECT cycle_id FROM public.cycle WHERE cycle = 'EST'));
+
+
+INSERT INTO public.user VALUES('lara.clette@isen.fr', 'Clette', 'Lara', '$2y$10$7.gHsr3BZbDn3xnvU1yqrON49S6GdgO.3RoH0Tr6jz3QD8qzk4jDK', NULL, '0612345678');
+INSERT INTO public.student(mail, student_ID, class_ID) VALUES('lara.clette@isen.fr', 70012, 1);
+INSERT INTO public.user VALUES('jacques.ouzi@isen.fr', 'Ouzi', 'Jacques', '$2y$10$7.gHsr3BZbDn3xnvU1yqrON49S6GdgO.3RoH0Tr6jz3QD8qzk4jDK', NULL, '0612345679');
+INSERT INTO public.student(mail, student_ID, class_ID) VALUES('jacques.ouzi@isen.fr', 70013, 1);
+INSERT INTO public.user VALUES('bernard.tichaud@isen.fr', 'Tichaud', 'Bernard', '$2y$10$7.gHsr3BZbDn3xnvU1yqrON49S6GdgO.3RoH0Tr6jz3QD8qzk4jDK', NULL, '0612345681');
+INSERT INTO public.student(mail, student_ID, class_ID) VALUES('bernard.tichaud@isen.fr', 70014, 1);
+INSERT INTO public.user VALUES('alain.terieur@isen.fr', 'Terieur', 'Alain', '$2y$10$7.gHsr3BZbDn3xnvU1yqrON49S6GdgO.3RoH0Tr6jz3QD8qzk4jDK', NULL, '0612345683');
+INSERT INTO public.student(mail, student_ID, class_ID) VALUES('alain.terieur@isen.fr', 70016, 1);
+INSERT INTO public.user VALUES('abel.auboisdormant@isen.fr', 'Auboisdormant', 'Abel', '$2y$10$7.gHsr3BZbDn3xnvU1yqrON49S6GdgO.3RoH0Tr6jz3QD8qzk4jDK', NULL, '0612345684');
+INSERT INTO public.student(mail, student_ID, class_ID) VALUES('abel.auboisdormant@isen.fr', 70017, 1);
+
+INSERT INTO public.user VALUES('ayoub.karine@isen.fr', 'Dubois', 'Maurice', '$2y$10$7.gHsr3BZbDn3xnvU1yqrON49S6GdgO.3RoH0Tr6jz3QD8qzk4jDK', NULL, '0612345685');
+INSERT INTO public.teacher VALUES('ayoub.karine@isen.fr');
+INSERT INTO public.user VALUES('abdelhaq.abdelqari@isen.fr', 'Dubois', 'Maurice', '$2y$10$7.gHsr3BZbDn3xnvU1yqrON49S6GdgO.3RoH0Tr6jz3QD8qzk4jDK', NULL, '0635345685');
+INSERT INTO public.teacher VALUES('abdelhaq.abdelqari@isen.fr');
+INSERT INTO public.user VALUES('leandro.montero@isen.fr', 'Dubois', 'Maurice', '$2y$10$7.gHsr3BZbDn3xnvU1yqrON49S6GdgO.3RoH0Tr6jz3QD8qzk4jDK', NULL, '0619945685');
+INSERT INTO public.teacher VALUES('leandro.montero@isen.fr');
+INSERT INTO public.user VALUES('mateo.sorin@isen.fr', 'Dubois', 'Maurice', '$2y$10$7.gHsr3BZbDn3xnvU1yqrON49S6GdgO.3RoH0Tr6jz3QD8qzk4jDK', NULL, '0612349185');
+INSERT INTO public.teacher VALUES('mateo.sorin@isen.fr');
+
+INSERT INTO public.lesson(class_id, teacher, semester_id, matter_id) VALUES(1, 'ayoub.karine@isen.fr', 1, (SELECT matter_id FROM public.matter WHERE subject = 'Web Backend'));
+INSERT INTO public.lesson(class_id, teacher, semester_id, matter_id) VALUES(1, 'ayoub.karine@isen.fr', 1, (SELECT matter_id FROM public.matter WHERE subject = 'Communication Web'));
+INSERT INTO public.lesson(class_id, teacher, semester_id, matter_id) VALUES(1, 'mateo.sorin@isen.fr', 1, (SELECT matter_id FROM public.matter WHERE subject = 'FHS'));
+INSERT INTO public.lesson(class_id, teacher, semester_id, matter_id) VALUES(1, 'abdelhaq.abdelqari@isen.fr', 1, (SELECT matter_id FROM public.matter WHERE subject = 'Mathématiques'));
+
+INSERT INTO public.evaluation(coeff, begin_datetime, end_datetime, description, lesson_id) VALUES (1 , '2022-12-16 08:00:00', '2022-12-16 09:30:00', 'DS1', 1);
+INSERT INTO public.evaluation(coeff, begin_datetime, end_datetime, description, lesson_id) VALUES (1 , '2023-01-15 08:00:00', '2023-01-15 09:30:00', 'DS1', 2);
+INSERT INTO public.evaluation(coeff, begin_datetime, end_datetime, description, lesson_id) VALUES (2 , '2023-02-08 08:00:00', '2023-02-08 09:30:00', 'DS2', 1);
+
+INSERT INTO public.grade(eval_id, grade, mail) VALUES (1, 18, 'lara.clette@isen.fr');
+INSERT INTO public.grade(eval_id, grade, mail) VALUES (1, 12.5, 'jacques.ouzi@isen.fr');
+INSERT INTO public.grade(eval_id, grade, mail) VALUES (1, 13.75, 'bernard.tichaud@isen.fr');
+INSERT INTO public.grade(eval_id, grade, mail) VALUES (1, 9, 'alain.terieur@isen.fr');
+INSERT INTO public.grade(eval_id, grade, mail) VALUES (1, 7, 'abel.auboisdormant@isen.fr');
+
+INSERT INTO public.grade(eval_id, grade, mail) VALUES (2, 11, 'lara.clette@isen.fr');
+INSERT INTO public.grade(eval_id, grade, mail) VALUES (2, 14, 'jacques.ouzi@isen.fr');
+INSERT INTO public.grade(eval_id, grade, mail) VALUES (2, 5, 'bernard.tichaud@isen.fr');
+INSERT INTO public.grade(eval_id, grade, mail) VALUES (2, 8.5, 'alain.terieur@isen.fr');
+INSERT INTO public.grade(eval_id, grade, mail) VALUES (2, 10, 'abel.auboisdormant@isen.fr');
+
+INSERT INTO public.grade(eval_id, grade, mail) VALUES (3, 14, 'lara.clette@isen.fr');
+INSERT INTO public.grade(eval_id, grade, mail) VALUES (3, 17, 'jacques.ouzi@isen.fr');
+INSERT INTO public.grade(eval_id, grade, mail) VALUES (3, 15, 'bernard.tichaud@isen.fr');
+
+INSERT INTO public.appreciation(appraisal, semester_id, mail) VALUES('Très bon semestre', 1, 'lara.clette@isen.fr');
+INSERT INTO public.appreciation(appraisal, semester_id, mail) VALUES('Très bon semestre', 1, 'jacques.ouzi@isen.fr');
+INSERT INTO public.appreciation(appraisal, semester_id, mail) VALUES('Manque de travail', 1, 'alain.terieur@isen.fr');
+
+INSERT INTO public.user VALUES('allan@isen.fr', 'Cueff', 'Allan', '$2y$10$7.gHsr3BZbDn3xnvU1yqrON49S6GdgO.3RoH0Tr6jz3QD8qzk4jDK', NULL, '0616155975');
 INSERT INTO public.admin VALUES('allan@isen.fr');
