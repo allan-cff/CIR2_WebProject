@@ -199,7 +199,7 @@
                 <td>' . $student->id . '</td>
               ';
               foreach($evaluationList as $eval){
-                if(isset($gradesList[$student->mail])){
+                if(isset($gradesList[$student->mail]) && isset($gradesList[$student->mail][$eval["eval_id"]])){
                   echo '<td>' . $gradesList[$student->mail][$eval["eval_id"]] . '</td>';
                 } else {
                   echo '<td>Non renseigné</td>';
