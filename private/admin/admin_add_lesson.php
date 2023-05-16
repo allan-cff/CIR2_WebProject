@@ -209,7 +209,7 @@
                 <?php
                   $classes = $user->listClasses();
                   foreach ($classes as $classe) {
-                    echo '<option value="'.$classe->id.'">'.$classe->name.'</option>';
+                    echo '<option value="'.$classe->id.'">'.$classe->print().'</option>';
                   }
                 ?>
               </select>
