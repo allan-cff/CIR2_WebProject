@@ -199,7 +199,11 @@
                 <td>' . $student->id . '</td>
               ';
               foreach($evaluationList as $eval){
-                echo '<td>' . $gradesList[$student->mail][$eval["eval_id"]] . '</td>';
+                if(isset($gradesList[$student->mail])){
+                  echo '<td>' . $gradesList[$student->mail][$eval["eval_id"]] . '</td>';
+                } else {
+                  echo '<td>Non renseigné</td>';
+                }
               }
               echo  '
                 <td>' . round($averages[$student->mail],2) . '</td>
