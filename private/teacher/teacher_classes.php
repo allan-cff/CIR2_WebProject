@@ -160,7 +160,14 @@
                 </table>  
               </td>
               <td>';
-            echo  '</td>
+              $averages = $user->listStudentsAverages($l["lesson"]->id);
+              $underTen = 0;
+              foreach($averages as $average){
+                if($average < 10){
+                  $underTen += 1;
+                }
+              }
+              echo $underTen . '</td>
               <td><a href="teacher_detail_class.php?lesson=' . $l["lesson"]->id . '">Modifier</a></td>
             </tr>';
           };
