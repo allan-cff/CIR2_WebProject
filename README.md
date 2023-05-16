@@ -42,3 +42,7 @@
 ## Figma link :
 
 [Figma](https://www.figma.com/file/UIjXCVssEtYETo0towYaei/page-login?type=design&node-id=0%3A1&t=pFohBGSzkjTUZUjC-1)
+
+## Presentation link :
+
+[PowerPoint](https://yncrea-my.sharepoint.com/:p:/g/personal/raphael_fosse_isen-ouest_yncrea_fr/Ea0e0ymq4AtPn_hKc9CAd_UBmvwnN5Pcvxw3ewJMjm-7nA?e=8DVGvc)
