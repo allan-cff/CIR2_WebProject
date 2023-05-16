@@ -288,7 +288,7 @@
         }
       } 
       if(isset($_POST['btnradio']) && $_POST['btnradio'] == 'eleve'){
-        if($_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
+        if(isset($_POST['new_student_id']) && $_POST['new_mail'] == $_POST['new_mail_validation'] && $_POST['new_password'] == $_POST['new_password_validation']){
           if(isset($_POST['new_class']) && get_class(unserialize($_POST['new_class'])) === "SchoolClass"){
             $studClass = unserialize($_POST['new_class']);
             $values = array(
@@ -296,6 +296,7 @@
               "name" => $_POST['new_last_name'],
               "surname" => $_POST['new_first_name'],
               "phone" => $_POST['new_phone'],
+              "student_id" => $_POST['new_student_id'],
               "is_admin" => false
             );
             $student = new Student(array_merge($values, $studClass->getDbRow()));
