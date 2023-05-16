@@ -303,6 +303,18 @@
             $sql->execute();
             return $user;
         }
+        public function listLessonsFromClassSemester($classId, $beginDate){
+            $sql = $this->database->conn->prepare('SELECT *, EXISTS (SELECT mail FROM public.admin WHERE mail = teacher) AS "is_admin" FROM public.lesson JOIN public.matter USING (matter_id) JOIN public.semester USING (semester_id) JOIN public.class USING (class_id) JOIN public.cycle USING (cycle_id) JOIN public.campus USING (campus_id) JOIN public.teacher ON teacher = mail JOIN public.user USING (mail) WHERE date_begin = :beginDate AND class_id = :classId;');
+            $sql->bindParam(':classId', $classId);
+            $sql->bindParam(':beginDate', $beginDate);
+            $sql->execute();
+            $lessonsList = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $listOfLessonsObjects = [];
+            foreach($lessonsList as $lesson){
+                $listOfLessonsObjects[$lesson["lesson_id"]] = new Lesson($lesson);
+            }
+            return $listOfLessonsObjects;
+        }
           // ADD HERE FUNCTIONS ONLY AN AUTHENTIFIED ADMINISTRATOR CAN USE    
     }
 ?>

@@ -169,7 +169,7 @@
     </nav>
   </header>
   <?php
-    if(isset($_POST['add_ds']) && isset($_POST['class_add_ds']) && isset($_POST['semester_add_ds']) && isset($_POST['lesson_add_ds']) && isset($_POST['datetimepicker_add_ds_begin']) && isset($_POST['coef_add_ds'])){
+    if(isset($_POST['add_ds']) && isset($_POST['lesson_add_ds']) && isset($_POST['datetimepicker_add_ds_begin']) && isset($_POST['datetimepicker_add_ds_end']) && isset($_POST['coef_add_ds'])){
       $lessonId = $_POST['lesson_add_ds'];
       $name = $_POST['new_ds_name'];
       $dateBegin = DateTimeImmutable::createFromFormat('H:i m/d/Y', $_POST['datetimepicker_add_ds_begin']);
@@ -211,30 +211,64 @@
           <div class="input-group mb-3">
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Classe</label>
 
-            <div class="col-sm-8">
-              <select class="form-select" name="class_add_ds">
-              <?php
+            <div class="btn-group col-sm-8">
+              <button type="button" id="buttonSemester" class="btn btn-outline-dark dropdown-toggle mx-auto" data-bs-toggle="dropdown" aria-expanded="false">
+                <?php if(!isset($_GET['class_id'])){
+                  echo 'Sélectionnez une classe';
+                } else {
                   $classList = $user->listClasses();
                   foreach($classList as $schoolClass){
-                    echo "<option value=\"" . $schoolClass->id . "\">" . $schoolClass->name . "</option>";
+                    if($schoolClass->id == $_GET['class_id']){
+                      echo $schoolClass->print();
+                    }
+                  }
+                }
+                ?>
+              </button>
+              <ul class="dropdown-menu">
+                <?php
+                  $classList = $user->listClasses();
+                  foreach($classList as $schoolClass){
+                    echo '<li><a class="dropdown-item" href="?class_id='. $schoolClass->id. '"';
+                    if(isset($_GET['date_begin'])){
+                      echo '&date_begin=' . $_GET['date_begin'];
+                    }
+                    echo '>'. $schoolClass->print() .'</a></li>';
                   }
                 ?>
-              </select>
+              </ul>
             </div>
           </div>
 
           <div class="input-group mb-3">
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Semestre</label>
 
-            <div class="col-sm-8">
-              <select class="form-select" name="semester_add_ds">
-                  <?php
-                    $semesterList = $user->listSemesters();
-                    foreach($semesterList as $semester){
-                      echo "<option value=\"" . $semester['date_begin'] . "\">" . $semester['date_begin'] .', '. $semester['date_end']  . "</option>";
+            <div class="btn-group col-sm-8">
+              <button type="button" id="buttonSemester" class="btn btn-outline-dark dropdown-toggle mx-auto" data-bs-toggle="dropdown" aria-expanded="false">
+                <?php if(!isset($_GET['date_begin'])){
+                  echo 'Sélectionnez un semestre';
+                } else {
+                  $semesterList = $user->listSemesters();
+                  foreach($semesterList as $semester){
+                    if($semester["date_begin"] == $_GET['date_begin']){
+                      echo $semester['semester_name'] . ' : du ' . $semester['date_begin']. ' au '. $semester['date_end'];
                     }
-                  ?>
-            </select>
+                  }
+                }
+                ?>
+              </button>
+              <ul class="dropdown-menu">
+                <?php
+                $semesterList = $user->listSemesters();
+                foreach($semesterList as $semester){
+                  echo '<li><a class="dropdown-item" href="?date_begin='. $semester["date_begin"];
+                  if(isset($_GET['class_id'])){
+                    echo '&class_id=' . $_GET['class_id'];
+                  }
+                  echo '">'. $semester['semester_name'] . ' : du ' . $semester['date_begin']. ' au '. $semester['date_end'] .'</a></li>';
+                }
+                ?>
+              </ul>
             </div>
           </div>
 
@@ -244,16 +278,18 @@
             <div class="col-sm-8">
               <select class="form-select" name="lesson_add_ds">
                   <?php
-                    $lessonsList = $user->listLessons();
+                  if(isset($_GET['class_id']) && isset($_GET['date_begin'])){
+                    $lessonsList = $user->listLessonsFromClassSemester($_GET['class_id'], $_GET['date_begin']);
                     foreach($lessonsList as $lesson){
                       echo "<option value=\"" . $lesson->id . "\">" . $lesson->subject . "</option>";
                     }
+                  }
                   ?>
             </select>
             </div>
           </div>
 
-          <div class="mb-3 row">
+          <div class="input-group mb-3">
             <label for="exampleFormControlInput1" id="noteDS" value="noteDS" class="col-sm-3 col-form-label">Intitulé du DS</label>
 
             <div class="col-sm-8">
@@ -261,7 +297,7 @@
             </div>
           </div>
 
-          <div class="mb-3 row">
+          <div class="input-group mb-3">
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Date de début</label>
 
             <div class="col-sm-8">
@@ -276,7 +312,7 @@
               </script>
             </div>
           </div>
-          <div class="mb-3 row">
+          <div class="input-group mb-3">
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Date de fin</label>
 
             <div class="col-sm-8">
@@ -292,7 +328,7 @@
             </div>
           </div>
         
-          <div class="mb-3 row">
+          <div class="input-group mb-3">
             <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Coefficient</label>
 
             <div class="col-sm-8">
