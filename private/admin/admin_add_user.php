@@ -248,12 +248,21 @@
               </select>
             </div>
           </div>
+
+          <div class="mb-3 row" id="student_id">
+            <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">ID étudiant</label>
+
+            <div class="col-sm-8">
+              <input type="number" class="form-control" placeholder="" name="new_student_id">
+            </div>
+          </div>
           
           <script>
             document.getElementById("btnradio1").addEventListener('change', showClass);
             document.getElementById("btnradio2").addEventListener('change', showClass);
             function showClass() {
               document.getElementById("class").classList.toggle('d-none');
+              document.getElementById("student_id").classList.toggle('d-none');
             }
           </script>
 
