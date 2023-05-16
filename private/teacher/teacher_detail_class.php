@@ -207,8 +207,13 @@
               }
               echo  '
                 <td>' . round($averages[$student->mail],2) . '</td>
-                <td>' . round($ranks[$student->mail],2) . '</td>
-                <td>' . $appreciations[$student->mail] . '</td>
+                <td>' . round($ranks[$student->mail],2) . '</td>';
+              if(isset($appreciations[$student->mail])){
+                echo '<td>' . $appreciations[$student->mail] . '</td>';
+              } else {
+                echo '<td>Non renseigné</td>';
+              }
+              echo '  
                 <td>
                   <a class="btn btn-outline-dark" href="teacher_add_grade.php?student='. $student->mail .'&lesson='. $myLesson->id .'&date_begin='. $myLesson->start .'">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
