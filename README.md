@@ -38,3 +38,7 @@
 
 - Start page id located at `login.html`
 - Initial database users have `test` as a password;
+
+## Figma link :
+
+[Figma](https://www.figma.com/file/UIjXCVssEtYETo0towYaei/page-login?type=design&node-id=0%3A1&t=pFohBGSzkjTUZUjC-1)
